@@ -1,7 +1,7 @@
 package org.smartregister.chw.cdp.presenter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.domain.MemberObject;

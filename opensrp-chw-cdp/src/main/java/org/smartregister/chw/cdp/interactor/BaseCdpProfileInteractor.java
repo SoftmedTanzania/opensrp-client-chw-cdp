@@ -1,6 +1,6 @@
 package org.smartregister.chw.cdp.interactor;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.domain.MemberObject;
