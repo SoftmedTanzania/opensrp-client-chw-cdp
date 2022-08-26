@@ -1,8 +1,8 @@
 package org.smartregister.chw.cdp.fragment;
 
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.activity.BaseCdpProfileActivity;
 import org.smartregister.chw.cdp.contract.BaseCdpRegisterFragmentContract;
 import org.smartregister.chw.cdp.model.BaseCdpRegisterFragmentModel;
@@ -11,7 +11,6 @@ import org.smartregister.chw.cdp.provider.BaseCdpRegisterProvider;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
-import org.smartregister.cdp.R;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.fragment.BaseRegisterFragment;
@@ -72,7 +71,7 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         android.view.View filterSortLayout = view.findViewById(R.id.filter_sort_layout);
         filterSortLayout.setVisibility(android.view.View.GONE);
 
-         titleView = view.findViewById(R.id.txt_title_label);
+        titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
             titleView.setText(R.string.all_outlets);
