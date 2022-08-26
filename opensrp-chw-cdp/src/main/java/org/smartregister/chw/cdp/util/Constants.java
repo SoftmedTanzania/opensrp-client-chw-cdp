@@ -19,7 +19,8 @@ public interface Constants {
     }
 
     interface FORMS {
-        String CDP_REGISTRATION = "cdp_confirmation";
+        String CDP_OUTLET_REGISTRATION = "cdp_outlet_registration";
+
     }
 
     interface TABLES {

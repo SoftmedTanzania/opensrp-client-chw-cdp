@@ -206,4 +206,8 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
 
     }
 
+    public void startOutletForm(){
+        // Implement
+    }
+
 }
