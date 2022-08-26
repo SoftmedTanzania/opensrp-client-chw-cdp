@@ -48,5 +48,7 @@
     <string name="edit">HARIRI</string>
     <string name="male">Me</string>
     <string name="female">Ke</string>
+    <string name="outlet_registration">Outlet Registration</string>
+    <string name="menu_cdp">Condom Programming</string>
 
 </resources>

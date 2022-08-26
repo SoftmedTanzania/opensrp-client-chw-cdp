@@ -1,6 +1,7 @@
 package org.smartregister.chw.cdp.contract;
 
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 import org.smartregister.chw.cdp.domain.MemberObject;
 import org.smartregister.domain.AlertStatus;
 
@@ -26,6 +27,8 @@ public interface BaseCdpProfileContract {
         void recordPnc(MemberObject memberObject);
 
         void hideView();
+
+        void startFormActivity(JSONObject formJson);
     }
 
     interface Presenter {

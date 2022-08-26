@@ -50,5 +50,9 @@
     <string name="edit">EDIT</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="outlet_registration">Outlet Registration</string>
+    <string name="menu_cdp">Condom Programming</string>
+    <string name="add_outlet">Add Outlet</string>
+    <string name="order_receive">Order/Receive</string>
 
 </resources>

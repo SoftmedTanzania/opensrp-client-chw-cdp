@@ -3,6 +3,7 @@ package org.smartregister.chw.cdp.listener;
 import android.app.Activity;
 import androidx.annotation.NonNull;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.smartregister.listener.BottomNavigationListener;
 import org.smartregister.cdp.R;
@@ -21,11 +22,13 @@ public class BaseCdpBottomNavigationListener extends BottomNavigationListener {
         super.onNavigationItemSelected(item);
 
         BaseRegisterActivity baseRegisterActivity = (BaseRegisterActivity) context;
-
-        if (item.getItemId() == R.id.action_family) {
+        int itemId =item.getItemId();
+        if ( itemId == R.id.action_family) {
             baseRegisterActivity.switchToBaseFragment();
-        } else if (item.getItemId() == R.id.action_scan_qr) {
-            baseRegisterActivity.startQrCodeScanner();
+        } else if (itemId == R.id.action_order_receive) {
+            baseRegisterActivity.switchToFragment(1);
+        } else if(itemId == R.id.action_add_outlet){
+            Toast.makeText(context, "Adding an Outlet", Toast.LENGTH_SHORT).show();
         }
 
         return true;

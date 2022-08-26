@@ -135,7 +135,7 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
 
     @MenuRes
     public int getMenuResource() {
-        return R.menu.bottom_nav_family_menu;
+        return R.menu.bottom_nav_condom_programming;
     }
 
     @Override

@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +17,8 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.json.JSONObject;
+import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.custom_views.BaseCdpFloatingMenu;
 import org.smartregister.chw.cdp.dao.CdpDao;
@@ -31,13 +29,16 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.TestUtil;
 import org.smartregister.domain.AlertStatus;
 import org.smartregister.helper.ImageRenderHelper;
-import org.smartregister.cdp.R;
 import org.smartregister.view.activity.BaseProfileActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
@@ -64,17 +65,16 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     protected ImageView imageViewCross;
     protected TextView textViewUndo;
     protected RelativeLayout rlCDPPositiveDate;
-    private TextView tvUpComingServices;
-    private TextView tvFamilyStatus;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     protected TextView textViewVisitDone;
     protected RelativeLayout visitDone;
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
-
-    private ProgressBar progressBar;
     protected BaseCdpFloatingMenu baseCdpFloatingMenu;
+    private TextView tvUpComingServices;
+    private TextView tvFamilyStatus;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    private ProgressBar progressBar;
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
         Intent intent = new Intent(activity, BaseCdpProfileActivity.class);
@@ -201,6 +201,11 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     public void hideView() {
         textViewRecordCDP.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startFormActivity(JSONObject formJson) {
+        // Implement
     }
 
     @SuppressLint("DefaultLocale")
