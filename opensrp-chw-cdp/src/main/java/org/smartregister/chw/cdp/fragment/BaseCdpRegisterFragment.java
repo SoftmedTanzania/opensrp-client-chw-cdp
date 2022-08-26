@@ -1,6 +1,7 @@
 package org.smartregister.chw.cdp.fragment;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.activity.BaseCdpProfileActivity;
@@ -25,6 +26,8 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
     public static final String FOLLOW_UP_VISIT = "follow_up_visit";
     protected Toolbar toolbar;
     protected CustomFontTextView titleView;
+    private TextView tvStockOnHandCount;
+    private TextView tvOutletsCount;
 
     @Override
     public void initializeAdapter(Set<View> visibleColumns) {
@@ -42,6 +45,9 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         toolbar.setContentInsetsAbsolute(0, 0);
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetStartWithNavigation(0);
+
+        tvStockOnHandCount = view.findViewById(R.id.stock_count_tv);
+        tvOutletsCount = view.findViewById(R.id.outlets_list_tv);
 
         // Update top left icon
         qrCodeScanImageView = view.findViewById(org.smartregister.R.id.scanQrCode);
@@ -77,6 +83,9 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
             titleView.setText(R.string.all_outlets);
             titleView.setFontVariant(FontVariant.REGULAR);
         }
+
+        updateOutlets(5);
+        updateStockOnHand(504);
     }
 
     @Override
@@ -97,6 +106,21 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         if (getSearchView() != null) {
             getSearchView().setText(uniqueID);
         }
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_cdp_all_outlets;
+    }
+
+    protected void updateStockOnHand(int stock){
+        if(tvStockOnHandCount != null)
+            tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
+    }
+
+    protected void updateOutlets(int outletCount){
+        if(tvOutletsCount != null)
+            tvOutletsCount.setText(getString(R.string.outlets_count, outletCount));
     }
 
     @Override

@@ -15,4 +15,9 @@ public class BaseOrdersRegisterFragment extends BaseCdpRegisterFragment {
             titleView.setFontVariant(FontVariant.REGULAR);
         }
     }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_cdp_order_receive;
+    }
 }

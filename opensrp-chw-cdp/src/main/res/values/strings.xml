@@ -55,5 +55,10 @@
     <string name="add_outlet">Add Outlet</string>
     <string name="order_receive">Order/Receive</string>
     <string name="all_outlets">All Outlets</string>
+    <string name="successful">Successful</string>
+    <string name="sent_orders">Sent Orders</string>
+    <string name="all">All</string>
+    <string name="stock_on_hand">Stock On Hand: %d</string>
+    <string name="outlets_count">Outlets: %d</string>
 
 </resources>
