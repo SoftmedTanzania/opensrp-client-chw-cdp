@@ -3,10 +3,8 @@ package org.smartregister.chw.cdp.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.MenuRes;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.domain.Form;
 
@@ -15,8 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.AllConstants;
 import org.smartregister.Context;
+import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpRegisterContract;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
+import org.smartregister.chw.cdp.fragment.BaseOrdersRegisterFragment;
 import org.smartregister.chw.cdp.interactor.BaseCdpRegisterInteractor;
 import org.smartregister.chw.cdp.listener.BaseCdpBottomNavigationListener;
 import org.smartregister.chw.cdp.model.BaseCdpRegisterModel;
@@ -27,7 +27,6 @@ import org.smartregister.chw.cdp.util.TestJsonFormUtils;
 import org.smartregister.chw.cdp.util.TestUtil;
 import org.smartregister.helper.BottomNavigationHelper;
 import org.smartregister.listener.BottomNavigationListener;
-import org.smartregister.cdp.R;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
@@ -37,6 +36,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.MenuRes;
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class BaseCdpRegisterActivity extends BaseRegisterActivity implements BaseCdpRegisterContract.View {
@@ -150,7 +151,9 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
 
     @Override
     protected Fragment[] getOtherFragments() {
-        return new Fragment[0];
+        return new Fragment[]{
+                new BaseOrdersRegisterFragment()
+        };
     }
 
     @Override
@@ -202,4 +205,5 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
         }
 
     }
+
 }

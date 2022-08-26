@@ -54,5 +54,6 @@
     <string name="menu_cdp">Condom Programming</string>
     <string name="add_outlet">Add Outlet</string>
     <string name="order_receive">Order/Receive</string>
+    <string name="all_outlets">All Outlets</string>
 
 </resources>

@@ -25,6 +25,7 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String FOLLOW_UP_VISIT = "follow_up_visit";
     protected Toolbar toolbar;
+    protected CustomFontTextView titleView;
 
     @Override
     public void initializeAdapter(Set<View> visibleColumns) {
@@ -71,10 +72,10 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         android.view.View filterSortLayout = view.findViewById(R.id.filter_sort_layout);
         filterSortLayout.setVisibility(android.view.View.GONE);
 
-        CustomFontTextView titleView = view.findViewById(R.id.txt_title_label);
+         titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
-            titleView.setText(getString(R.string.menu_cdp));
+            titleView.setText(R.string.all_outlets);
             titleView.setFontVariant(FontVariant.REGULAR);
         }
     }
