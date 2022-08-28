@@ -41,8 +41,9 @@
             android:fontFamily="@font/roboto_medium"
             android:ellipsize="none"
             android:scrollHorizontally="false"
-            android:textColor="@color/text_black"
-            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/register_member_village_size"
             tools:text="Outlet Name" />
 
         <LinearLayout
