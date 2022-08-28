@@ -9,7 +9,6 @@ import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.pojo.CdpOutletEventClient;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.util.JsonFormUtils;
@@ -27,13 +26,13 @@ import static org.smartregister.util.JsonFormUtils.ENTITY_ID;
 import static org.smartregister.util.JsonFormUtils.OPENMRS_ENTITY_ID;
 import static org.smartregister.util.JsonFormUtils.VALUE;
 import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
-import static org.smartregister.util.JsonFormUtils.getFieldValue;
 import static org.smartregister.util.JsonFormUtils.getJSONObject;
 import static org.smartregister.util.JsonFormUtils.getString;
 
 public class OutletJsonFormUtil {
 
     private static final String OUTLET_ATTRIBUTE = "outlet_attribute";
+    private static final String OUTLET_IDENTIFIER = "outlet_identifier";
 
     public static CdpOutletEventClient processOutletRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         try {
@@ -52,6 +51,7 @@ public class OutletJsonFormUtil {
                 baseClient.setBirthdate(new Date());
                 baseClient.setClientType("Outlet");
                 baseClient.setAttributes(extractAttributes(fields));
+                baseClient.setIdentifiers(extractIdentifiers(fields));
                 Event baseEvent = JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, "metadata"), formTag(allSharedPreferences), entityId, Constants.EVENT_TYPE.CDP_OUTLET_REGISTRATION, Constants.TABLES.CDP_OUTLET);
                 tagSyncMetadata(allSharedPreferences, baseEvent);
                 return new CdpOutletEventClient(baseClient, baseEvent);
@@ -136,7 +136,34 @@ public class OutletJsonFormUtil {
             pattributes.put(entityIdVal, value);
         }
     }
-    
 
+    public static Map<String, String> extractIdentifiers(JSONArray fields) {
+        Map<String, String> pids = new HashMap<>();
+        for (int i = 0; i < fields.length(); i++) {
+            JSONObject jsonObject = getJSONObject(fields, i);
+            fillIdentifiers(pids, jsonObject);
+        }
+        return pids;
+    }
+
+    public static void fillIdentifiers(Map<String, String> pids, JSONObject jsonObject) {
+
+        String value = getString(jsonObject, VALUE);
+        if (StringUtils.isBlank(value)) {
+            return;
+        }
+
+        if (StringUtils.isNotBlank(getString(jsonObject, ENTITY_ID))) {
+            return;
+        }
+
+        String entityVal = getString(jsonObject, OPENMRS_ENTITY);
+
+        if (entityVal != null && entityVal.equals(OUTLET_IDENTIFIER)) {
+            String entityIdVal = getString(jsonObject, OPENMRS_ENTITY_ID);
+
+            pids.put(entityIdVal, value);
+        }
+    }
 
 }
