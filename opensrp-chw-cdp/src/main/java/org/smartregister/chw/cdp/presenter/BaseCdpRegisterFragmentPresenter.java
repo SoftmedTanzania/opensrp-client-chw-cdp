@@ -97,7 +97,7 @@ public class BaseCdpRegisterFragmentPresenter implements BaseCdpRegisterFragment
 
     @Override
     public String getMainTable() {
-        return Constants.TABLES.CDP_OUTLET;
+        return Constants.TABLES.CDP_REGISTER;
     }
 
     @Override
