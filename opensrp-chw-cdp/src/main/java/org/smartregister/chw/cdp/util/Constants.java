@@ -54,4 +54,7 @@ public interface Constants {
         String PHOTO = "photo";
     }
 
+    public interface JSON_FORM_KEY {
+        String UNIQUE_ID = "unique_id";
+    }
 }

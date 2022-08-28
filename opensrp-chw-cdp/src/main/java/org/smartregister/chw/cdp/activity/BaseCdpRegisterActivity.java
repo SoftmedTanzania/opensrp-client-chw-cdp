@@ -96,6 +96,19 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
     }
 
     @Override
+    public void startFormActivity(JSONObject jsonForm, String formName) {
+        if (formName.equals(Constants.FORMS.CDP_OUTLET_REGISTRATION)) {
+            try {
+                String locationId = Context.getInstance().allSharedPreferences().getPreference(AllConstants.CURRENT_LOCATION_ID);
+                presenter().startForm(formName, null, null, locationId);
+            } catch (Exception e) {
+                Timber.e(e);
+                displayToast(getString(R.string.error_unable_to_start_form));
+            }
+        }
+    }
+
+    @Override
     public Form getFormConfig() {
         return null;
     }

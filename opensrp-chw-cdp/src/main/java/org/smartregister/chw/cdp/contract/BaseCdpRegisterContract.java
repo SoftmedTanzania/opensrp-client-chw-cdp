@@ -16,6 +16,8 @@ public interface BaseCdpRegisterContract {
         Presenter presenter();
 
         Form getFormConfig();
+
+        void startFormActivity(JSONObject form, String formName);
     }
 
     interface Presenter extends BaseRegisterContract.Presenter {
