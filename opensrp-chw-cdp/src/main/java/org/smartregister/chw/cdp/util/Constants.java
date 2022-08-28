@@ -14,16 +14,17 @@ public interface Constants {
     }
 
     interface EVENT_TYPE {
+        String CDP_OUTLET_REGISTRATION = "CDP Outlet Registration";
         String CDP_REGISTRATION = "CDP Registration";
         String CDP_FOLLOW_UP_VISIT = "CDP Follow-up Visit";
     }
 
     interface FORMS {
         String CDP_OUTLET_REGISTRATION = "cdp_outlet_registration";
-
     }
 
     interface TABLES {
+        String CDP_OUTLET = "ec_cdp_outlet";
         String CDP_REGISTER = "ec_cdp_register";
         String CDP_FOLLOW_UP = "ec_cdp_follow_up_visit";
     }
@@ -47,6 +48,10 @@ public interface Constants {
 
     interface CDP_MEMBER_OBJECT {
         String MEMBER_OBJECT = "memberObject";
+    }
+
+    interface KEY {
+        String PHOTO = "photo";
     }
 
 }

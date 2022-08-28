@@ -1,5 +1,6 @@
 package org.smartregister.chw.cdp.util;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,17 +9,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.CdpLibrary;
+import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.util.FormUtils;
+
+import java.io.File;
+import java.io.IOException;
+
+import timber.log.Timber;
 
 import static org.smartregister.chw.cdp.util.Constants.ENCOUNTER_TYPE;
 import static org.smartregister.chw.cdp.util.Constants.STEP_ONE;
 import static org.smartregister.chw.cdp.util.Constants.STEP_TWO;
 
-public class TestJsonFormUtils extends org.smartregister.util.JsonFormUtils {
+public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
+    public static final String OPENSRP_ID = "opensrp_id";
+    public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
 
     public static Triple<Boolean, JSONObject, JSONArray> validateParameters(String jsonString) {
 
@@ -84,7 +94,7 @@ public class TestJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return org.smartregister.util.JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, METADATA), formTag(allSharedPreferences), entityId, getString(jsonForm, ENCOUNTER_TYPE), encounter_type);
     }
 
-    protected static FormTag formTag(AllSharedPreferences allSharedPreferences) {
+    public static FormTag formTag(AllSharedPreferences allSharedPreferences) {
         FormTag formTag = new FormTag();
         formTag.providerId = allSharedPreferences.fetchRegisteredANM();
         formTag.appVersion = CdpLibrary.getInstance().getApplicationVersion();

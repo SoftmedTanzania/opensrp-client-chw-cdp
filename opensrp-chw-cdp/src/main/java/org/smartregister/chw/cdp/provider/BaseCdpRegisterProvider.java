@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.util.DBConstants;
-import org.smartregister.chw.cdp.util.TestUtil;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.cdp.R;
@@ -65,7 +65,7 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
             return context.getResources().getString(R.string.pnc_string);
         } else {
             String gender = Utils.getValue(commonPersonObjectClient.getColumnmaps(), DBConstants.KEY.GENDER, true);
-            return TestUtil.getGenderTranslated(context, gender);
+            return CdpUtil.getGenderTranslated(context, gender);
         }
     }
 

@@ -5,7 +5,7 @@ import androidx.annotation.VisibleForTesting;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.domain.MemberObject;
 import org.smartregister.chw.cdp.util.AppExecutors;
-import org.smartregister.chw.cdp.util.TestUtil;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.domain.AlertStatus;
 
 import java.util.Date;
@@ -37,7 +37,7 @@ public class BaseCdpProfileInteractor implements BaseCdpProfileContract.Interact
 
         Runnable runnable = () -> {
             try {
-                TestUtil.saveFormEvent(jsonString);
+                CdpUtil.saveFormEvent(jsonString);
             } catch (Exception e) {
                 e.printStackTrace();
             }

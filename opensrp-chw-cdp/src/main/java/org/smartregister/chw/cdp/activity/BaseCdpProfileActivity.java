@@ -26,7 +26,7 @@ import org.smartregister.chw.cdp.domain.MemberObject;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
 import org.smartregister.chw.cdp.presenter.BaseCdpProfilePresenter;
 import org.smartregister.chw.cdp.util.Constants;
-import org.smartregister.chw.cdp.util.TestUtil;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.domain.AlertStatus;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.activity.BaseProfileActivity;
@@ -214,7 +214,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         int age = new Period(new DateTime(memberObject.getAge()), new DateTime()).getYears();
         textViewName.setText(String.format("%s %s %s, %d", memberObject.getFirstName(),
                 memberObject.getMiddleName(), memberObject.getLastName(), age));
-        textViewGender.setText(TestUtil.getGenderTranslated(this, memberObject.getGender()));
+        textViewGender.setText(CdpUtil.getGenderTranslated(this, memberObject.getGender()));
         textViewLocation.setText(memberObject.getAddress());
         textViewUniqueID.setText(memberObject.getUniqueId());
 
@@ -269,9 +269,9 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         rlUpcomingServices.setVisibility(View.VISIBLE);
 
         if (status == AlertStatus.upcoming) {
-            tvUpComingServices.setText(TestUtil.fromHtml(getString(R.string.vaccine_service_upcoming, service, dateFormat.format(date))));
+            tvUpComingServices.setText(CdpUtil.fromHtml(getString(R.string.vaccine_service_upcoming, service, dateFormat.format(date))));
         } else {
-            tvUpComingServices.setText(TestUtil.fromHtml(getString(R.string.vaccine_service_due, service, dateFormat.format(date))));
+            tvUpComingServices.setText(CdpUtil.fromHtml(getString(R.string.vaccine_service_due, service, dateFormat.format(date))));
         }
     }
 
@@ -283,7 +283,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         } else if (status == AlertStatus.normal) {
             setFamilyStatus(getString(R.string.family_has_services_due));
         } else if (status == AlertStatus.urgent) {
-            tvFamilyStatus.setText(TestUtil.fromHtml(getString(R.string.family_has_service_overdue)));
+            tvFamilyStatus.setText(CdpUtil.fromHtml(getString(R.string.family_has_service_overdue)));
         }
     }
 

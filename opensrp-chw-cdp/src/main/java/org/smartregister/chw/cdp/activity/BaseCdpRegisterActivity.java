@@ -14,17 +14,19 @@ import org.json.JSONObject;
 import org.smartregister.AllConstants;
 import org.smartregister.Context;
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseCdpRegisterContract;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.fragment.BaseOrdersRegisterFragment;
 import org.smartregister.chw.cdp.interactor.BaseCdpRegisterInteractor;
 import org.smartregister.chw.cdp.listener.BaseCdpBottomNavigationListener;
 import org.smartregister.chw.cdp.model.BaseCdpRegisterModel;
+import org.smartregister.chw.cdp.pojo.RegisterParams;
 import org.smartregister.chw.cdp.presenter.BaseCdpRegisterPresenter;
+import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
-import org.smartregister.chw.cdp.util.TestJsonFormUtils;
-import org.smartregister.chw.cdp.util.TestUtil;
 import org.smartregister.helper.BottomNavigationHelper;
 import org.smartregister.listener.BottomNavigationListener;
 import org.smartregister.repository.BaseRepository;
@@ -103,7 +105,24 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
     @Override
     protected void onActivityResultExtended(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
-            presenter().saveForm(data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON));
+            String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String encounter_type = jsonObject.getString("encounter_type");
+                if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_OUTLET_REGISTRATION)) {
+                    RegisterParams registerParam = new RegisterParams();
+                    registerParam.setEditMode(false);
+                    registerParam.setFormTag(CdpJsonFormUtils.formTag(CdpLibrary.getInstance().context().allSharedPreferences()));
+                    showProgressDialog(R.string.saving_dialog_title);
+                    presenter().saveForm(jsonString, registerParam);
+                } else {
+                    presenter().saveForm(jsonString);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
             finish();
         }
     }
@@ -163,18 +182,22 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_GET_JSON) {
-
+        if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+            String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
             try {
-                String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
-                JSONObject form = new JSONObject(jsonString);
-                JSONArray fieldsOne = TestJsonFormUtils.fields(form, Constants.STEP_ONE);
-                updateFormField(fieldsOne, DBConstants.KEY.RELATIONAL_ID, FAMILY_BASE_ENTITY_ID);
-//                process cdp form
-                presenter().saveForm(form.toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String encounter_type = jsonObject.getString("encounter_type");
+                if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_OUTLET_REGISTRATION)) {
+                    RegisterParams registerParam = new RegisterParams();
+                    registerParam.setEditMode(false);
+                    registerParam.setFormTag(CdpJsonFormUtils.formTag(CdpLibrary.getInstance().context().allSharedPreferences()));
+                    showProgressDialog(R.string.saving_dialog_title);
+                    presenter().saveForm(jsonString, registerParam);
+                } else {
+                    presenter().saveForm(jsonString);
+                }
             } catch (JSONException e) {
-                Timber.e(e);
-                displayToast(getString(R.string.error_unable_to_save_form));
+                e.printStackTrace();
             }
             startClientProcessing();
         }
@@ -198,7 +221,7 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
         try {
             long lastSyncTimeStamp = Utils.getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
-            TestUtil.getClientProcessorForJava().processClient(TestUtil.getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
+            CdpUtil.getClientProcessorForJava().processClient(CdpUtil.getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
             Utils.getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
             Timber.d(e);
@@ -206,7 +229,7 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
 
     }
 
-    public void startOutletForm(){
+    public void startOutletForm() {
         // Implement
     }
 

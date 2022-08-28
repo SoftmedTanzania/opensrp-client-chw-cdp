@@ -50,5 +50,6 @@
     <string name="female">Ke</string>
     <string name="outlet_registration">Outlet Registration</string>
     <string name="menu_cdp">Condom Programming</string>
+    <string name="no_unique_id">Kitambulisho hakipatikani. Bonyeza kitufe cha sync kupata rekodi zaidi na kama bado hakipatikani, wasiliana na mtaalamu wa mifumo</string>
 
 </resources>

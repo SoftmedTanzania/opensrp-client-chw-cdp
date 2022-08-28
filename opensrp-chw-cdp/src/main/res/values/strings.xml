@@ -60,5 +60,6 @@
     <string name="all">All</string>
     <string name="stock_on_hand">Stock On Hand: %d</string>
     <string name="outlets_count">Outlets: %d</string>
+    <string name="no_unique_id">No unique Id found</string>
 
 </resources>

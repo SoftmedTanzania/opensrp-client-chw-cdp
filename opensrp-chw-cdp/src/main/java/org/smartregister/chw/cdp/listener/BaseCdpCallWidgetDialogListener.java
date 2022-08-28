@@ -4,7 +4,7 @@ package org.smartregister.chw.cdp.listener;
 import android.view.View;
 
 import org.smartregister.chw.cdp.fragment.BaseCdpCallDialogFragment;
-import org.smartregister.chw.cdp.util.TestUtil;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.cdp.R;
 
 import timber.log.Timber;
@@ -25,7 +25,7 @@ public class BaseCdpCallWidgetDialogListener implements View.OnClickListener {
         } else if (i == R.id.cdp_call_head_phone) {
             try {
                 String phoneNumber = (String) v.getTag();
-                TestUtil.launchDialer(callDialogFragment.getActivity(), callDialogFragment, phoneNumber);
+                CdpUtil.launchDialer(callDialogFragment.getActivity(), callDialogFragment, phoneNumber);
                 callDialogFragment.dismiss();
             } catch (Exception e) {
                 Timber.e(e);
@@ -33,7 +33,7 @@ public class BaseCdpCallWidgetDialogListener implements View.OnClickListener {
         } else if (i == R.id.call_cdp_client_phone) {
             try {
                 String phoneNumber = (String) v.getTag();
-                TestUtil.launchDialer(callDialogFragment.getActivity(), callDialogFragment, phoneNumber);
+                CdpUtil.launchDialer(callDialogFragment.getActivity(), callDialogFragment, phoneNumber);
                 callDialogFragment.dismiss();
             } catch (Exception e) {
                 Timber.e(e);
