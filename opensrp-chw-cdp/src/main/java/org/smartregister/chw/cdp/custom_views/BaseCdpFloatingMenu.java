@@ -6,17 +6,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import org.smartregister.chw.cdp.domain.MemberObject;
+import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.fragment.BaseCdpCallDialogFragment;
 import org.smartregister.cdp.R;
 
 public class BaseCdpFloatingMenu extends LinearLayout implements View.OnClickListener {
-    private MemberObject MEMBER_OBJECT;
+    private OutletObject outletObject;
 
-    public BaseCdpFloatingMenu(Context context, MemberObject MEMBER_OBJECT) {
+    public BaseCdpFloatingMenu(Context context, OutletObject outletObject) {
         super(context);
         initUi();
-        this.MEMBER_OBJECT = MEMBER_OBJECT;
+        this.outletObject = outletObject;
     }
 
     protected void initUi() {
@@ -30,10 +30,10 @@ public class BaseCdpFloatingMenu extends LinearLayout implements View.OnClickLis
     public void onClick(View view) {
         if (view.getId() == R.id.cdp_fab) {
             Activity activity = (Activity) getContext();
-            BaseCdpCallDialogFragment.launchDialog(activity, MEMBER_OBJECT);
+            BaseCdpCallDialogFragment.launchDialog(activity, outletObject);
         }  else if (view.getId() == R.id.refer_to_facility_layout) {
             Activity activity = (Activity) getContext();
-            BaseCdpCallDialogFragment.launchDialog(activity, MEMBER_OBJECT);
+            BaseCdpCallDialogFragment.launchDialog(activity, outletObject);
         }
     }
 }

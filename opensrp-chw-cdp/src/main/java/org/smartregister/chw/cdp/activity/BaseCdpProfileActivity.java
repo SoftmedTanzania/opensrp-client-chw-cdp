@@ -15,6 +15,8 @@ import android.widget.TextView;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
+import org.smartregister.chw.cdp.dao.CdpDao;
+import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
 import org.smartregister.chw.cdp.presenter.BaseCdpProfilePresenter;
 import org.smartregister.chw.cdp.util.Constants;
@@ -39,6 +41,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     protected TextView tvLastVisitSub;
     protected RelativeLayout rlVisitHistory;
     protected Button btnRecordFollowup;
+    protected OutletObject outletObject;
 
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
@@ -52,7 +55,9 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         setContentView(R.layout.activity_cdp_profile);
         Toolbar toolbar = findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
-//        String baseEntityId = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
+
+        String baseEntityId = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
+        outletObject = CdpDao.getOutlet(baseEntityId);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -68,28 +73,26 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
             appBarLayout.setOutlineProvider(null);
         }
 
+        imageRenderHelper = new ImageRenderHelper(this);
+        setupViews();
+        initializePresenter();
+    }
+
+    @Override
+    protected void setupViews() {
+
         textViewName = findViewById(R.id.textview_name);
         textViewUniqueID = findViewById(R.id.textview_id);
         imageView = findViewById(R.id.imageview_profile);
         textViewLocation = findViewById(R.id.textview_location);
-        textViewOutletType = findViewById(R.id.outlet_type);
+        textViewOutletType = findViewById(R.id.textview_outlet_type);
         tvLastRecordedStock = findViewById(R.id.tv_lastRecordedStock);
         rlLastRecordedStock = findViewById(R.id.rlLastRecordedStock);
         tvLastVisitSub = findViewById(R.id.tv_visitHistory_sub);
         rlVisitHistory = findViewById(R.id.rlVisitHistory);
         btnRecordFollowup = findViewById(R.id.btn_record_visit);
 
-
         btnRecordFollowup.setOnClickListener(this);
-
-        imageRenderHelper = new ImageRenderHelper(this);
-        initializePresenter();
-        setupViews();
-    }
-
-    @Override
-    protected void setupViews() {
-        //Implement
     }
 
 
@@ -104,7 +107,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     protected void initializePresenter() {
         showProgressBar(true);
-        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor());
+        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor(), outletObject);
         fetchProfileData();
         profilePresenter.refreshProfileBottom();
     }
@@ -122,8 +125,11 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void setProfileViewWithData() {
-        //Implement
+    public void setProfileViewWithData(OutletObject outletObject) {
+        textViewName.setText(outletObject.getOutletName());
+        textViewLocation.setText(outletObject.getOutletWardName());
+        textViewUniqueID.setText(outletObject.getOutletId());
+        textViewOutletType.setText(outletObject.getOutletType());
     }
 
 

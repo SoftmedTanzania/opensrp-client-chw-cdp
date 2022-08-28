@@ -1,14 +1,10 @@
 package org.smartregister.chw.cdp.interactor;
 
-import androidx.annotation.VisibleForTesting;
-
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
-import org.smartregister.chw.cdp.domain.MemberObject;
 import org.smartregister.chw.cdp.util.AppExecutors;
 import org.smartregister.chw.cdp.util.CdpUtil;
-import org.smartregister.domain.AlertStatus;
 
-import java.util.Date;
+import androidx.annotation.VisibleForTesting;
 
 public class BaseCdpProfileInteractor implements BaseCdpProfileContract.Interactor {
     protected AppExecutors appExecutors;
@@ -24,7 +20,7 @@ public class BaseCdpProfileInteractor implements BaseCdpProfileContract.Interact
 
     @Override
     public void refreshProfileInfo() {
-       //Implement
+        //Implement
     }
 
     @Override

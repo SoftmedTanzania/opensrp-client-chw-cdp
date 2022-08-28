@@ -2,15 +2,12 @@ package org.smartregister.chw.cdp.contract;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
-import org.smartregister.chw.cdp.domain.MemberObject;
-import org.smartregister.domain.AlertStatus;
-
-import java.util.Date;
+import org.smartregister.chw.cdp.domain.OutletObject;
 
 public interface BaseCdpProfileContract {
     interface View extends InteractorCallBack {
 
-        void setProfileViewWithData();
+        void setProfileViewWithData(OutletObject outletObject);
 
 
         void showProgressBar(boolean status);
@@ -23,7 +20,7 @@ public interface BaseCdpProfileContract {
 
     interface Presenter {
 
-        void fillProfileData(@Nullable MemberObject memberObject);
+        void fillProfileData(@Nullable OutletObject outletObject);
 
         void saveForm(String jsonString);
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
-import org.smartregister.chw.cdp.domain.MemberObject;
+import org.smartregister.chw.cdp.domain.OutletObject;
 
 import java.lang.ref.WeakReference;
 
@@ -15,16 +15,19 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
     protected WeakReference<BaseCdpProfileContract.View> view;
     protected BaseCdpProfileContract.Interactor interactor;
     protected Context context;
+    protected OutletObject outletObject;
 
-    public BaseCdpProfilePresenter(BaseCdpProfileContract.View view, BaseCdpProfileContract.Interactor interactor) {
+    public BaseCdpProfilePresenter(BaseCdpProfileContract.View view, BaseCdpProfileContract.Interactor interactor, OutletObject outletObject) {
         this.view = new WeakReference<>(view);
         this.interactor = interactor;
+        this.outletObject = outletObject;
+        fillProfileData(outletObject);
     }
 
     @Override
-    public void fillProfileData(MemberObject memberObject) {
-        if (memberObject != null && getView() != null) {
-            getView().setProfileViewWithData();
+    public void fillProfileData(OutletObject outletObject) {
+        if (outletObject != null && getView() != null) {
+            getView().setProfileViewWithData(outletObject);
         }
     }
 

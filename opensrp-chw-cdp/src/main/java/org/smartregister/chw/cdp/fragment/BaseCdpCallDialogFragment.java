@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.cdp.contract.BaseCdpCallDialogContract;
-import org.smartregister.chw.cdp.domain.MemberObject;
+import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.listener.BaseCdpCallWidgetDialogListener;
 import org.smartregister.cdp.R;
 
@@ -25,14 +25,14 @@ import static org.smartregister.util.Utils.getName;
 public class BaseCdpCallDialogFragment extends DialogFragment implements BaseCdpCallDialogContract.View {
 
     public static final String DIALOG_TAG = "BaseCDPCallDialogFragment_DIALOG_TAG";
-    private static MemberObject MEMBER_OBJECT;
+    private static OutletObject outletObject;
     private View.OnClickListener listener = null;
 
-    public static BaseCdpCallDialogFragment launchDialog(Activity activity, MemberObject MO) {
+    public static BaseCdpCallDialogFragment launchDialog(Activity activity, OutletObject oO) {
         BaseCdpCallDialogFragment dialogFragment = BaseCdpCallDialogFragment.newInstance();
         FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
         Fragment prev = activity.getFragmentManager().findFragmentByTag(DIALOG_TAG);
-        MEMBER_OBJECT = MO;
+        outletObject = oO;
         if (prev != null) {
             ft.remove(prev);
         }
@@ -68,49 +68,28 @@ public class BaseCdpCallDialogFragment extends DialogFragment implements BaseCdp
 
     private void setCallTitle(ViewGroup rootView, int viewId, final String message) {
         TextView callTitle = rootView.findViewById(viewId);
-        if (MEMBER_OBJECT.getBaseEntityId().equals(MEMBER_OBJECT.getFamilyHead())) {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_family_head)));
-        } else if ("0".equals(MEMBER_OBJECT.getAncMember())) {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_anc_client)));
-        } else if (MEMBER_OBJECT.getBaseEntityId().equals(MEMBER_OBJECT.getPrimaryCareGiver())) {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_primary_caregiver)));
-        } else if ("0".equals(MEMBER_OBJECT.getPncMember())) {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_pnc_client)));
-        } else {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_cdp_client)));
-        }
+
+        callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_cdp_client)));
+
     }
 
     private void initUI(ViewGroup rootView) {
-        if (StringUtils.isNotBlank(MEMBER_OBJECT.getPhoneNumber())) {
-            setCallTitle(rootView, R.id.call_title, getResources().getString(R.string.call));
-            if (StringUtils.isNotBlank(MEMBER_OBJECT.getFamilyHead())) {
-                TextView familyHeadName = rootView.findViewById(R.id.cdp_call_head_name);
-                familyHeadName.setText(MEMBER_OBJECT.getFamilyHeadName());
-                TextView clientCallHeadPhone = rootView.findViewById(R.id.cdp_call_head_phone);
-                clientCallHeadPhone.setTag(MEMBER_OBJECT.getPhoneNumber());
-                clientCallHeadPhone.setText(
-                        getName(getCurrentContext().getString(R.string.call), MEMBER_OBJECT.getFamilyHeadPhoneNumber()));
-                clientCallHeadPhone.setOnClickListener(listener);
-
-            } else {
-                rootView.findViewById(R.id.cdp_layout_family_head).setVisibility(GONE);
-            }
-
-            if (!MEMBER_OBJECT.getBaseEntityId().equals(MEMBER_OBJECT.getFamilyHead())) {
-                //just a member
-                TextView cdpClientNameTextView = rootView.findViewById(R.id.call_cdp_client_name);
-                cdpClientNameTextView.setText(String.format("%s %s %s", MEMBER_OBJECT.getFirstName(), MEMBER_OBJECT.getMiddleName(), MEMBER_OBJECT.getLastName()));
-
-                setCallTitle(rootView, R.id.call_cdp_client_title, "");
-                TextView callCDPClientPhone = rootView.findViewById(R.id.call_cdp_client_phone);
-                callCDPClientPhone.setTag(MEMBER_OBJECT.getPhoneNumber());
-                callCDPClientPhone.setText(getName(getCurrentContext().getString(R.string.call), MEMBER_OBJECT.getPhoneNumber()));
-                callCDPClientPhone.setOnClickListener(listener);
-            } else {
-                rootView.findViewById(R.id.layout_cdp_client).setVisibility(GONE);
-            }
-        }
+//        if (StringUtils.isNotBlank(outletObject.getPhoneNumber())) {
+//            setCallTitle(rootView, R.id.call_title, getResources().getString(R.string.call));
+//
+//            rootView.findViewById(R.id.cdp_layout_family_head).setVisibility(GONE);
+//
+//            //just a member
+//            TextView cdpClientNameTextView = rootView.findViewById(R.id.call_cdp_client_name);
+//            cdpClientNameTextView.setText(String.format("%s %s %s", MEMBER_OBJECT.getFirstName(), MEMBER_OBJECT.getMiddleName(), MEMBER_OBJECT.getLastName()));
+//
+//            setCallTitle(rootView, R.id.call_cdp_client_title, "");
+//            TextView callCDPClientPhone = rootView.findViewById(R.id.call_cdp_client_phone);
+//            callCDPClientPhone.setTag(MEMBER_OBJECT.getPhoneNumber());
+//            callCDPClientPhone.setText(getName(getCurrentContext().getString(R.string.call), MEMBER_OBJECT.getPhoneNumber()));
+//            callCDPClientPhone.setOnClickListener(listener);
+//
+//        }
 
         rootView.findViewById(R.id.cdp_call_close).setOnClickListener(listener);
     }
