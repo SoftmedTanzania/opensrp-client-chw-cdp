@@ -12,19 +12,9 @@ public interface BaseCdpProfileContract {
 
         void setProfileViewWithData();
 
-        void setOverDueColor();
-
-        void openMedicalHistory();
-
-        void openUpcomingService();
-
-        void openFamilyDueServices();
 
         void showProgressBar(boolean status);
 
-        void recordAnc(MemberObject memberObject);
-
-        void recordPnc(MemberObject memberObject);
 
         void hideView();
 
@@ -47,7 +37,7 @@ public interface BaseCdpProfileContract {
 
     interface Interactor {
 
-        void refreshProfileInfo(MemberObject memberObject, InteractorCallBack callback);
+        void refreshProfileInfo();
 
         void saveRegistration(String jsonString, final BaseCdpProfileContract.InteractorCallBack callBack);
     }
@@ -55,11 +45,6 @@ public interface BaseCdpProfileContract {
 
     interface InteractorCallBack {
 
-        void refreshMedicalHistory(boolean hasHistory);
-
-        void refreshUpComingServicesStatus(String service, AlertStatus status, Date date);
-
-        void refreshFamilyStatus(AlertStatus status);
 
     }
 }

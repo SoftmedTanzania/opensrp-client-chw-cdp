@@ -23,13 +23,8 @@ public class BaseCdpProfileInteractor implements BaseCdpProfileContract.Interact
     }
 
     @Override
-    public void refreshProfileInfo(MemberObject memberObject, BaseCdpProfileContract.InteractorCallBack callback) {
-        Runnable runnable = () -> appExecutors.mainThread().execute(() -> {
-            callback.refreshFamilyStatus(AlertStatus.normal);
-            callback.refreshMedicalHistory(true);
-            callback.refreshUpComingServicesStatus("CDP Visit", AlertStatus.normal, new Date());
-        });
-        appExecutors.diskIO().execute(runnable);
+    public void refreshProfileInfo() {
+       //Implement
     }
 
     @Override

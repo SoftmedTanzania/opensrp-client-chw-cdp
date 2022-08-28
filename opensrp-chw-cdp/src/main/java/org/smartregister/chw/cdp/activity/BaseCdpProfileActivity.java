@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,37 +13,27 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.custom_views.BaseCdpFloatingMenu;
-import org.smartregister.chw.cdp.dao.CdpDao;
-import org.smartregister.chw.cdp.domain.MemberObject;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
 import org.smartregister.chw.cdp.presenter.BaseCdpProfilePresenter;
 import org.smartregister.chw.cdp.util.Constants;
-import org.smartregister.chw.cdp.util.CdpUtil;
-import org.smartregister.domain.AlertStatus;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.activity.BaseProfileActivity;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 
 public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseCdpProfileContract.View, BaseCdpProfileContract.InteractorCallBack {
-    protected MemberObject memberObject;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     protected BaseCdpProfileContract.Presenter profilePresenter;
     protected CircleImageView imageView;
     protected TextView textViewName;
@@ -70,10 +59,6 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
-    protected BaseCdpFloatingMenu baseCdpFloatingMenu;
-    private TextView tvUpComingServices;
-    private TextView tvFamilyStatus;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     private ProgressBar progressBar;
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
@@ -112,8 +97,6 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         view_family_row = findViewById(R.id.view_family_row);
         view_positive_date_row = findViewById(R.id.view_positive_date_row);
         imageViewCross = findViewById(R.id.tick_image);
-        tvUpComingServices = findViewById(R.id.textview_name_due);
-        tvFamilyStatus = findViewById(R.id.textview_family_has);
         textview_positive_date = findViewById(R.id.textview_positive_date);
         rlLastVisit = findViewById(R.id.rlLastVisit);
         rlUpcomingServices = findViewById(R.id.rlUpcomingServices);
@@ -142,61 +125,32 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         textViewUndo.setOnClickListener(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
-        memberObject = CdpDao.getMember(baseEntityId);
         initializePresenter();
-        profilePresenter.fillProfileData(memberObject);
         setupViews();
     }
 
     @Override
     protected void setupViews() {
-        initializeFloatingMenu();
-        recordAnc(memberObject);
-        recordPnc(memberObject);
+        //Implement
     }
 
-    @Override
-    public void recordAnc(MemberObject memberObject) {
-        //implement
-    }
-
-    @Override
-    public void recordPnc(MemberObject memberObject) {
-        //implement
-    }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.title_layout) {
             onBackPressed();
-        } else if (id == R.id.rlLastVisit) {
-            this.openMedicalHistory();
-        } else if (id == R.id.rlUpcomingServices) {
-            this.openUpcomingService();
-        } else if (id == R.id.rlFamilyServicesDue) {
-            this.openFamilyDueServices();
         }
     }
 
     @Override
     protected void initializePresenter() {
         showProgressBar(true);
-        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor(), memberObject);
+        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor());
         fetchProfileData();
         profilePresenter.refreshProfileBottom();
     }
 
-    public void initializeFloatingMenu() {
-        if (StringUtils.isNotBlank(memberObject.getPhoneNumber())) {
-            baseCdpFloatingMenu = new BaseCdpFloatingMenu(this, memberObject);
-            baseCdpFloatingMenu.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            addContentView(baseCdpFloatingMenu, linearLayoutParams);
-        }
-    }
 
     @Override
     public void hideView() {
@@ -211,28 +165,9 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @SuppressLint("DefaultLocale")
     @Override
     public void setProfileViewWithData() {
-        int age = new Period(new DateTime(memberObject.getAge()), new DateTime()).getYears();
-        textViewName.setText(String.format("%s %s %s, %d", memberObject.getFirstName(),
-                memberObject.getMiddleName(), memberObject.getLastName(), age));
-        textViewGender.setText(CdpUtil.getGenderTranslated(this, memberObject.getGender()));
-        textViewLocation.setText(memberObject.getAddress());
-        textViewUniqueID.setText(memberObject.getUniqueId());
-
-        if (StringUtils.isNotBlank(memberObject.getFamilyHead()) && memberObject.getFamilyHead().equals(memberObject.getBaseEntityId())) {
-            findViewById(R.id.family_cdp_head).setVisibility(View.VISIBLE);
-        }
-        if (StringUtils.isNotBlank(memberObject.getPrimaryCareGiver()) && memberObject.getPrimaryCareGiver().equals(memberObject.getBaseEntityId())) {
-            findViewById(R.id.primary_cdp_caregiver).setVisibility(View.VISIBLE);
-        }
-        if (memberObject.getCDPTestDate() != null) {
-            textview_positive_date.setText(getString(R.string.cdp_positive) + " " + formatTime(memberObject.getCDPTestDate()));
-        }
+        //Implement
     }
 
-    @Override
-    public void setOverDueColor() {
-        textViewRecordCDP.setBackground(getResources().getDrawable(R.drawable.record_btn_selector_overdue));
-    }
 
     @Override
     protected ViewPager setupViewPager(ViewPager viewPager) {
@@ -254,70 +189,6 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         super.onDestroy();
     }
 
-    @Override
-    public void refreshMedicalHistory(boolean hasHistory) {
-        showProgressBar(false);
-        rlLastVisit.setVisibility(hasHistory ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void refreshUpComingServicesStatus(String service, AlertStatus status, Date date) {
-        showProgressBar(false);
-        if (status == AlertStatus.complete)
-            return;
-        view_most_due_overdue_row.setVisibility(View.VISIBLE);
-        rlUpcomingServices.setVisibility(View.VISIBLE);
-
-        if (status == AlertStatus.upcoming) {
-            tvUpComingServices.setText(CdpUtil.fromHtml(getString(R.string.vaccine_service_upcoming, service, dateFormat.format(date))));
-        } else {
-            tvUpComingServices.setText(CdpUtil.fromHtml(getString(R.string.vaccine_service_due, service, dateFormat.format(date))));
-        }
-    }
-
-    @Override
-    public void refreshFamilyStatus(AlertStatus status) {
-        showProgressBar(false);
-        if (status == AlertStatus.complete) {
-            setFamilyStatus(getString(R.string.family_has_nothing_due));
-        } else if (status == AlertStatus.normal) {
-            setFamilyStatus(getString(R.string.family_has_services_due));
-        } else if (status == AlertStatus.urgent) {
-            tvFamilyStatus.setText(CdpUtil.fromHtml(getString(R.string.family_has_service_overdue)));
-        }
-    }
-
-    private void setFamilyStatus(String familyStatus) {
-        view_family_row.setVisibility(View.VISIBLE);
-        rlFamilyServicesDue.setVisibility(View.VISIBLE);
-        tvFamilyStatus.setText(familyStatus);
-    }
-
-    @Override
-    public void openMedicalHistory() {
-        //implement
-    }
-
-    @Override
-    public void openUpcomingService() {
-        //implement
-    }
-
-    @Override
-    public void openFamilyDueServices() {
-        //implement
-    }
-
-    @Nullable
-    private String formatTime(Date dateTime) {
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-            return formatter.format(dateTime);
-        } catch (Exception e) {
-            Timber.d(e);
-        }
-        return null;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
