@@ -6,25 +6,20 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
-import org.smartregister.chw.cdp.custom_views.BaseCdpFloatingMenu;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
 import org.smartregister.chw.cdp.presenter.BaseCdpProfilePresenter;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.activity.BaseProfileActivity;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -33,33 +28,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseCdpProfileContract.View, BaseCdpProfileContract.InteractorCallBack {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     protected BaseCdpProfileContract.Presenter profilePresenter;
     protected CircleImageView imageView;
     protected TextView textViewName;
-    protected TextView textViewGender;
-    protected TextView textViewLocation;
     protected TextView textViewUniqueID;
-    protected TextView textViewRecordCDP;
-    protected TextView textViewRecordAnc;
-    protected TextView textview_positive_date;
-    protected View view_last_visit_row;
-    protected View view_most_due_overdue_row;
-    protected View view_family_row;
-    protected View view_positive_date_row;
-    protected RelativeLayout rlLastVisit;
-    protected RelativeLayout rlUpcomingServices;
-    protected RelativeLayout rlFamilyServicesDue;
-    protected RelativeLayout visitStatus;
-    protected ImageView imageViewCross;
-    protected TextView textViewUndo;
-    protected RelativeLayout rlCDPPositiveDate;
-    protected TextView textViewVisitDone;
-    protected RelativeLayout visitDone;
-    protected LinearLayout recordVisits;
-    protected TextView textViewVisitDoneEdit;
-    protected TextView textViewRecordAncNotDone;
-    private ProgressBar progressBar;
+    protected TextView textViewLocation;
+    protected TextView textViewOutletType;
+    protected TextView tvLastRecordedStock;
+    protected RelativeLayout rlLastRecordedStock;
+    protected TextView tvLastVisitSub;
+    protected RelativeLayout rlVisitHistory;
+    protected Button btnRecordFollowup;
+
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
         Intent intent = new Intent(activity, BaseCdpProfileActivity.class);
@@ -72,7 +52,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         setContentView(R.layout.activity_cdp_profile);
         Toolbar toolbar = findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
-        String baseEntityId = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
+//        String baseEntityId = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -89,40 +69,18 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         }
 
         textViewName = findViewById(R.id.textview_name);
-        textViewGender = findViewById(R.id.textview_gender);
-        textViewLocation = findViewById(R.id.textview_address);
         textViewUniqueID = findViewById(R.id.textview_id);
-        view_last_visit_row = findViewById(R.id.view_last_visit_row);
-        view_most_due_overdue_row = findViewById(R.id.view_most_due_overdue_row);
-        view_family_row = findViewById(R.id.view_family_row);
-        view_positive_date_row = findViewById(R.id.view_positive_date_row);
-        imageViewCross = findViewById(R.id.tick_image);
-        textview_positive_date = findViewById(R.id.textview_positive_date);
-        rlLastVisit = findViewById(R.id.rlLastVisit);
-        rlUpcomingServices = findViewById(R.id.rlUpcomingServices);
-        rlFamilyServicesDue = findViewById(R.id.rlFamilyServicesDue);
-        rlCDPPositiveDate = findViewById(R.id.rlCDPPositiveDate);
-        textViewVisitDone = findViewById(R.id.textview_visit_done);
-        visitStatus = findViewById(R.id.record_visit_not_done_bar);
-        visitDone = findViewById(R.id.visit_done_bar);
-        recordVisits = findViewById(R.id.record_visits);
-        progressBar = findViewById(R.id.progress_bar);
-        textViewRecordAncNotDone = findViewById(R.id.textview_record_anc_not_done);
-        textViewVisitDoneEdit = findViewById(R.id.textview_edit);
-        textViewRecordCDP = findViewById(R.id.textview_record_cdp);
-        textViewRecordAnc = findViewById(R.id.textview_record_anc);
-        textViewUndo = findViewById(R.id.textview_undo);
         imageView = findViewById(R.id.imageview_profile);
+        textViewLocation = findViewById(R.id.textview_location);
+        textViewOutletType = findViewById(R.id.outlet_type);
+        tvLastRecordedStock = findViewById(R.id.tv_lastRecordedStock);
+        rlLastRecordedStock = findViewById(R.id.rlLastRecordedStock);
+        tvLastVisitSub = findViewById(R.id.tv_visitHistory_sub);
+        rlVisitHistory = findViewById(R.id.rlVisitHistory);
+        btnRecordFollowup = findViewById(R.id.btn_record_visit);
 
-        textViewRecordAncNotDone.setOnClickListener(this);
-        textViewVisitDoneEdit.setOnClickListener(this);
-        rlLastVisit.setOnClickListener(this);
-        rlUpcomingServices.setOnClickListener(this);
-        rlFamilyServicesDue.setOnClickListener(this);
-        rlCDPPositiveDate.setOnClickListener(this);
-        textViewRecordCDP.setOnClickListener(this);
-        textViewRecordAnc.setOnClickListener(this);
-        textViewUndo.setOnClickListener(this);
+
+        btnRecordFollowup.setOnClickListener(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
         initializePresenter();
@@ -154,7 +112,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
 
     @Override
     public void hideView() {
-        textViewRecordCDP.setVisibility(View.GONE);
+        btnRecordFollowup.setVisibility(View.GONE);
     }
 
     @Override
@@ -181,7 +139,12 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
 
     @Override
     public void showProgressBar(boolean status) {
-        progressBar.setVisibility(status ? View.VISIBLE : View.GONE);
+        //Implement
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 
     @Override
