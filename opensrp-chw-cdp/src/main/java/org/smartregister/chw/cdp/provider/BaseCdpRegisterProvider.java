@@ -2,21 +2,17 @@ package org.smartregister.chw.cdp.provider;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.util.DBConstants;
-import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
-import org.smartregister.cdp.R;
 import org.smartregister.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
@@ -28,16 +24,14 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
-import static org.smartregister.util.Utils.getName;
-
-public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegisterProvider.RegisterViewHolder> {
+public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegisterProvider.OutletViewHolder> {
 
     private final LayoutInflater inflater;
-
-    private View.OnClickListener paginationClickListener;
     protected View.OnClickListener onClickListener;
+    private View.OnClickListener paginationClickListener;
     private Context context;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
 
@@ -51,49 +45,33 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
     }
 
     @Override
-    public void getView(Cursor cursor, SmartRegisterClient smartRegisterClient, RegisterViewHolder registerViewHolder) {
+    public void getView(Cursor cursor, SmartRegisterClient smartRegisterClient, OutletViewHolder outletViewHolder) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) smartRegisterClient;
         if (visibleColumns.isEmpty()) {
-            populatePatientColumn(pc, registerViewHolder);
+            populatePatientColumn(pc, outletViewHolder);
         }
     }
 
-    private String updateMemberGender(CommonPersonObjectClient commonPersonObjectClient) {
-        if ("0".equals(Utils.getValue(commonPersonObjectClient.getColumnmaps(), DBConstants.KEY.IS_ANC_CLOSED, false))) {
-            return context.getResources().getString(R.string.anc_string);
-        } else if ("0".equals(Utils.getValue(commonPersonObjectClient.getColumnmaps(), DBConstants.KEY.IS_PNC_CLOSED, false))) {
-            return context.getResources().getString(R.string.pnc_string);
-        } else {
-            String gender = Utils.getValue(commonPersonObjectClient.getColumnmaps(), DBConstants.KEY.GENDER, true);
-            return CdpUtil.getGenderTranslated(context, gender);
-        }
-    }
 
-    private void populatePatientColumn(CommonPersonObjectClient pc, final RegisterViewHolder viewHolder) {
+    private void populatePatientColumn(CommonPersonObjectClient pc, final OutletViewHolder viewHolder) {
         try {
 
-            String firstName = getName(
-                    Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true),
-                    Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.MIDDLE_NAME, true));
+            String outletName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_NAME, true);
+            String outletLocation = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_WARD_NAME, true);
+            String outletType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_TYPE, true);
 
-            String dobString = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false);
-            int age = new Period(new DateTime(dobString), new DateTime()).getYears();
+            viewHolder.outlet_name.setText(outletName);
+            viewHolder.outlet_location.setText(outletLocation);
+            viewHolder.outlet_type.setText(outletType);
 
-            String patientName = getName(firstName, Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true));
-            viewHolder.patientName.setText(patientName + ", " + age);
-            viewHolder.textViewGender.setText(updateMemberGender(pc));
-            viewHolder.textViewVillage.setText(Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.VILLAGE_TOWN, true));
-            viewHolder.patientColumn.setOnClickListener(onClickListener);
-            viewHolder.patientColumn.setTag(pc);
-            viewHolder.patientColumn.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.CLICK_VIEW_NORMAL);
+            viewHolder.outlet_column.setOnClickListener(onClickListener);
+            viewHolder.outlet_column.setTag(pc);
+            viewHolder.outlet_column.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.CLICK_VIEW_NORMAL);
 
-            viewHolder.dueButton.setOnClickListener(onClickListener);
-            viewHolder.dueButton.setTag(pc);
-            viewHolder.dueButton.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.FOLLOW_UP_VISIT);
             viewHolder.registerColumns.setOnClickListener(onClickListener);
 
-            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.patientColumn.performClick());
-            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.dueButton.performClick());
+            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.outlet_column.performClick());
+            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.outlet_column.performClick());
 
         } catch (Exception e) {
             Timber.e(e);
@@ -133,9 +111,9 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
     }
 
     @Override
-    public RegisterViewHolder createViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.cdp_register_list_row, parent, false);
-        return new RegisterViewHolder(view);
+    public OutletViewHolder createViewHolder(ViewGroup parent) {
+        View view = inflater.inflate(R.layout.cdp_outlet_register_list_row, parent, false);
+        return new OutletViewHolder(view);
     }
 
     @Override
@@ -149,28 +127,22 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
         return viewHolder instanceof FooterViewHolder;
     }
 
-    public class RegisterViewHolder extends RecyclerView.ViewHolder {
-        public TextView patientName;
-        public TextView parentName;
-        public TextView textViewVillage;
-        public TextView textViewGender;
-        public Button dueButton;
-        public View patientColumn;
+    public class OutletViewHolder extends RecyclerView.ViewHolder {
+        public TextView outlet_name;
+        public TextView outlet_type;
+        public TextView outlet_location;
+        public View outlet_column;
 
         public View registerColumns;
-        public View dueWrapper;
 
-        public RegisterViewHolder(View itemView) {
+        public OutletViewHolder(View itemView) {
             super(itemView);
 
-            parentName = itemView.findViewById(R.id.patient_parent_name);
-            patientName = itemView.findViewById(R.id.patient_name_age);
-            textViewVillage = itemView.findViewById(R.id.text_view_village);
-            textViewGender = itemView.findViewById(R.id.text_view_gender);
-            dueButton = itemView.findViewById(R.id.due_button);
-            patientColumn = itemView.findViewById(R.id.patient_column);
-            registerColumns = itemView.findViewById(R.id.register_columns);
-            dueWrapper = itemView.findViewById(R.id.due_button_wrapper);
+            outlet_name = itemView.findViewById(R.id.outlet_name);
+            outlet_type = itemView.findViewById(R.id.outlet_type);
+            outlet_location = itemView.findViewById(R.id.outlet_location);
+            outlet_column = itemView.findViewById(R.id.outlet_column);
+            registerColumns = itemView.findViewById(R.id.outlet_register_columns);
         }
     }
 

@@ -39,7 +39,7 @@ public class BaseCdpRegisterFragmentPresenter implements BaseCdpRegisterFragment
 
     @Override
     public String getDefaultSortQuery() {
-        return Constants.TABLES.CDP_REGISTER + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
+        return getMainTable() + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
     }
 
     @Override
@@ -61,7 +61,7 @@ public class BaseCdpRegisterFragmentPresenter implements BaseCdpRegisterFragment
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = Constants.TABLES.CDP_REGISTER;
+        String tableName = getMainTable();
         mainCondition = trim(getMainCondition()).equals("") ? mainCondition : getMainCondition();
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);
@@ -97,7 +97,7 @@ public class BaseCdpRegisterFragmentPresenter implements BaseCdpRegisterFragment
 
     @Override
     public String getMainTable() {
-        return Constants.TABLES.CDP_REGISTER;
+        return Constants.TABLES.CDP_OUTLET;
     }
 
     @Override
