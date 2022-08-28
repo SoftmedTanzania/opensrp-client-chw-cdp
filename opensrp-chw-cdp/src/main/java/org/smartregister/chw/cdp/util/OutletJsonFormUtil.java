@@ -16,15 +16,24 @@ import org.smartregister.util.JsonFormUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import timber.log.Timber;
 
+import static com.vijay.jsonwizard.constants.JsonFormConstants.OPENMRS_ENTITY;
 import static org.smartregister.chw.cdp.util.CdpJsonFormUtils.formTag;
+import static org.smartregister.util.JsonFormUtils.ENTITY_ID;
+import static org.smartregister.util.JsonFormUtils.OPENMRS_ENTITY_ID;
+import static org.smartregister.util.JsonFormUtils.VALUE;
 import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
 import static org.smartregister.util.JsonFormUtils.getFieldValue;
 import static org.smartregister.util.JsonFormUtils.getJSONObject;
+import static org.smartregister.util.JsonFormUtils.getString;
 
 public class OutletJsonFormUtil {
+
+    private static final String OUTLET_ATTRIBUTE = "outlet_attribute";
 
     public static CdpOutletEventClient processOutletRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         try {
@@ -34,7 +43,7 @@ public class OutletJsonFormUtil {
             } else {
                 JSONObject jsonForm = (JSONObject) registrationFormParams.getMiddle();
                 JSONArray fields = (JSONArray) registrationFormParams.getRight();
-                String entityId = JsonFormUtils.getString(jsonForm, "entity_id");
+                String entityId = getString(jsonForm, "entity_id");
                 if (StringUtils.isBlank(entityId)) {
                     entityId = generateRandomUUIDString();
                 }
@@ -42,6 +51,7 @@ public class OutletJsonFormUtil {
                 Client baseClient = JsonFormUtils.createBaseClient(fields, formTag(allSharedPreferences), entityId);
                 baseClient.setBirthdate(new Date());
                 baseClient.setClientType("Outlet");
+                baseClient.setAttributes(extractAttributes(fields));
                 Event baseEvent = JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, "metadata"), formTag(allSharedPreferences), entityId, Constants.EVENT_TYPE.CDP_OUTLET_REGISTRATION, Constants.TABLES.CDP_OUTLET);
                 tagSyncMetadata(allSharedPreferences, baseEvent);
                 return new CdpOutletEventClient(baseClient, baseEvent);
@@ -51,6 +61,7 @@ public class OutletJsonFormUtil {
             return null;
         }
     }
+
 
     protected static void lastInteractedWith(JSONArray fields) {
         try {
@@ -96,6 +107,36 @@ public class OutletJsonFormUtil {
 
         ecUpdater.addClient(baseClient.getBaseEntityId(), mergedJson);
     }
+
+    public static Map<String, Object> extractAttributes(JSONArray fields) {
+        Map<String, Object> pattributes = new HashMap<>();
+        for (int i = 0; i < fields.length(); i++) {
+            JSONObject jsonObject = getJSONObject(fields, i);
+            fillAttributes(pattributes, jsonObject);
+        }
+
+        return pattributes;
+    }
+
+    public static void fillAttributes(Map<String, Object> pattributes, JSONObject jsonObject) {
+
+        String value = getString(jsonObject, VALUE);
+        if (StringUtils.isBlank(value)) {
+            return;
+        }
+
+        if (StringUtils.isNotBlank(getString(jsonObject, ENTITY_ID))) {
+            return;
+        }
+
+        String entityVal = getString(jsonObject, OPENMRS_ENTITY);
+
+        if (entityVal != null && entityVal.equals(OUTLET_ATTRIBUTE)) {
+            String entityIdVal = getString(jsonObject, OPENMRS_ENTITY_ID);
+            pattributes.put(entityIdVal, value);
+        }
+    }
+    
 
 
 }

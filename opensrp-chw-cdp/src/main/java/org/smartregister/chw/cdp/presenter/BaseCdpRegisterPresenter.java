@@ -78,7 +78,7 @@ public class BaseCdpRegisterPresenter implements BaseCdpRegisterContract.Present
 
     @Override
     public void onRegistrationSaved(boolean editMode) {
-        //TODO Implement
+        getView().hideProgressDialog();
     }
 
     @Override

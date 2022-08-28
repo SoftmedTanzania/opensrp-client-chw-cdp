@@ -1,6 +1,5 @@
 package org.smartregister.chw.cdp.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,7 +25,6 @@ import org.smartregister.chw.cdp.presenter.BaseCdpRegisterPresenter;
 import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.chw.cdp.util.Constants;
-import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.helper.BottomNavigationHelper;
 import org.smartregister.listener.BottomNavigationListener;
 import org.smartregister.repository.BaseRepository;
