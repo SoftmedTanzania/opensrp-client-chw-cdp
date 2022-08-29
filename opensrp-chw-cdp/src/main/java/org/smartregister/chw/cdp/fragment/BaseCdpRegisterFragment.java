@@ -4,15 +4,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.activity.BaseCdpProfileActivity;
 import org.smartregister.chw.cdp.contract.BaseCdpRegisterFragmentContract;
 import org.smartregister.chw.cdp.dao.CdpDao;
+import org.smartregister.chw.cdp.dao.CdpStockingDao;
 import org.smartregister.chw.cdp.model.BaseCdpRegisterFragmentModel;
 import org.smartregister.chw.cdp.presenter.BaseCdpRegisterFragmentPresenter;
 import org.smartregister.chw.cdp.provider.BaseCdpRegisterProvider;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.fragment.BaseRegisterFragment;
@@ -46,6 +49,8 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         toolbar.setContentInsetsAbsolute(0, 0);
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetStartWithNavigation(0);
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String locationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
 
         tvStockOnHandCount = view.findViewById(R.id.stock_count_tv);
         tvOutletsCount = view.findViewById(R.id.outlets_list_tv);
@@ -86,7 +91,7 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         }
 
         updateOutlets(CdpDao.getCDPOutletCount());
-        updateStockOnHand(504);
+        updateStockOnHand(CdpStockingDao.getCurrentStockInHand(locationId));
     }
 
     @Override
@@ -114,13 +119,13 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
         return R.layout.fragment_cdp_all_outlets;
     }
 
-    protected void updateStockOnHand(int stock){
-        if(tvStockOnHandCount != null)
+    protected void updateStockOnHand(int stock) {
+        if (tvStockOnHandCount != null)
             tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
     }
 
-    protected void updateOutlets(int outletCount){
-        if(tvOutletsCount != null)
+    protected void updateOutlets(int outletCount) {
+        if (tvOutletsCount != null)
             tvOutletsCount.setText(getString(R.string.outlets_count, outletCount));
     }
 
