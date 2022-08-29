@@ -23,7 +23,7 @@ public class CdpDao extends AbstractDao {
     }
 
     public static OutletObject getOutlet(String baseEntityID) {
-        String sql = "SELECT p.outlet_name, p.outlet_type, p.outlet_ward_name, p.unique_id " +
+        String sql = "SELECT p.outlet_name, p.outlet_type, p.outlet_ward_name, p.unique_id, p.focal_person_name, p.focal_person_phone " +
                 "           FROM ec_cdp_outlet p " +
                 "           INNER JOIN ec_cdp_register m on p.base_entity_id = m.base_entity_id " +
                 "           WHERE m.is_closed is 0" +
@@ -37,6 +37,8 @@ public class CdpDao extends AbstractDao {
             outletObject.setOutletId(getCursorValue(cursor, "unique_id", ""));
             outletObject.setOutletWardName(getCursorValue(cursor, "outlet_ward_name", ""));
             outletObject.setOutletType(getCursorValue(cursor, "outlet_type", ""));
+            outletObject.setFocalPersonName(getCursorValue(cursor, "focal_person_name", ""));
+            outletObject.setFocalPersonNumber(getCursorValue(cursor, "focal_person_phone", ""));
 
             return outletObject;
         };

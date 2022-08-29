@@ -31,9 +31,6 @@ public class BaseCdpFloatingMenu extends LinearLayout implements View.OnClickLis
         if (view.getId() == R.id.cdp_fab) {
             Activity activity = (Activity) getContext();
             BaseCdpCallDialogFragment.launchDialog(activity, outletObject);
-        }  else if (view.getId() == R.id.refer_to_facility_layout) {
-            Activity activity = (Activity) getContext();
-            BaseCdpCallDialogFragment.launchDialog(activity, outletObject);
         }
     }
 }

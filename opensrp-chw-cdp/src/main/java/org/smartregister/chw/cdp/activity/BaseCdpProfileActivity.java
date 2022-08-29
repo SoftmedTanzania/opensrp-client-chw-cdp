@@ -6,15 +6,19 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
+import org.smartregister.chw.cdp.custom_views.BaseCdpFloatingMenu;
 import org.smartregister.chw.cdp.dao.CdpDao;
 import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
@@ -42,6 +46,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     protected RelativeLayout rlVisitHistory;
     protected Button btnRecordFollowup;
     protected OutletObject outletObject;
+    protected BaseCdpFloatingMenu baseCdpFloatingMenu;
 
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
@@ -80,7 +85,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
 
     @Override
     protected void setupViews() {
-
+        initializeFloatingMenu();
         textViewName = findViewById(R.id.textview_name);
         textViewUniqueID = findViewById(R.id.textview_id);
         imageView = findViewById(R.id.imageview_profile);
@@ -156,6 +161,17 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void initializeFloatingMenu() {
+        if (StringUtils.isNotBlank(outletObject.getFocalPersonNumber())) {
+            baseCdpFloatingMenu = new BaseCdpFloatingMenu(this, outletObject);
+            baseCdpFloatingMenu.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            addContentView(baseCdpFloatingMenu, linearLayoutParams);
+        }
     }
 
 

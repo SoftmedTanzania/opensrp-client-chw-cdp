@@ -69,27 +69,27 @@ public class BaseCdpCallDialogFragment extends DialogFragment implements BaseCdp
     private void setCallTitle(ViewGroup rootView, int viewId, final String message) {
         TextView callTitle = rootView.findViewById(viewId);
 
-        callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_cdp_client)));
+        callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_focal_person)));
 
     }
 
     private void initUI(ViewGroup rootView) {
-//        if (StringUtils.isNotBlank(outletObject.getPhoneNumber())) {
-//            setCallTitle(rootView, R.id.call_title, getResources().getString(R.string.call));
-//
-//            rootView.findViewById(R.id.cdp_layout_family_head).setVisibility(GONE);
-//
-//            //just a member
-//            TextView cdpClientNameTextView = rootView.findViewById(R.id.call_cdp_client_name);
-//            cdpClientNameTextView.setText(String.format("%s %s %s", MEMBER_OBJECT.getFirstName(), MEMBER_OBJECT.getMiddleName(), MEMBER_OBJECT.getLastName()));
-//
-//            setCallTitle(rootView, R.id.call_cdp_client_title, "");
-//            TextView callCDPClientPhone = rootView.findViewById(R.id.call_cdp_client_phone);
-//            callCDPClientPhone.setTag(MEMBER_OBJECT.getPhoneNumber());
-//            callCDPClientPhone.setText(getName(getCurrentContext().getString(R.string.call), MEMBER_OBJECT.getPhoneNumber()));
-//            callCDPClientPhone.setOnClickListener(listener);
-//
-//        }
+        if (StringUtils.isNotBlank(outletObject.getFocalPersonNumber())) {
+            setCallTitle(rootView, R.id.call_title, getResources().getString(R.string.call));
+
+            rootView.findViewById(R.id.cdp_layout_family_head).setVisibility(GONE);
+
+            //just a member
+            TextView cdpClientNameTextView = rootView.findViewById(R.id.call_cdp_client_name);
+            cdpClientNameTextView.setText(outletObject.getFocalPersonName());
+
+            setCallTitle(rootView, R.id.call_cdp_client_title, "");
+            TextView callCDPClientPhone = rootView.findViewById(R.id.call_cdp_client_phone);
+            callCDPClientPhone.setTag(outletObject.getFocalPersonNumber());
+            callCDPClientPhone.setText(getName(getCurrentContext().getString(R.string.call), outletObject.getFocalPersonNumber()));
+            callCDPClientPhone.setOnClickListener(listener);
+
+        }
 
         rootView.findViewById(R.id.cdp_call_close).setOnClickListener(listener);
     }
