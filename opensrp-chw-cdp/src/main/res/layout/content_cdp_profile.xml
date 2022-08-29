@@ -41,15 +41,16 @@
             android:id="@+id/view_visit_history_row"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_below="@id/rlLastRecordedStock"
+            android:layout_below="@id/rlVisitHistory"
             android:background="@color/light_grey"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
 
         <RelativeLayout
             android:id="@+id/rlVisitHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/view_visit_history_row"
+            android:layout_below="@id/view_last_recorded_stock_row"
             android:background="@drawable/list_item_background_selctor"
             android:padding="20dp"
             android:visibility="visible">
