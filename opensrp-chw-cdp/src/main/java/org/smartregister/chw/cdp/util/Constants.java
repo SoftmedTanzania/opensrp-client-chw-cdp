@@ -17,16 +17,22 @@ public interface Constants {
         String CDP_OUTLET_REGISTRATION = "CDP Outlet Registration";
         String CDP_REGISTRATION = "CDP Registration";
         String CDP_FOLLOW_UP_VISIT = "CDP Follow-up Visit";
+        String CDP_RECEIVE_FROM_FACILITY = "CDP Receive From Facility";
+        String CDP_OUTLET_RESTOCK = "CDP Outlet Restock";
     }
 
     interface FORMS {
         String CDP_OUTLET_REGISTRATION = "cdp_outlet_registration";
+        String CDP_OUTLET_RESTOCK = "cdp_outlet_restock";
+        String CD_OUTLET_VISIT = "cdp_outlet_visit";
     }
 
     interface TABLES {
         String CDP_OUTLET = "ec_cdp_outlet";
         String CDP_REGISTER = "ec_cdp_register";
         String CDP_FOLLOW_UP = "ec_cdp_follow_up_visit";
+        String CDP_STOCK_COUNT = "ec_cdp_stock_count";
+        String CDP_STOCK_LOG = "ec_cdp_stock_log";
     }
 
     interface ACTIVITY_PAYLOAD {
@@ -34,7 +40,6 @@ public interface Constants {
         String FAMILY_BASE_ENTITY_ID = "FAMILY_BASE_ENTITY_ID";
         String ACTION = "ACTION";
         String CDP_FORM_NAME = "CDP_FORM_NAME";
-
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {
@@ -54,7 +59,7 @@ public interface Constants {
         String PHOTO = "photo";
     }
 
-    public interface JSON_FORM_KEY {
+    interface JSON_FORM_KEY {
         String UNIQUE_ID = "unique_id";
     }
 }
