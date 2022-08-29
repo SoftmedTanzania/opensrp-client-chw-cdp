@@ -33,7 +33,7 @@ public class CdpStockingDao extends AbstractDao {
                 "           female_condoms_offset = '" + femaleCondomsOffset + "', " +
                 "           male_condoms_offset = '" + maleCondomsOffset + "', " +
                 "           stock_event_type = '" + stockEventType + "', " +
-                "           event_type = '" + eventType + "'" +
+                "           event_type = '" + eventType + "', " +
                 "           date_updated = '" + now + "'" +
                 "       ";
         updateDB(sqlUpdateStockLog);
