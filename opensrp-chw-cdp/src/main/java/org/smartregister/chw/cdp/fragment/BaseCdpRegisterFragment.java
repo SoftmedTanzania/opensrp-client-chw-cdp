@@ -6,6 +6,7 @@ import android.widget.TextView;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.activity.BaseCdpProfileActivity;
 import org.smartregister.chw.cdp.contract.BaseCdpRegisterFragmentContract;
+import org.smartregister.chw.cdp.dao.CdpDao;
 import org.smartregister.chw.cdp.model.BaseCdpRegisterFragmentModel;
 import org.smartregister.chw.cdp.presenter.BaseCdpRegisterFragmentPresenter;
 import org.smartregister.chw.cdp.provider.BaseCdpRegisterProvider;
@@ -84,7 +85,7 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
             titleView.setFontVariant(FontVariant.REGULAR);
         }
 
-        updateOutlets(5);
+        updateOutlets(CdpDao.getCDPOutletCount());
         updateStockOnHand(504);
     }
 
