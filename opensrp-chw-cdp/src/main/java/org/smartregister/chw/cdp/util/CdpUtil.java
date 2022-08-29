@@ -126,20 +126,6 @@ public class CdpUtil {
         return R.mipmap.ic_member;
     }
 
-    public static class CloseCDPMemberFromRegister extends AsyncTask<Void, Void, Void> {
-        private final String baseEntityId;
-
-        public CloseCDPMemberFromRegister(String baseEntityId) {
-            this.baseEntityId = baseEntityId;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            CdpDao.closeCDPMemberFromRegister(baseEntityId);
-            return null;
-        }
-
-    }
 
     public static String getGenderTranslated(Context context, String gender) {
         if (gender.equalsIgnoreCase(Gender.MALE.toString())) {
