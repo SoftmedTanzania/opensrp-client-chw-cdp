@@ -61,5 +61,12 @@ public interface Constants {
 
     interface JSON_FORM_KEY {
         String UNIQUE_ID = "unique_id";
+        String FEMALE_CONDOMS_OFFSET = "female_condoms_offset";
+        String MALE_CONDOMS_OFFSET = "male_condoms_offset";
+    }
+
+    interface STOCK_EVENT_TYPES {
+        String INCREMENT = "increment";
+        String DECREMENT = "decrement";
     }
 }
