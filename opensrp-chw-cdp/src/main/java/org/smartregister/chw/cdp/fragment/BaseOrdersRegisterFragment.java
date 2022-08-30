@@ -10,7 +10,6 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.util.JsonFormUtils;
 import org.smartregister.view.customcontrols.FontVariant;
 
 import java.util.ArrayList;
