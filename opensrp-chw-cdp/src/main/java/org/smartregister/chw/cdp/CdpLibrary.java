@@ -2,6 +2,8 @@ package org.smartregister.chw.cdp;
 
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
+import org.smartregister.chw.cdp.repository.VisitDetailsRepository;
+import org.smartregister.chw.cdp.repository.VisitRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
@@ -18,8 +20,18 @@ public class CdpLibrary {
     private int databaseVersion;
     private ECSyncHelper syncHelper;
 
+    private VisitRepository visitRepository;
+    private VisitDetailsRepository visitDetailsRepository;
+
     private ClientProcessorForJava clientProcessorForJava;
     private Compressor compressor;
+
+    private CdpLibrary(Context contextArg, Repository repositoryArg, int applicationVersion, int databaseVersion) {
+        this.context = contextArg;
+        this.repository = repositoryArg;
+        this.applicationVersion = applicationVersion;
+        this.databaseVersion = databaseVersion;
+    }
 
     public static void init(Context context, Repository repository, int applicationVersion, int databaseVersion) {
         if (instance == null) {
@@ -35,13 +47,6 @@ public class CdpLibrary {
                     + "your Application class ");
         }
         return instance;
-    }
-
-    private CdpLibrary(Context contextArg, Repository repositoryArg, int applicationVersion, int databaseVersion) {
-        this.context = contextArg;
-        this.repository = repositoryArg;
-        this.applicationVersion = applicationVersion;
-        this.databaseVersion = databaseVersion;
     }
 
     public Context context() {
@@ -76,6 +81,20 @@ public class CdpLibrary {
 
     public void setClientProcessorForJava(ClientProcessorForJava clientProcessorForJava) {
         this.clientProcessorForJava = clientProcessorForJava;
+    }
+
+    public VisitRepository visitRepository() {
+        if (visitRepository == null) {
+            visitRepository = new VisitRepository();
+        }
+        return visitRepository;
+    }
+
+    public VisitDetailsRepository visitDetailsRepository() {
+        if (visitDetailsRepository == null) {
+            visitDetailsRepository = new VisitDetailsRepository();
+        }
+        return visitDetailsRepository;
     }
 
 }
