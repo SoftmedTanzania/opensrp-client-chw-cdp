@@ -17,6 +17,7 @@ public interface Constants {
         String CDP_OUTLET_REGISTRATION = "CDP Outlet Registration";
         String CDP_REGISTRATION = "CDP Registration";
         String CDP_FOLLOW_UP_VISIT = "CDP Follow-up Visit";
+        String CDP_OUTLET_VISIT = "CDP Outlet Visit";
         String CDP_RECEIVE_FROM_FACILITY = "CDP Receive From Facility";
         String CDP_OUTLET_RESTOCK = "CDP Outlet Restock";
     }
@@ -33,6 +34,7 @@ public interface Constants {
         String CDP_FOLLOW_UP = "ec_cdp_follow_up_visit";
         String CDP_STOCK_COUNT = "ec_cdp_stock_count";
         String CDP_STOCK_LOG = "ec_cdp_stock_log";
+        String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
     }
 
     interface ACTIVITY_PAYLOAD {

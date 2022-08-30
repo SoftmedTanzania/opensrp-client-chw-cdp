@@ -4,12 +4,22 @@ import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.dao.AbstractDao;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class CdpDao extends AbstractDao {
 
+    public static int getNextOutletVisitNumber(String baseEntityId) {
+        String sql = "SELECT visit_number from ec_cdp_register where is_closed is 0" +
+                "   AND base_entity_id = '" + baseEntityId + "' ";
+
+        DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "visit_number");
+        List<Integer> res = readData(sql, dataMap);
+        if (res != null && res.size() > 0 && res.get(0) != null)
+            return res.get(0) + 1;
+
+        return 1;
+    }
 
     public static Integer getCDPOutletCount() {
         String sql = "SELECT count(*) count from ec_cdp_outlet where is_closed is 0";
@@ -27,7 +37,7 @@ public class CdpDao extends AbstractDao {
                 "           FROM ec_cdp_outlet p " +
                 "           INNER JOIN ec_cdp_register m on p.base_entity_id = m.base_entity_id " +
                 "           WHERE m.is_closed is 0" +
-                "           AND m.base_entity_id = '"+ baseEntityID + "'";
+                "           AND m.base_entity_id = '" + baseEntityID + "'";
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
         DataMap<OutletObject> dataMap = cursor -> {

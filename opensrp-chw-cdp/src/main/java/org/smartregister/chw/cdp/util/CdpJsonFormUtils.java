@@ -88,8 +88,8 @@ public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if (Constants.EVENT_TYPE.CDP_REGISTRATION.equals(encounter_type)) {
             encounter_type = Constants.TABLES.CDP_REGISTER;
-        } else if (Constants.EVENT_TYPE.CDP_FOLLOW_UP_VISIT.equals(encounter_type)) {
-            encounter_type = Constants.TABLES.CDP_FOLLOW_UP;
+        } else if (Constants.EVENT_TYPE.CDP_OUTLET_VISIT.equals(encounter_type)) {
+            encounter_type = Constants.TABLES.CDP_OUTLET_VISIT;
         }
         return org.smartregister.util.JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, METADATA), formTag(allSharedPreferences), entityId, getString(jsonForm, ENCOUNTER_TYPE), encounter_type);
     }
