@@ -24,6 +24,8 @@ public interface BaseCdpProfileContract {
 
         void saveForm(String jsonString);
 
+        void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception;
+
         @Nullable
         View getView();
 
@@ -37,6 +39,12 @@ public interface BaseCdpProfileContract {
         void refreshProfileInfo();
 
         void saveRegistration(String jsonString, final BaseCdpProfileContract.InteractorCallBack callBack);
+    }
+
+    interface Model {
+
+        JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception;
+
     }
 
 

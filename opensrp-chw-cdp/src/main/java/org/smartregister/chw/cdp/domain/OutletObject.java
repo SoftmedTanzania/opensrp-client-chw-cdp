@@ -10,6 +10,7 @@ public class OutletObject implements Serializable {
     private String outletId;
     private String focalPersonName;
     private String focalPersonNumber;
+    private String baseEntityId;
 
     public OutletObject() {
     }
@@ -60,5 +61,13 @@ public class OutletObject implements Serializable {
 
     public void setFocalPersonNumber(String focalPersonNumber) {
         this.focalPersonNumber = focalPersonNumber;
+    }
+
+    public String getBaseEntityId() {
+        return baseEntityId;
+    }
+
+    public void setBaseEntityId(String baseEntityId) {
+        this.baseEntityId = baseEntityId;
     }
 }

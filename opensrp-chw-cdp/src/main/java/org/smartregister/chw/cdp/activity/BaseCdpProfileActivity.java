@@ -22,6 +22,7 @@ import org.smartregister.chw.cdp.custom_views.BaseCdpFloatingMenu;
 import org.smartregister.chw.cdp.dao.CdpDao;
 import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.interactor.BaseCdpProfileInteractor;
+import org.smartregister.chw.cdp.model.BaseCdpProfileModel;
 import org.smartregister.chw.cdp.presenter.BaseCdpProfilePresenter;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.helper.ImageRenderHelper;
@@ -107,12 +108,15 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         if (id == R.id.title_layout) {
             onBackPressed();
         }
+        if (id == R.id.btn_record_visit) {
+            startOutletVisit();
+        }
     }
 
     @Override
     protected void initializePresenter() {
         showProgressBar(true);
-        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor(), outletObject);
+        profilePresenter = new BaseCdpProfilePresenter(this, new BaseCdpProfileInteractor(), new BaseCdpProfileModel(), outletObject);
         fetchProfileData();
         profilePresenter.refreshProfileBottom();
     }
@@ -124,8 +128,10 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     }
 
     @Override
-    public void startFormActivity(JSONObject formJson) {
-        // Implement
+    public void startFormActivity(JSONObject jsonForm) {
+        Intent intent = new Intent(this, BaseCdpRegisterActivity.class);
+        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
+        startActivityForResult(intent, Constants.REQUEST_CODE_GET_JSON);
     }
 
     @SuppressLint("DefaultLocale")
@@ -141,6 +147,14 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     protected ViewPager setupViewPager(ViewPager viewPager) {
         return null;
+    }
+
+    protected void startOutletVisit() {
+        try {
+            profilePresenter.startForm(Constants.FORMS.CD_OUTLET_VISIT, outletObject.getBaseEntityId(), null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -179,7 +193,6 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             profilePresenter.saveForm(data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON));
-            finish();
         }
     }
 }

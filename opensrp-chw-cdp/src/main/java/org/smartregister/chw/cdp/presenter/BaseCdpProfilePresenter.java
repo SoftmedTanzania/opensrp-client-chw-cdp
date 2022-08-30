@@ -3,6 +3,7 @@ package org.smartregister.chw.cdp.presenter;
 import android.content.Context;
 import androidx.annotation.Nullable;
 
+import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
 import org.smartregister.chw.cdp.domain.OutletObject;
 
@@ -14,13 +15,15 @@ import timber.log.Timber;
 public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter {
     protected WeakReference<BaseCdpProfileContract.View> view;
     protected BaseCdpProfileContract.Interactor interactor;
+    protected BaseCdpProfileContract.Model model;
     protected Context context;
     protected OutletObject outletObject;
 
-    public BaseCdpProfilePresenter(BaseCdpProfileContract.View view, BaseCdpProfileContract.Interactor interactor, OutletObject outletObject) {
+    public BaseCdpProfilePresenter(BaseCdpProfileContract.View view, BaseCdpProfileContract.Interactor interactor, BaseCdpProfileContract.Model model, OutletObject outletObject) {
         this.view = new WeakReference<>(view);
         this.interactor = interactor;
         this.outletObject = outletObject;
+        this.model = model;
         fillProfileData(outletObject);
     }
 
@@ -57,5 +60,11 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
         } catch (Exception e) {
             Timber.e(e);
         }
+    }
+
+    @Override
+    public void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception {
+        JSONObject form = model.getFormAsJson(formName, entityId, currentLocationId);
+        getView().startFormActivity(form);
     }
 }

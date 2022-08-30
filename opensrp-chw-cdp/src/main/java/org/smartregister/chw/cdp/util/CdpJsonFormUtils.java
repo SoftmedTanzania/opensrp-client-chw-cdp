@@ -131,6 +131,11 @@ public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         jsonObject.put(DBConstants.KEY.RELATIONAL_ID, entityId);
     }
 
+    public static void getVisitForm(JSONObject jsonObject, String entityId, String currentLocationId) throws JSONException{
+        jsonObject.getJSONObject(METADATA).put(ENCOUNTER_LOCATION, currentLocationId);
+        jsonObject.put(org.smartregister.util.JsonFormUtils.ENTITY_ID, entityId);
+    }
+
     public static JSONObject getFormAsJson(String formName) throws Exception {
         return FormUtils.getInstance(CdpLibrary.getInstance().context().applicationContext()).getFormJson(formName);
     }
