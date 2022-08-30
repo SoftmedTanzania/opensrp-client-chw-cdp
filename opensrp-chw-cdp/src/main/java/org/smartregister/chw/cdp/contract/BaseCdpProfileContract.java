@@ -16,6 +16,8 @@ public interface BaseCdpProfileContract {
         void hideView();
 
         void startFormActivity(JSONObject formJson);
+
+        void updateLastRecordedStock();
     }
 
     interface Presenter {
@@ -32,6 +34,8 @@ public interface BaseCdpProfileContract {
         void refreshProfileBottom();
 
         void recordCDPButton(String visitState);
+
+        void refreshLastVisitData(OutletObject outletObject);
     }
 
     interface Interactor {

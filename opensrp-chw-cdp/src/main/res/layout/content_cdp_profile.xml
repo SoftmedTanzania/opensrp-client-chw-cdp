@@ -25,7 +25,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/tick_image"
-                android:text="Last recorded stock: 10"
+                android:text="@string/last_recorded_stock"
                 android:textColor="@color/text_black" />
         </RelativeLayout>
 

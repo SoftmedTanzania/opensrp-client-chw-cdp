@@ -85,6 +85,12 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     }
 
     @Override
+    protected void onResumption() {
+        super.onResumption();
+        new android.os.Handler().postDelayed(this::initializePresenter, 1000);
+    }
+
+    @Override
     protected void setupViews() {
         initializeFloatingMenu();
         textViewName = findViewById(R.id.textview_name);
@@ -125,6 +131,11 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     public void hideView() {
         btnRecordFollowup.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateLastRecordedStock(){
+        tvLastRecordedStock.setText(getString(R.string.last_recorded_stock, CdpDao.getLastRecordedStockAtOutlet(outletObject.getBaseEntityId())));
     }
 
     @Override

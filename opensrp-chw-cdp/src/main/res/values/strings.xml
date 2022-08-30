@@ -64,5 +64,6 @@
     <string name="return_to_all_outlets">Return to all outlets</string>
     <string name="record_outlet_visit">Record Outlet Visit</string>
     <string name="call_focal_person">Focal Person</string>
+    <string name="last_recorded_stock">Last recorded stock: %d</string>
 
 </resources>
