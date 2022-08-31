@@ -105,6 +105,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         btnRecordFollowup = findViewById(R.id.btn_record_visit);
 
         btnRecordFollowup.setOnClickListener(this);
+        rlVisitHistory.setOnClickListener(this);
     }
 
 
@@ -116,6 +117,9 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         }
         if (id == R.id.btn_record_visit) {
             startOutletVisit();
+        }
+        if(id == R.id.rlVisitHistory){
+            startRestockingHistory();
         }
     }
 
@@ -136,6 +140,10 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     @Override
     public void updateLastRecordedStock(){
         tvLastRecordedStock.setText(getString(R.string.last_recorded_stock, CdpDao.getLastRecordedStockAtOutlet(outletObject.getBaseEntityId())));
+    }
+
+    protected void startRestockingHistory(){
+        BaseRestockingHistoryActivity.startMe(this, outletObject);
     }
 
     @Override

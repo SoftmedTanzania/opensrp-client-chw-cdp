@@ -42,6 +42,7 @@ public interface Constants {
         String FAMILY_BASE_ENTITY_ID = "FAMILY_BASE_ENTITY_ID";
         String ACTION = "ACTION";
         String CDP_FORM_NAME = "CDP_FORM_NAME";
+        String OUTLET_OBJECT = "OUTLET_OBJECT";
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {
