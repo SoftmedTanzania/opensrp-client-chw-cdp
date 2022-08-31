@@ -1,7 +1,6 @@
 package org.smartregister.chw.cdp.presenter;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
@@ -9,6 +8,7 @@ import org.smartregister.chw.cdp.domain.OutletObject;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 
@@ -17,14 +17,13 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
     protected BaseCdpProfileContract.Interactor interactor;
     protected BaseCdpProfileContract.Model model;
     protected Context context;
-    protected OutletObject outletObject;
 
     public BaseCdpProfilePresenter(BaseCdpProfileContract.View view, BaseCdpProfileContract.Interactor interactor, BaseCdpProfileContract.Model model, OutletObject outletObject) {
         this.view = new WeakReference<>(view);
         this.interactor = interactor;
-        this.outletObject = outletObject;
         this.model = model;
         fillProfileData(outletObject);
+        refreshLastVisitData(outletObject);
     }
 
     @Override
@@ -36,7 +35,14 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
 
     @Override
     public void recordCDPButton(@Nullable String visitState) {
-       //Implement
+        //Implement
+    }
+
+    @Override
+    public void refreshLastVisitData(OutletObject outletObject) {
+        if (outletObject != null && getView() != null) {
+            getView().updateLastRecordedStock();
+        }
     }
 
     @Override

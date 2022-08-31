@@ -32,6 +32,26 @@ public class CdpDao extends AbstractDao {
         return res.get(0);
     }
 
+    public static int getLastRecordedStockAtOutlet(String baseEntityId) {
+        int maleCondomsCount = 0;
+        int femaleCondomsCount = 0;
+        String sql = "SELECT male_condoms_count, female_condoms_count FROM ec_cdp_register " +
+                     "   WHERE base_entity_id = '" + baseEntityId + "' ";
+        DataMap<Integer> female_condoms_count = cursor -> getCursorIntValue(cursor, "female_condoms_count");
+        DataMap<Integer> male_condoms_count = cursor -> getCursorIntValue(cursor, "male_condoms_count");
+
+        List<Integer> maleCondomsCountRes = readData(sql, male_condoms_count);
+        List<Integer> femaleCondomsCountRes = readData(sql, female_condoms_count);
+
+        if (maleCondomsCountRes != null && maleCondomsCountRes.size() > 0 && maleCondomsCountRes.get(0) != null)
+            maleCondomsCount = maleCondomsCountRes.get(0);
+        if (femaleCondomsCountRes != null && femaleCondomsCountRes.size() > 0 && femaleCondomsCountRes.get(0) != null)
+            femaleCondomsCount = femaleCondomsCountRes.get(0);
+
+        return maleCondomsCount + femaleCondomsCount;
+
+    }
+
     public static OutletObject getOutlet(String baseEntityID) {
         String sql = "SELECT p.base_entity_id, p.outlet_name, p.outlet_type, p.outlet_ward_name, p.unique_id, p.focal_person_name, p.focal_person_phone " +
                 "           FROM ec_cdp_outlet p " +
