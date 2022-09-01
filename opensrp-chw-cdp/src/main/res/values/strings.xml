@@ -72,5 +72,14 @@
     <string name="restock_button_label">Restock</string>
     <string name="restocking_visit_history_label">Restocking Visit History</string>
     <string name="back_to_outlet">Return to %s Outlet</string>
+    <string name="male_condom">Male Condom</string>
+    <string name="female_condom">Female Condom</string>
+    <string name="public_sc">Public Sector Condom</string>
+    <string name="dume">Dume</string>
+    <string name="salama">Salama</string>
+    <string name="familia">Familia</string>
+    <string name="others">Others</string>
+
+
 
 </resources>

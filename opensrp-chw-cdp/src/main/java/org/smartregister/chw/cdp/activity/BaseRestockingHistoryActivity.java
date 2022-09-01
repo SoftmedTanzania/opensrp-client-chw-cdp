@@ -133,7 +133,7 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
         List<Map<String, String>> visits_details = new ArrayList<>();
         String[] params = {"condom_restock_date", "condom_type", "male_condom_brand", "female_condom_brand", "restocked_female_condoms", "restocked_male_condoms"};
         RestockingUtils.extractVisit(visit, params, visits_details);
-        RestockingUtils.processRestockingVisit(visits_details, view);
+        RestockingUtils.processRestockingVisit(visits_details, view, this);
     }
 
     @Override

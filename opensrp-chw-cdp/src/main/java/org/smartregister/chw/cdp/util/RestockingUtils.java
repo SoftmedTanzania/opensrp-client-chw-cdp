@@ -1,5 +1,6 @@
 package org.smartregister.chw.cdp.util;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,32 +31,32 @@ public class RestockingUtils {
         visits_details.add(map);
     }
 
-    public static void processRestockingVisit(List<Map<String, String>> visits_details, View view) {
+    public static void processRestockingVisit(List<Map<String, String>> visits_details, View view, Activity context) {
         if (visits_details != null && visits_details.size() > 0) {
             for (Map<String, String> vals : visits_details) {
                 String foundCondomTypes = getMapValue(vals, "condom_type");
                 if (foundCondomTypes.contains(",")) {
                     String[] condomTypes = foundCondomTypes.split(",");
                     for (String condomType : condomTypes) {
-                        populateData(view, vals, condomType.trim());
+                        populateData(view, vals, condomType.trim(), context);
                     }
                 } else {
-                    populateData(view, vals, foundCondomTypes);
+                    populateData(view, vals, foundCondomTypes, context);
                 }
 
             }
         }
     }
 
-    private static void populateData(View view, Map<String, String> vals, String condomType) {
+    private static void populateData(View view, Map<String, String> vals, String condomType, Activity context) {
         if (condomType.equalsIgnoreCase("male_condom")) {
             view.findViewById(R.id.male_condoms_details).setVisibility(View.VISIBLE);
             TextView tvType = view.findViewById(R.id.tv_type_male);
             TextView tvBrand = view.findViewById(R.id.tv_brand_male);
             TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_male);
             TextView tvQuantity = view.findViewById(R.id.tv_quantity_male);
-            tvType.setText(condomType);
-            tvBrand.setText(getMapValue(vals, "male_condom_brand"));
+            tvType.setText(context.getString(context.getResources().getIdentifier(condomType, "string", context.getPackageName())));
+            tvBrand.setText(context.getString(context.getResources().getIdentifier(getMapValue(vals, "male_condom_brand"), "string", context.getPackageName())));
             tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
             tvQuantity.setText(getMapValue(vals, "restocked_male_condoms"));
         }
@@ -65,8 +66,9 @@ public class RestockingUtils {
             TextView tvBrand = view.findViewById(R.id.tv_brand_female);
             TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_female);
             TextView tvQuantity = view.findViewById(R.id.tv_quantity_female);
-            tvType.setText(condomType);
-            tvBrand.setText(getMapValue(vals, "female_condom_brand"));
+
+            tvType.setText(context.getString(context.getResources().getIdentifier(condomType, "string", context.getPackageName())));
+            tvBrand.setText(context.getString(context.getResources().getIdentifier(getMapValue(vals, "female_condom_brand"), "string", context.getPackageName())));
             tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
             tvQuantity.setText(getMapValue(vals, "restocked_female_condoms"));
         }
