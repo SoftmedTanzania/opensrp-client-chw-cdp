@@ -33,15 +33,42 @@ public class RestockingUtils {
     public static void processRestockingVisit(List<Map<String, String>> visits_details, View view) {
         if (visits_details != null && visits_details.size() > 0) {
             for (Map<String, String> vals : visits_details) {
-                TextView tvType = view.findViewById(R.id.tv_type);
-                TextView tvBrand = view.findViewById(R.id.tv_brand);
-                TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date);
-                TextView tvQuantity = view.findViewById(R.id.tv_quantity);
-                tvType.setText(getMapValue(vals, "condom_type"));
-                tvBrand.setText(getMapValue(vals, "male_condom_brand"));
-                tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
-                tvQuantity.setText(getMapValue(vals, "restocked_male_condoms"));
+                String foundCondomTypes = getMapValue(vals, "condom_type");
+                if (foundCondomTypes.contains(",")) {
+                    String[] condomTypes = foundCondomTypes.split(",");
+                    for (String condomType : condomTypes) {
+                        populateData(view, vals, condomType.trim());
+                    }
+                } else {
+                    populateData(view, vals, foundCondomTypes);
+                }
+
             }
+        }
+    }
+
+    private static void populateData(View view, Map<String, String> vals, String condomType) {
+        if (condomType.equalsIgnoreCase("male_condom")) {
+            view.findViewById(R.id.male_condoms_details).setVisibility(View.VISIBLE);
+            TextView tvType = view.findViewById(R.id.tv_type_male);
+            TextView tvBrand = view.findViewById(R.id.tv_brand_male);
+            TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_male);
+            TextView tvQuantity = view.findViewById(R.id.tv_quantity_male);
+            tvType.setText(condomType);
+            tvBrand.setText(getMapValue(vals, "male_condom_brand"));
+            tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
+            tvQuantity.setText(getMapValue(vals, "restocked_male_condoms"));
+        }
+        if (condomType.equalsIgnoreCase("female_condom")) {
+            view.findViewById(R.id.female_condoms_details).setVisibility(View.VISIBLE);
+            TextView tvType = view.findViewById(R.id.tv_type_female);
+            TextView tvBrand = view.findViewById(R.id.tv_brand_female);
+            TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_female);
+            TextView tvQuantity = view.findViewById(R.id.tv_quantity_female);
+            tvType.setText(condomType);
+            tvBrand.setText(getMapValue(vals, "female_condom_brand"));
+            tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
+            tvQuantity.setText(getMapValue(vals, "restocked_female_condoms"));
         }
     }
 
