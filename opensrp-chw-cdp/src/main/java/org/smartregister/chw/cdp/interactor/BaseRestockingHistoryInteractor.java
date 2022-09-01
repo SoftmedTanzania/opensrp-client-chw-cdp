@@ -3,10 +3,16 @@ package org.smartregister.chw.cdp.interactor;
 import android.content.Context;
 
 import org.smartregister.chw.cdp.contract.RestockingHistoryContract;
+import org.smartregister.chw.cdp.domain.Visit;
 import org.smartregister.chw.cdp.util.AppExecutors;
 import org.smartregister.chw.cdp.util.CdpUtil;
+import org.smartregister.chw.cdp.util.VisitUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.VisibleForTesting;
+import timber.log.Timber;
 
 public class BaseRestockingHistoryInteractor implements RestockingHistoryContract.Interactor {
 
@@ -36,6 +42,17 @@ public class BaseRestockingHistoryInteractor implements RestockingHistoryContrac
 
     @Override
     public void getMemberHistory(String memberID, Context context, RestockingHistoryContract.InteractorCallBack callBack) {
-        //do nothing for now
+        final Runnable runnable = () -> {
+
+            final List<Visit> visits = new ArrayList<>();
+            try {
+                visits.addAll(VisitUtils.getVisits(memberID));
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+            appExecutors.mainThread().execute(() -> callBack.onDataFetched(visits));
+        };
+
+        appExecutors.diskIO().execute(runnable);
     }
 }

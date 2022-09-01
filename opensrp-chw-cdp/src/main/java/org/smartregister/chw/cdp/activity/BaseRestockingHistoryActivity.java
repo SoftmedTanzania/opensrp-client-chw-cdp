@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -30,6 +32,9 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     protected OutletObject outletObject;
     protected RestockingHistoryContract.Presenter presenter;
+    protected LinearLayout linearLayout;
+    protected Toolbar toolbar;
+    protected TextView tvTitle;
 
     public static void startMe(Activity activity, OutletObject outletObject) {
         Intent intent = new Intent(activity, BaseRestockingHistoryActivity.class);
@@ -39,19 +44,21 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
 
     protected void setupViews() {
-        Toolbar toolbar = findViewById(R.id.collapsing_toolbar);
-        TextView tvTitle = findViewById(R.id.tvTitle);
+        toolbar = findViewById(R.id.collapsing_toolbar);
+        tvTitle = findViewById(R.id.tvTitle);
+
+        linearLayout = findViewById(R.id.linearLayoutRestockingHistory);
 
         Button restockingBtn = findViewById(R.id.restock_button);
 
         restockingBtn.setOnClickListener(this);
 
         tvTitle.setText(getString(R.string.back_to_outlet, outletObject.getOutletName()));
-        setUpActionBar(toolbar);
+        setUpActionBar();
     }
 
 
-    private void setUpActionBar(Toolbar toolbar) {
+    private void setUpActionBar() {
 
         setSupportActionBar(toolbar);
 
@@ -78,7 +85,8 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     @Override
     protected void onResumption() {
-        //Overridden
+        setupViews();
+        initializePresenter();
     }
 
     @Override
@@ -100,22 +108,24 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     @Override
     public RestockingHistoryContract.Presenter getPresenter() {
-        return null;
+        return presenter;
     }
 
     @Override
     public void onDataReceived(List<Visit> visits) {
-        //
+        View view = renderView(visits);
+        linearLayout.addView(view, 0);
     }
 
     @Override
     public Context getViewContext() {
-        return null;
+        return getApplicationContext();
     }
 
     @Override
     public View renderView(List<Visit> visits) {
-        return null;
+        LayoutInflater inflater = getLayoutInflater();
+        return inflater.inflate(R.layout.cdp_restocking_visit_history_details, null);
     }
 
     @Override
