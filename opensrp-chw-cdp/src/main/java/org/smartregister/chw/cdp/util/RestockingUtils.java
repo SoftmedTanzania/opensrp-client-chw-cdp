@@ -40,7 +40,7 @@ public class RestockingUtils {
                 tvType.setText(getMapValue(vals, "condom_type"));
                 tvBrand.setText(getMapValue(vals, "male_condom_brand"));
                 tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
-                tvQuantity.setText(getMapValue(vals, "male_condoms_offset"));
+                tvQuantity.setText(getMapValue(vals, "restocked_male_condoms"));
             }
         }
     }
