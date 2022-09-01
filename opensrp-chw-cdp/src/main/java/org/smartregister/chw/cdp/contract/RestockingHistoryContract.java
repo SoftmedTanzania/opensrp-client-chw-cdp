@@ -32,13 +32,13 @@ public interface RestockingHistoryContract {
 
         View getView();
 
-        void startForm(String formName) throws Exception;
+        void startForm(String formName, String outletId) throws Exception;
 
         void saveForm(String jsonString);
     }
 
     interface Model {
-        JSONObject getFormAsJson(String formName) throws Exception;
+        JSONObject getFormAsJson(String formName, String outletId) throws Exception;
     }
 
     interface Interactor {

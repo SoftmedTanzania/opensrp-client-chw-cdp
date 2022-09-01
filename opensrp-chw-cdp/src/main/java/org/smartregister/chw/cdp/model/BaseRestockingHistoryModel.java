@@ -6,7 +6,9 @@ import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 
 public class BaseRestockingHistoryModel implements RestockingHistoryContract.Model {
     @Override
-    public JSONObject getFormAsJson(String formName) throws Exception {
-        return CdpJsonFormUtils.getFormAsJson(formName);
+    public JSONObject getFormAsJson(String formName, String entityId) throws Exception {
+        JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+        CdpJsonFormUtils.getRegistrationForm(form, entityId, "");
+        return form;
     }
 }

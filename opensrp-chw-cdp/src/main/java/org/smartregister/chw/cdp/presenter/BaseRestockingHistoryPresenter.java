@@ -41,8 +41,8 @@ public class BaseRestockingHistoryPresenter implements RestockingHistoryContract
     }
 
     @Override
-    public void startForm(String formName) throws Exception {
-        JSONObject form = model.getFormAsJson(formName);
+    public void startForm(String formName, String outletID) throws Exception {
+        JSONObject form = model.getFormAsJson(formName, outletID);
         getView().startFormActivity(form);
     }
 
