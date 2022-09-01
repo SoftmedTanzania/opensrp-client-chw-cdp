@@ -118,10 +118,15 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
         if (visits.size() > 0) {
             for (Visit visit : visits) {
                 View view = renderView(visit);
-                linearLayout.addView(view, 0);
+                getMainLayout().addView(view, 0);
             }
         }
 
+    }
+
+    @Override
+    public LinearLayout getMainLayout() {
+        return linearLayout;
     }
 
     protected void processViewData(Visit visit, View view) {
@@ -160,7 +165,6 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             presenter.saveForm(data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON));
-            finish();
         }
     }
 }

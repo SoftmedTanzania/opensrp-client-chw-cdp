@@ -35,7 +35,7 @@ public class BaseRestockingHistoryInteractor implements RestockingHistoryContrac
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            appExecutors.mainThread().execute(() -> callBack.onRegistrationSaved());
         };
         appExecutors.diskIO().execute(runnable);
     }

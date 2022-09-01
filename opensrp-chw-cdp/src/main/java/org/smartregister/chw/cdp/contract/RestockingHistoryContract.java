@@ -1,6 +1,7 @@
 package org.smartregister.chw.cdp.contract;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.domain.Visit;
@@ -23,6 +24,8 @@ public interface RestockingHistoryContract {
         void startRestockingForm(String formName) throws Exception;
 
         void startFormActivity(JSONObject form);
+
+        LinearLayout getMainLayout();
 
     }
 
@@ -52,5 +55,6 @@ public interface RestockingHistoryContract {
 
         void onDataFetched(List<Visit> visits);
 
+        void onRegistrationSaved();
     }
 }

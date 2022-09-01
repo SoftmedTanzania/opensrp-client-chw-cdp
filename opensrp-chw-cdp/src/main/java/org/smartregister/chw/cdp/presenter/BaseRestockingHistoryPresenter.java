@@ -57,4 +57,14 @@ public class BaseRestockingHistoryPresenter implements RestockingHistoryContract
             getView().onDataReceived(visits);
         }
     }
+
+    @Override
+    public void onRegistrationSaved() {
+        if(getView() != null && getView().getMainLayout() != null){
+            if(getView().getMainLayout().getChildCount() > 1){
+                getView().getMainLayout().removeViews(0, getView().getMainLayout().getChildCount());
+            }
+            getView().getPresenter().initialize();
+        }
+    }
 }
