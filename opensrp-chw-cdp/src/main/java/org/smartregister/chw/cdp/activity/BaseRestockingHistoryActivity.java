@@ -124,11 +124,11 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     }
 
-    protected void processViewData(Context context, Visit visit, View view) {
+    protected void processViewData(Visit visit, View view) {
         List<Map<String, String>> visits_details = new ArrayList<>();
         String[] params = {"condom_restock_date", "condom_type", "male_condom_brand", "female_condom_brand", "male_condoms_offset", "female_condoms_offset"};
         RestockingUtils.extractVisit(visit, params, visits_details);
-        RestockingUtils.processRestockingVisit(visits_details, context, view);
+        RestockingUtils.processRestockingVisit(visits_details, view);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
     public View renderView(Visit visit) {
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.cdp_restocking_visit_history_details, null);
-        processViewData(this, visit, view);
+        processViewData(visit, view);
         return view;
     }
 

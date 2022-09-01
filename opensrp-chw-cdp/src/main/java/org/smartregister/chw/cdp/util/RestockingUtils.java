@@ -1,6 +1,5 @@
 package org.smartregister.chw.cdp.util;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,7 +30,7 @@ public class RestockingUtils {
         visits_details.add(map);
     }
 
-    public static void processRestockingVisit(List<Map<String, String>> visits_details, Context context, View view) {
+    public static void processRestockingVisit(List<Map<String, String>> visits_details, View view) {
         if (visits_details != null && visits_details.size() > 0) {
             for (Map<String, String> vals : visits_details) {
                 TextView tvType = view.findViewById(R.id.tv_type);
