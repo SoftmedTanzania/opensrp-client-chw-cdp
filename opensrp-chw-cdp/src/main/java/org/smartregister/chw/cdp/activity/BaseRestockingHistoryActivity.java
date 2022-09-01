@@ -21,9 +21,12 @@ import org.smartregister.chw.cdp.interactor.BaseRestockingHistoryInteractor;
 import org.smartregister.chw.cdp.model.BaseRestockingHistoryModel;
 import org.smartregister.chw.cdp.presenter.BaseRestockingHistoryPresenter;
 import org.smartregister.chw.cdp.util.Constants;
+import org.smartregister.chw.cdp.util.RestockingUtils;
 import org.smartregister.view.activity.SecuredActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -86,7 +89,6 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
     @Override
     protected void onResumption() {
         setupViews();
-        initializePresenter();
     }
 
     @Override
@@ -113,8 +115,20 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     @Override
     public void onDataReceived(List<Visit> visits) {
-        View view = renderView(visits);
-        linearLayout.addView(view, 0);
+        if (visits.size() > 0) {
+            for (Visit visit : visits) {
+                View view = renderView(visit);
+                linearLayout.addView(view, 0);
+            }
+        }
+
+    }
+
+    protected void processViewData(Context context, Visit visit, View view) {
+        List<Map<String, String>> visits_details = new ArrayList<>();
+        String[] params = {"condom_restock_date", "condom_type", "male_condom_brand", "female_condom_brand", "male_condoms_offset", "female_condoms_offset"};
+        RestockingUtils.extractVisit(visit, params, visits_details);
+        RestockingUtils.processRestockingVisit(visits_details, context, view);
     }
 
     @Override
@@ -123,9 +137,11 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
     }
 
     @Override
-    public View renderView(List<Visit> visits) {
+    public View renderView(Visit visit) {
         LayoutInflater inflater = getLayoutInflater();
-        return inflater.inflate(R.layout.cdp_restocking_visit_history_details, null);
+        View view = inflater.inflate(R.layout.cdp_restocking_visit_history_details, null);
+        processViewData(this, visit, view);
+        return view;
     }
 
     @Override
@@ -137,13 +153,14 @@ public class BaseRestockingHistoryActivity extends SecuredActivity implements Vi
 
     @Override
     public void startRestockingForm(String formName) throws Exception {
-        presenter.startForm(formName);
+        presenter.startForm(formName, outletObject.getBaseEntityId());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             presenter.saveForm(data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON));
+            finish();
         }
     }
 }

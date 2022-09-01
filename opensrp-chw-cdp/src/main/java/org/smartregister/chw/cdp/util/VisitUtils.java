@@ -13,13 +13,9 @@ public class VisitUtils {
     public static List<Visit> getVisits(String memberID) {
 
         List<Visit> visits = getVisitsOnly(memberID, Constants.EVENT_TYPE.CDP_OUTLET_RESTOCK);
-
-        int x = 0;
-        while (visits.size() > x) {
-            Visit visit = visits.get(x);
+        for (Visit visit : visits) {
             List<VisitDetail> detailList = getVisitDetailsOnly(visit.getVisitId());
-            visits.get(x).setVisitDetails(getVisitGroups(detailList));
-            x++;
+            visit.setVisitDetails(getVisitGroups(detailList));
         }
 
         return visits;

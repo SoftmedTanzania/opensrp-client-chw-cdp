@@ -18,7 +18,7 @@ public interface RestockingHistoryContract {
 
         Context getViewContext();
 
-        android.view.View renderView(List<Visit> visits);
+        android.view.View renderView(Visit visits);
 
         void startRestockingForm(String formName) throws Exception;
 

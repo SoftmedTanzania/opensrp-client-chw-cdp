@@ -53,6 +53,8 @@ public class BaseRestockingHistoryPresenter implements RestockingHistoryContract
 
     @Override
     public void onDataFetched(List<Visit> visits) {
-        getView().onDataReceived(visits);
+        if (getView() != null) {
+            getView().onDataReceived(visits);
+        }
     }
 }
