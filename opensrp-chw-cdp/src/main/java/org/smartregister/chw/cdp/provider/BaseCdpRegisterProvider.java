@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
+import org.smartregister.chw.cdp.holders.FooterViewHolder;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
@@ -146,17 +147,4 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
         }
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
-        public TextView pageInfoView;
-        public Button nextPageView;
-        public Button previousPageView;
-
-        public FooterViewHolder(View view) {
-            super(view);
-
-            nextPageView = view.findViewById(org.smartregister.R.id.btn_next_page);
-            previousPageView = view.findViewById(org.smartregister.R.id.btn_previous_page);
-            pageInfoView = view.findViewById(org.smartregister.R.id.txt_page_info);
-        }
-    }
 }
