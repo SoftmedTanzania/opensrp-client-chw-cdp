@@ -35,6 +35,8 @@ public interface Constants {
         String CDP_STOCK_COUNT = "ec_cdp_stock_count";
         String CDP_STOCK_LOG = "ec_cdp_stock_log";
         String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
+        String CDP_ORDERS = "ec_cdp_orders";
+        String TASK = "task";
     }
 
     interface ACTIVITY_PAYLOAD {

@@ -21,25 +21,24 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
 
     @NonNull
     @Override
-    public String mainSelect(@NonNull String tableName, String entityTable, @NonNull String mainCondition) {
+    public String mainSelect(@NonNull String tableName, @NonNull String mainCondition) {
         SmartRegisterQueryBuilder queryBuilder = new SmartRegisterQueryBuilder();
-        queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName), DBConstants.KEY.BASE_ENTITY_ID);
+        queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName), DBConstants.KEY.LOCATION_ID);
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName));
-        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.CDP_OUTLET + " ON  " + tableName+ "." +DBConstants.KEY.BASE_ENTITY_ID  + " = " + Constants.TABLES.CDP_OUTLET + "." + DBConstants.KEY.BASE_ENTITY_ID + " COLLATE NOCASE ");
+        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.LOCATION_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
         return queryBuilder.mainCondition(mainCondition);
     }
 
     @NotNull
     public String[] mainColumns(String tableName) {
         Set<String> columnList = new HashSet<>();
-        columnList.add(tableName + "." + DBConstants.KEY.BASE_ENTITY_ID);
-        columnList.add(Constants.TABLES.CDP_OUTLET + "." + DBConstants.KEY.RELATIONAL_ID);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_NAME);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_TYPE);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_VILLAGE_STREET_NAME);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_WARD_NAME);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.FOCAL_PERSON_NAME);
-        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.FOCAL_PERSON_PHONE);
+        columnList.add(tableName + "." + DBConstants.KEY.LOCATION_ID);
+        columnList.add(tableName + "." + DBConstants.KEY.LOCATION_ID + " AS " + DBConstants.KEY.RELATIONAL_ID);
+        columnList.add(tableName + "." + DBConstants.KEY.CONDOM_TYPE);
+        columnList.add(tableName + "." + DBConstants.KEY.CONDOM_BRAND);
+        columnList.add(tableName + "." + DBConstants.KEY.QUANTITY_REQ);
+        columnList.add(tableName + "." + DBConstants.KEY.REQUESTED_AT);
+        columnList.add(tableName + "." + DBConstants.KEY.REQUEST_TYPE);
 
         return columnList.toArray(new String[columnList.size()]);
     }

@@ -38,7 +38,7 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
 
     @Override
     public String getMainTable() {
-        return Constants.TABLES.CDP_REGISTER;
+        return Constants.TABLES.CDP_ORDERS;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
         String tableName = getMainTable();
         mainCondition = trim(getMainCondition()).equals("") ? mainCondition : getMainCondition();
         String countSelect = model.countSelect(tableName, mainCondition);
-        String mainSelect = model.mainSelect(tableName, tableName, mainCondition);
+        String mainSelect = model.mainSelect(tableName, mainCondition);
 
         if (getView() != null) {
 

@@ -34,6 +34,6 @@ public interface BaseOrdersRegisterFragmentContract {
     interface Model {
         String countSelect(String tableName, String mainCondition);
 
-        String mainSelect(String tableName, String entityTable, String mainCondition);
+        String mainSelect(String tableName, String mainCondition);
     }
 }
