@@ -7,7 +7,6 @@ import android.widget.Toast;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
-import org.smartregister.chw.cdp.interactor.BaseOrdersRegisterFragmentInteractor;
 import org.smartregister.chw.cdp.model.BaseOrdersRegisterFragmentModel;
 import org.smartregister.chw.cdp.presenter.BaseOrdersRegisterFragmentPresenter;
 import org.smartregister.chw.cdp.provider.BaseOrdersRegisterProvider;
@@ -132,7 +131,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
 
     @Override
     protected void initializePresenter() {
-        presenter = new BaseOrdersRegisterFragmentPresenter(this, new BaseOrdersRegisterFragmentInteractor(), model());
+        presenter = new BaseOrdersRegisterFragmentPresenter(this, model());
     }
 
     @Override

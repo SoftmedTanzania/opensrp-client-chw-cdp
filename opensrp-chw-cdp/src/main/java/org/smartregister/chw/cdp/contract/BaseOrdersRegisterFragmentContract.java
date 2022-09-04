@@ -27,15 +27,6 @@ public interface BaseOrdersRegisterFragmentContract {
 
     }
 
-    interface Interactor {
-        void saveRegistration(String jsonString, final InteractorCallBack callBack);
-    }
-
-    interface InteractorCallBack {
-        void clientDetails(CommonPersonObjectClient client);
-
-        void onRegistrationSaved();
-    }
 
     interface Model {
         String countSelect(String tableName, String mainCondition);

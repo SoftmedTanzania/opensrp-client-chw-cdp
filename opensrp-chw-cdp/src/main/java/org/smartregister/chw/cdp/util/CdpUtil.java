@@ -11,10 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spanned;
@@ -22,11 +19,11 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
+import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseCdpCallDialogContract;
-import org.smartregister.chw.cdp.dao.CdpDao;
+import org.smartregister.chw.cdp.pojo.CdpOrderTaskEvent;
 import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.cdp.R;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -35,6 +32,8 @@ import org.smartregister.util.PermissionUtils;
 
 import java.util.Date;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 import static org.smartregister.util.Utils.getAllSharedPreferences;
@@ -120,6 +119,15 @@ public class CdpUtil {
         AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
         Event baseEvent = CdpJsonFormUtils.processJsonForm(allSharedPreferences, jsonString);
         CdpUtil.processEvent(allSharedPreferences, baseEvent);
+    }
+
+    public static void saveTaskEvent(final String jsonString, String encounterType) throws Exception {
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+
+        CdpOrderTaskEvent cdpOrderTaskEvent = OrdersUtil.createOrderTaskEvent(allSharedPreferences, jsonString, encounterType);
+        CdpUtil.processEvent(allSharedPreferences, cdpOrderTaskEvent.getEvent());
+        OrdersUtil.persistTask(cdpOrderTaskEvent.getTask());
+
     }
 
     public static int getMemberProfileImageResourceIdentifier(String entityType) {

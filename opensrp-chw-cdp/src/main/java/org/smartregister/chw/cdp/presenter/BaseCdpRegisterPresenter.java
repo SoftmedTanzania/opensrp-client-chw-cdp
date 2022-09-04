@@ -56,6 +56,16 @@ public class BaseCdpRegisterPresenter implements BaseCdpRegisterContract.Present
     }
 
     @Override
+    public void saveOrderForm(String jsonString, String encounterType) {
+        try {
+            getView().showProgressDialog(R.string.saving_dialog_title);
+            interactor.processSaveOrderForm(jsonString, this, encounterType);
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
     public void saveForm(String jsonString, RegisterParams registerParams) {
         //Use this for registration form
         try {

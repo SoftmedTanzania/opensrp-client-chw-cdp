@@ -26,6 +26,8 @@ public interface BaseCdpRegisterContract {
 
         void saveForm(String jsonString);
 
+        void saveOrderForm(String jsonString, String encounterType);
+
         void saveForm(String jsonString, RegisterParams registerParams);
 
     }
@@ -41,6 +43,7 @@ public interface BaseCdpRegisterContract {
     interface Interactor {
 
         void saveRegistration(String jsonString, final InteractorCallBack callBack);
+        void processSaveOrderForm(String jsonString, final InteractorCallBack callBack, String encounterType);
         void saveRegistration(final List<CdpOutletEventClient> cdpOutletEventClientList, final String jsonString,
                               final RegisterParams registerParams, final BaseCdpRegisterContract.InteractorCallBack callBack);
         void getNextUniqueId(final Triple<String, String, String> triple, final BaseCdpRegisterContract.InteractorCallBack callBack);

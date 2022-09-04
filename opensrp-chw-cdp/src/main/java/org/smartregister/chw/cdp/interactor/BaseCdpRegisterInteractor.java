@@ -34,7 +34,7 @@ import static org.smartregister.chw.cdp.util.CdpUtil.getClientProcessorForJava;
 
 public class BaseCdpRegisterInteractor implements BaseCdpRegisterContract.Interactor {
 
-    private AppExecutors appExecutors;
+    private final AppExecutors appExecutors;
 
     @VisibleForTesting
     BaseCdpRegisterInteractor(AppExecutors appExecutors) {
@@ -55,7 +55,21 @@ public class BaseCdpRegisterInteractor implements BaseCdpRegisterContract.Intera
                 e.printStackTrace();
             }
 
-            appExecutors.mainThread().execute(() -> callBack.onRegistrationSaved());
+            appExecutors.mainThread().execute(callBack::onRegistrationSaved);
+        };
+        appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void processSaveOrderForm(String jsonString, BaseCdpRegisterContract.InteractorCallBack callBack, String encounterType) {
+        Runnable runnable = () -> {
+            try {
+                CdpUtil.saveTaskEvent(jsonString, encounterType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            appExecutors.mainThread().execute(callBack::onRegistrationSaved);
         };
         appExecutors.diskIO().execute(runnable);
     }

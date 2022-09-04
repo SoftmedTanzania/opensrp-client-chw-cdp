@@ -1,8 +1,6 @@
 package org.smartregister.chw.cdp.util;
 
 import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.pojo.CdpOrderTaskEvent;
 import org.smartregister.clientandeventmodel.Event;
@@ -12,6 +10,7 @@ import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.TaskRepository;
 
 import static org.smartregister.chw.cdp.util.CdpJsonFormUtils.processJsonForm;
+import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
 
 public class OrdersUtil {
 
@@ -19,29 +18,23 @@ public class OrdersUtil {
     private static final String CODE = "CondomOrder";
 
     public static CdpOrderTaskEvent createOrderTaskEvent(AllSharedPreferences allSharedPreferences, String jsonString, String focus) {
-        JSONObject formData;
-        try {
-            formData = new JSONObject(jsonString);
-            String encounter_type = formData.optString(Constants.JSON_FORM_EXTRA.ENCOUNTER_TYPE);
 
-            Event event = processJsonForm(allSharedPreferences, jsonString);
-            Task task = null;
-            if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_ORDER)) {
-                //TODO: read the value from the JSON object for facility ordering
-                String groupId = allSharedPreferences.fetchDefaultLocalityId(allSharedPreferences.fetchRegisteredANM());
-                assert event != null;
-                task = createTask(allSharedPreferences, focus, event, groupId);
-            }
-            return new CdpOrderTaskEvent(event, task);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        Event event = processJsonForm(allSharedPreferences, jsonString);
+        event.setBaseEntityId(generateRandomUUIDString());
+        Task task = null;
+        if (focus.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_ORDER)) {
+            //TODO: read the value from the JSON object for facility ordering
+            String groupId = allSharedPreferences.fetchDefaultLocalityId(allSharedPreferences.fetchRegisteredANM());
+            task = createTask(allSharedPreferences, focus, event, groupId);
         }
-        return null;
+        return new CdpOrderTaskEvent(event, task);
+
     }
 
     public static Task createTask(AllSharedPreferences allSharedPreferences, String focus, Event event, String groupId) {
         DateTime now = new DateTime();
         Task task = new Task();
+        task.setIdentifier(generateRandomUUIDString());
         task.setPlanIdentifier(PLAN_ID); //=
         task.setGroupIdentifier(groupId); //= referralTask.groupId
         task.setStatus(Task.TaskStatus.READY); //=

@@ -11,14 +11,12 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFragmentContract.Presenter {
     protected WeakReference<BaseOrdersRegisterFragmentContract.View> viewReference;
-    protected BaseOrdersRegisterFragmentContract.Interactor interactor;
     protected BaseOrdersRegisterFragmentContract.Model model;
     private String taskFocus;
 
-    public BaseOrdersRegisterFragmentPresenter(BaseOrdersRegisterFragmentContract.View view, BaseOrdersRegisterFragmentContract.Interactor interactor, BaseOrdersRegisterFragmentContract.Model model) {
+    public BaseOrdersRegisterFragmentPresenter(BaseOrdersRegisterFragmentContract.View view, BaseOrdersRegisterFragmentContract.Model model) {
         this.viewReference = new WeakReference<>(view);
         this.model = model;
-        this.interactor = interactor;
     }
 
     @Override

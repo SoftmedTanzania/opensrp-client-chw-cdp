@@ -126,6 +126,8 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
                     registerParam.setFormTag(CdpJsonFormUtils.formTag(CdpLibrary.getInstance().context().allSharedPreferences()));
                     showProgressDialog(R.string.saving_dialog_title);
                     presenter().saveForm(jsonString, registerParam);
+                } else if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_ORDER)) {
+                    presenter().saveOrderForm(jsonString, encounter_type);
                 } else {
                     presenter().saveForm(jsonString);
                 }
@@ -204,6 +206,8 @@ public class BaseCdpRegisterActivity extends BaseRegisterActivity implements Bas
                     registerParam.setFormTag(CdpJsonFormUtils.formTag(CdpLibrary.getInstance().context().allSharedPreferences()));
                     showProgressDialog(R.string.saving_dialog_title);
                     presenter().saveForm(jsonString, registerParam);
+                } else if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_ORDER)) {
+                    presenter().saveOrderForm(jsonString, encounter_type);
                 } else {
                     presenter().saveForm(jsonString);
                 }
