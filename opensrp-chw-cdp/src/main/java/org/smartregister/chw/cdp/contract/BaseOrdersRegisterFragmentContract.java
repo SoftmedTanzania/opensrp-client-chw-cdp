@@ -1,6 +1,7 @@
 package org.smartregister.chw.cdp.contract;
 
 import org.json.JSONObject;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 
@@ -14,6 +15,8 @@ public interface BaseOrdersRegisterFragmentContract {
         void initializeAdapter(String tableName);
 
         void startOrderForm();
+
+        void showDetails(CommonPersonObjectClient cp);
     }
 
     interface Presenter extends BaseRegisterFragmentContract.Presenter {

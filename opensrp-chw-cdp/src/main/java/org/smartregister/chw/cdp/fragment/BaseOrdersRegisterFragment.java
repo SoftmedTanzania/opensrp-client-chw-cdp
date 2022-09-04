@@ -2,7 +2,6 @@ package org.smartregister.chw.cdp.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.CdpLibrary;
+import org.smartregister.chw.cdp.activity.BaseOrderDetailsActivity;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
 import org.smartregister.chw.cdp.model.BaseOrdersRegisterFragmentModel;
 import org.smartregister.chw.cdp.presenter.BaseOrdersRegisterFragmentPresenter;
@@ -21,14 +21,13 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.Obs;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
-import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.customcontrols.FontVariant;
 import org.smartregister.view.fragment.BaseRegisterFragment;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +38,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import timber.log.Timber;
 
+import static org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment.CLICK_VIEW_NORMAL;
 import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
 
 public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements BaseOrdersRegisterFragmentContract.View {
@@ -170,7 +170,6 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     }
 
 
-
     @Override
     protected String getMainCondition() {
         return presenter().getMainCondition();
@@ -188,8 +187,21 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
 
     @Override
     protected void onViewClicked(View view) {
-        //
+        if (getActivity() == null || !(view.getTag() instanceof CommonPersonObjectClient)) {
+            return;
+        }
+
+        CommonPersonObjectClient client = (CommonPersonObjectClient) view.getTag();
+        if (view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
+            showDetails(client);
+        }
     }
+
+    @Override
+    public void showDetails(CommonPersonObjectClient cp) {
+        BaseOrderDetailsActivity.startMe(requireActivity(), cp);
+    }
+
 
     @Override
     protected int getLayout() {

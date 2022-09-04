@@ -64,11 +64,6 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
             viewHolder.registerColumns.setTag(pc);
             viewHolder.registerColumns.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.CLICK_VIEW_NORMAL);
 
-            viewHolder.registerColumns.setOnClickListener(onClickListener);
-
-            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.registerColumns.performClick());
-            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.registerColumns.performClick());
-
         } catch (Exception e) {
             Timber.e(e);
         }

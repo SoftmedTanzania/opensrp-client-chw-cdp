@@ -55,6 +55,10 @@
     <string name="quantity_label">Quantity (Pieces):</string>
     <string name="brand_label">Brand:</string>
     <string name="restocking_date_label">Restocking Date:</string>
+    <string name="type_label_text">Type</string>
+    <string name="quantity_label_text">Quantity (Pieces)</string>
+    <string name="brand_label_text">Brand</string>
+    <string name="restocking_date_label_text">Restocking Date</string>
     <string name="restock_button_label">Restock</string>
     <string name="restocking_visit_history_label">Restocking Visit History</string>
 

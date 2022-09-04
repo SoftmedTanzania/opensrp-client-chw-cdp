@@ -47,6 +47,7 @@ public interface Constants {
         String ACTION = "ACTION";
         String CDP_FORM_NAME = "CDP_FORM_NAME";
         String OUTLET_OBJECT = "OUTLET_OBJECT";
+        String CLIENT = "CLIENT";
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {
