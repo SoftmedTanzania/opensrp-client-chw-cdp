@@ -27,7 +27,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         SmartRegisterQueryBuilder queryBuilder = new SmartRegisterQueryBuilder();
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName), DBConstants.KEY.LOCATION_ID);
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName));
-        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.LOCATION_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
+        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.BASE_ENTITY_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
         return queryBuilder.mainCondition(mainCondition);
     }
 
@@ -46,6 +46,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         columnList.add(tableName + "." + DBConstants.KEY.QUANTITY_REQ);
         columnList.add(tableName + "." + DBConstants.KEY.REQUESTED_AT);
         columnList.add(tableName + "." + DBConstants.KEY.REQUEST_TYPE);
+        columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS);
 
         return columnList.toArray(new String[columnList.size()]);
     }

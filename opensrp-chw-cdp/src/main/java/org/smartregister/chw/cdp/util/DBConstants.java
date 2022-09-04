@@ -22,5 +22,6 @@ public class DBConstants {
         public static final String REQUESTED_AT = "requested_at";
         public static final String REQUEST_TYPE = "request_type";
         public static final String FOR = "for";
+        public static final String STATUS = "status";
     }
 }
