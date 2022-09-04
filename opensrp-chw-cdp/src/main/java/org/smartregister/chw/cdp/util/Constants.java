@@ -70,10 +70,17 @@ public interface Constants {
         String UNIQUE_ID = "unique_id";
         String FEMALE_CONDOMS_OFFSET = "female_condoms_offset";
         String MALE_CONDOMS_OFFSET = "male_condoms_offset";
+        String CONDOM_TYPE = "condom_type";
+        String CONDOM_BRAND = "condom_brand";
+        String CONDOMS_REQUESTED = "requested_condoms";
     }
 
     interface STOCK_EVENT_TYPES {
         String INCREMENT = "increment";
         String DECREMENT = "decrement";
+    }
+
+    interface ORDER_TYPES {
+        String COMMUNITY_TO_FACILITY_ORDER = "community_to_facility";
     }
 }
