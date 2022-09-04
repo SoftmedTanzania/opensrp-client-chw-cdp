@@ -1,7 +1,7 @@
 package org.smartregister.chw.cdp.contract;
 
 import org.json.JSONObject;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.view.contract.BaseRegisterFragmentContract;
 
 public interface BaseOrdersRegisterFragmentContract {
@@ -22,6 +22,12 @@ public interface BaseOrdersRegisterFragmentContract {
         String getMainCondition();
 
         String getDefaultSortQuery();
+
+        String getSentOrdersQuery();
+
+        String getDefaultFilterSortQuery(String filter, String mainSelect, String sortQueries, RecyclerViewPaginatedAdapter clientAdapter);
+
+        String getSuccessFulOrdersQuery();
 
         String getMainTable();
 

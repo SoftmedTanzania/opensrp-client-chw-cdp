@@ -23,5 +23,6 @@ public class DBConstants {
         public static final String REQUEST_TYPE = "request_type";
         public static final String FOR = "for";
         public static final String STATUS = "status";
+        public static final String IS_CLOSED = "is_closed";
     }
 }

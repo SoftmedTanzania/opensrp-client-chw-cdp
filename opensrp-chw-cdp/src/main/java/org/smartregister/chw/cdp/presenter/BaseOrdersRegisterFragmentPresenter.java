@@ -1,12 +1,16 @@
 package org.smartregister.chw.cdp.presenter;
 
-import org.smartregister.chw.cdp.contract.BaseCdpRegisterFragmentContract;
+import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
-import org.smartregister.chw.cdp.fragment.BaseOrdersRegisterFragment;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
+import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
+import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
+
+import timber.log.Timber;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
@@ -27,13 +31,46 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
 
     @Override
     public String getMainCondition() {
-        return "";
+        return getMainTable() + "." + DBConstants.KEY.IS_CLOSED + " IS 0";
     }
 
     @Override
     public String getDefaultSortQuery() {
         return getMainTable() + "." + DBConstants.KEY.REQUESTED_AT + " DESC ";
     }
+
+    @Override
+    public String getSentOrdersQuery() {
+        return Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS + " = '" + Constants.OrderStatus.READY + "'";
+    }
+
+    @Override
+    public String getSuccessFulOrdersQuery() {
+        return Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS + " = '" + Constants.OrderStatus.COMPLETE + "'";
+    }
+
+    @Override
+    public String getDefaultFilterSortQuery(String filter, String mainSelect, String sortQueries, RecyclerViewPaginatedAdapter clientAdapter) {
+        SmartRegisterQueryBuilder sqb = new SmartRegisterQueryBuilder(mainSelect);
+
+        String query = "";
+        StringBuilder customFilter = new StringBuilder();
+
+        if (StringUtils.isNotBlank(filter)) {
+            customFilter.append(MessageFormat.format((" and ( {0} ) "), filter));
+        }
+        try {
+            sqb.addCondition(customFilter.toString());
+            query = sqb.orderbyCondition(sortQueries);
+            query = sqb.Endquery(sqb.addlimitandOffset(query, clientAdapter.getCurrentlimit(), clientAdapter.getCurrentoffset()));
+        } catch (Exception e) {
+            Timber.e(e, e.toString());
+        }
+        return query;
+
+    }
+
+
 
     @Override
     public String getMainTable() {
