@@ -4,6 +4,7 @@ import org.smartregister.chw.cdp.contract.BaseCdpRegisterFragmentContract;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
 import org.smartregister.chw.cdp.fragment.BaseOrdersRegisterFragment;
 import org.smartregister.chw.cdp.util.Constants;
+import org.smartregister.chw.cdp.util.DBConstants;
 
 import java.lang.ref.WeakReference;
 
@@ -31,7 +32,7 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
 
     @Override
     public String getDefaultSortQuery() {
-        return "";
+        return getMainTable() + "." + DBConstants.KEY.REQUESTED_AT + " DESC ";
     }
 
     @Override
