@@ -1,26 +1,25 @@
 package org.smartregister.chw.cdp.dao;
 
+import org.joda.time.DateTime;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
-
-import java.util.Date;
 
 public class CdpOrderDao extends AbstractDao {
     private static final String mainOrdersTable = Constants.TABLES.CDP_ORDERS;
 
     public static void updateOrderData(String locationId,
-                                          String baseEntityId,
-                                          String formSubmissionId,
-                                          String condomType,
-                                          String condomBrand,
-                                          String quantityRequested,
-                                          String requestType) {
+                                       String baseEntityId,
+                                       String formSubmissionId,
+                                       String condomType,
+                                       String condomBrand,
+                                       String quantityRequested,
+                                       String requestType) {
 
-        Date now = new Date();
+        DateTime now = new DateTime();
 
         String sql = "INSERT INTO " + mainOrdersTable + "" +
                 "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at) " +
-                "         VALUES ('" + baseEntityId + "', '" + locationId +"', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + now + "')" +
+                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + now.getMillis() + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET location_id = '" + locationId + "'," +
                 "           form_submission_id = '" + formSubmissionId + "', " +
@@ -28,7 +27,7 @@ public class CdpOrderDao extends AbstractDao {
                 "           condom_brand = '" + condomBrand + "', " +
                 "           quantity_requested = '" + quantityRequested + "', " +
                 "           request_type = '" + requestType + "', " +
-                "           requested_at = '" + now + "'" +
+                "           requested_at = '" + now.getMillis() + "'" +
                 "       ";
         updateDB(sql);
     }

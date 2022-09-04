@@ -1,9 +1,9 @@
 package org.smartregister.chw.cdp.dao;
 
+import org.joda.time.DateTime;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -22,11 +22,11 @@ public class CdpStockingDao extends AbstractDao {
                                           String stockEventType,
                                           String eventType) {
 
-        Date now = new Date();
+        DateTime now = new DateTime();
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
                 "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, stock_event_type, date_updated) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + stockEventType + "', '" + eventType + "', '" + now + "')" +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + stockEventType + "', '" + eventType + "', '" + now.getMillis() + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           chw_name = '" + chwName + "', " +
@@ -34,7 +34,7 @@ public class CdpStockingDao extends AbstractDao {
                 "           male_condoms_offset = '" + maleCondomsOffset + "', " +
                 "           stock_event_type = '" + stockEventType + "', " +
                 "           event_type = '" + eventType + "', " +
-                "           date_updated = '" + now + "'" +
+                "           date_updated = '" + now.getMillis() + "'" +
                 "       ";
         updateDB(sqlUpdateStockLog);
     }
@@ -48,7 +48,7 @@ public class CdpStockingDao extends AbstractDao {
         int femaleCondomsCount = 0;
         int maleCondomsCount = 0;
 
-        Date now = new Date();
+        DateTime now = new DateTime();
         Integer currentFemaleCondomCount = getCurrentFemaleCondomCount(locationId);
         Integer currentMaleCondomCount = getCurrentMaleCondomCount(locationId);
 
@@ -62,12 +62,12 @@ public class CdpStockingDao extends AbstractDao {
 
         String sqlUpdateStockCount = "INSERT INTO " + stockCountTable + "" +
                 "    (id, base_entity_id, chw_name, female_condoms_count, male_condoms_count, date_updated) " +
-                "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + now + "')" +
+                "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + now.getMillis() + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "          SET  chw_name = '" + chwName + "', " +
                 "               female_condoms_count = '" + femaleCondomsCount + "', " +
                 "               male_condoms_count = '" + maleCondomsCount + "', " +
-                "               date_updated = '" + now + "'" +
+                "               date_updated = '" + now.getMillis() + "'" +
                 "       ";
         updateDB(sqlUpdateStockCount);
     }
