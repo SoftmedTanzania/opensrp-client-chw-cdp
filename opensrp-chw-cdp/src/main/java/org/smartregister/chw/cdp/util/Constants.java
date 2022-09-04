@@ -83,4 +83,10 @@ public interface Constants {
     interface ORDER_TYPES {
         String COMMUNITY_TO_FACILITY_ORDER = "community_to_facility";
     }
+
+    interface OrderStatus {
+        String READY = "READY";
+        String FAILED = "FAILED";
+        String COMPLETE = "COMPLETE";
+    }
 }

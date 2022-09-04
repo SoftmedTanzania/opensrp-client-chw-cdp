@@ -80,6 +80,8 @@
     <string name="familia">Familia</string>
     <string name="others">Others</string>
     <string name="order_status_pending">Pending</string>
+    <string name="order_status_complete">Successful</string>
+    <string name="order_status_failed">Failed</string>
 
 
 </resources>

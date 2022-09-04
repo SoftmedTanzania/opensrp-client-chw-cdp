@@ -10,6 +10,7 @@ import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.holders.FooterViewHolder;
 import org.smartregister.chw.cdp.holders.OrdersViewHolder;
+import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
@@ -22,6 +23,7 @@ import org.smartregister.view.dialog.SortOption;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
@@ -51,10 +53,12 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
             String condomType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_TYPE, true);
             String condomBrand = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_BRAND, true);
             String condomQuantity = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.QUANTITY_REQ, false);
+            String orderStatus = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.STATUS, false);
 
             viewHolder.condom_type.setText(condomType);
             viewHolder.condom_brand.setText(condomBrand);
             viewHolder.quantity.setText(condomQuantity);
+            viewHolder.status.setText(getStatusString(context, orderStatus));
 
             viewHolder.registerColumns.setOnClickListener(onClickListener);
             viewHolder.registerColumns.setTag(pc);
@@ -67,6 +71,17 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
 
         } catch (Exception e) {
             Timber.e(e);
+        }
+    }
+
+    private String getStatusString(Context context, String st) {
+        switch (st.toUpperCase(Locale.ROOT)) {
+            case Constants.OrderStatus.FAILED:
+                return context.getString(R.string.order_status_failed);
+            case Constants.OrderStatus.COMPLETE:
+                return context.getString(R.string.order_status_complete);
+            default:
+                return context.getString(R.string.order_status_pending);
         }
     }
 
