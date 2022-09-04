@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.holders.FooterViewHolder;
 import org.smartregister.chw.cdp.holders.OrdersViewHolder;
+import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
+import org.smartregister.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.dialog.FilterOption;
@@ -21,6 +24,7 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 import java.text.MessageFormat;
 
 import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersViewHolder> {
     private final LayoutInflater inflater;
@@ -42,7 +46,28 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
     }
 
     private void populateOrderDetailColumn(CommonPersonObjectClient pc, OrdersViewHolder viewHolder) {
-        //
+        try {
+
+            String condomType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_TYPE, true);
+            String condomBrand = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_BRAND, true);
+            String condomQuantity = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.QUANTITY_REQ, false);
+
+            viewHolder.condom_type.setText(condomType);
+            viewHolder.condom_brand.setText(condomBrand);
+            viewHolder.quantity.setText(condomQuantity);
+
+            viewHolder.registerColumns.setOnClickListener(onClickListener);
+            viewHolder.registerColumns.setTag(pc);
+            viewHolder.registerColumns.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.CLICK_VIEW_NORMAL);
+
+            viewHolder.registerColumns.setOnClickListener(onClickListener);
+
+            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.registerColumns.performClick());
+            viewHolder.registerColumns.setOnClickListener(v -> viewHolder.registerColumns.performClick());
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
     }
 
     @Override
