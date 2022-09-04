@@ -17,4 +17,9 @@ public class BaseOrdersRegisterFragmentInteractor implements BaseOrdersRegisterF
     public BaseOrdersRegisterFragmentInteractor() {
         this(new AppExecutors());
     }
+
+    @Override
+    public void saveRegistration(String jsonString, BaseOrdersRegisterFragmentContract.InteractorCallBack callBack) {
+        //
+    }
 }

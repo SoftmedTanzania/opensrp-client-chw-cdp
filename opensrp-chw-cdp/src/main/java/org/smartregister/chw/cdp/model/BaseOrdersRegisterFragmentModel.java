@@ -1,7 +1,9 @@
 package org.smartregister.chw.cdp.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
+import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
@@ -27,6 +29,11 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName));
         queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.LOCATION_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
         return queryBuilder.mainCondition(mainCondition);
+    }
+
+    @Override
+    public JSONObject getOrderFormAsJson(String formName) throws Exception {
+        return CdpJsonFormUtils.getFormAsJson(formName);
     }
 
     @NotNull

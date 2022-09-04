@@ -87,11 +87,21 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     }
 
     @Override
+    public BaseOrdersRegisterFragmentContract.Model model() {
+        return new BaseOrdersRegisterFragmentModel();
+    }
+
+    @Override
     public void initializeAdapter(String tableName) {
         BaseOrdersRegisterProvider registerProvider = new BaseOrdersRegisterProvider(getActivity(), registerActionHandler, paginationViewHandler);
         clientAdapter = new RecyclerViewPaginatedAdapter(null, registerProvider, context().commonrepository(this.tablename));
         clientAdapter.setCurrentlimit(20);
         clientsView.setAdapter(clientAdapter);
+    }
+
+    @Override
+    public void startOrderForm() {
+       //implement in chw and hf
     }
 
 
@@ -122,7 +132,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
 
     @Override
     protected void initializePresenter() {
-        presenter = new BaseOrdersRegisterFragmentPresenter(this, new BaseOrdersRegisterFragmentInteractor(), new BaseOrdersRegisterFragmentModel());
+        presenter = new BaseOrdersRegisterFragmentPresenter(this, new BaseOrdersRegisterFragmentInteractor(), model());
     }
 
     @Override
@@ -145,7 +155,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
             syncButton.setPadding(0, 0, 10, 0);
             syncButton.setImageDrawable(context().getDrawable(R.drawable.ic_add_white_24));
             syncButton.setOnClickListener(view -> {
-                loadTestStockData();
+               startOrderForm();
             });
         }
     }
