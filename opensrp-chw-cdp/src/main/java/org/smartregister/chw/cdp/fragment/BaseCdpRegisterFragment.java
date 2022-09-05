@@ -42,6 +42,12 @@ public class BaseCdpRegisterFragment extends BaseRegisterFragment implements Bas
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setupViews(rootView);
+    }
+
+    @Override
     public void setupViews(android.view.View view) {
         super.setupViews(view);
 
