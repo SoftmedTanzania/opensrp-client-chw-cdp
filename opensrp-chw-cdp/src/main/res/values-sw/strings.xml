@@ -61,5 +61,6 @@
     <string name="restocking_date_label_text">Restocking Date</string>
     <string name="restock_button_label">Restock</string>
     <string name="restocking_visit_history_label">Restocking Visit History</string>
+    <string name="request_date_label_text">Request Date</string>
 
 </resources>
