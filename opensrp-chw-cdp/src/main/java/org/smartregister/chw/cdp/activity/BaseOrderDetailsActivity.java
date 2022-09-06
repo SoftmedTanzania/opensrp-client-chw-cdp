@@ -27,6 +27,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
     protected TextView condomBrand;
     protected TextView quantity;
     protected TextView requestDate;
+    protected TextView requesterName;
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
         Intent intent = new Intent(activity, BaseOrderDetailsActivity.class);
@@ -44,7 +45,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
         setupViews();
     }
 
-    protected int getMainContentView(){
+    protected int getMainContentView() {
         return R.layout.activity_order_details;
     }
 
@@ -60,12 +61,15 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
         condomType = findViewById(R.id.condom_type);
         quantity = findViewById(R.id.condom_quantity);
         requestDate = findViewById(R.id.request_date);
+        requesterName = findViewById(R.id.requester_name);
 
         condomType.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_TYPE, true));
         condomBrand.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_BRAND, true));
         quantity.setText(Utils.getValue(client, DBConstants.KEY.QUANTITY_REQ, false));
         Long requestedAtMillis = Long.parseLong(Utils.getValue(client, DBConstants.KEY.REQUESTED_AT, false));
         requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
+        String requesterLocation = Utils.getValue(client, DBConstants.KEY.LOCATION_ID, false);
+        requesterName.setText(CdpUtil.getRequesterNameFromId(requesterLocation));
 
         setUpActionBar();
     }

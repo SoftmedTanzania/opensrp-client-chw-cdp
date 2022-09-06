@@ -24,8 +24,10 @@ import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseCdpCallDialogContract;
 import org.smartregister.chw.cdp.pojo.CdpOrderTaskEvent;
 import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.domain.Location;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
+import org.smartregister.repository.LocationRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.util.PermissionUtils;
@@ -142,6 +144,20 @@ public class CdpUtil {
     public static String formatTimeStamp(Long timestamp){
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.ROOT);
         return df.format(timestamp);
+    }
+
+    /**
+    * Get the location name from Id
+     * @param  locationId Location uuid in string
+     * @return  location name
+     * */
+    public static String getRequesterNameFromId(String locationId){
+        LocationRepository locationRepository = CdpLibrary.getInstance().context().getLocationRepository();
+        Location location = locationRepository.getLocationById(locationId);
+        if(location!= null && location.getProperties() != null){
+            return  location.getProperties().getName();
+        }
+        return "";
     }
 
 
