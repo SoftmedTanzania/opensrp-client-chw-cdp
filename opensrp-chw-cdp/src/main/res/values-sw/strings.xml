@@ -65,5 +65,6 @@
     <string name="health_facility_name_label">Health Facility Name</string>
     <string name="village_name_label">Village Name</string>
     <string name="stock_distribution_label">Stock Distribution</string>
+    <string name="out_of_stock_label">Out of Stock</string>
 
 </resources>
