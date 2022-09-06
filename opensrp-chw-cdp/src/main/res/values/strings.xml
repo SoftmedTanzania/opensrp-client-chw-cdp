@@ -89,6 +89,7 @@
     <string name="return_to_orders">Return to all Orders</string>
     <string name="order_request_details">Order Request Details</string>
     <string name="requests">Requests</string>
+    <string name="request_date_label_text">Request Date</string>
 
 
 </resources>
