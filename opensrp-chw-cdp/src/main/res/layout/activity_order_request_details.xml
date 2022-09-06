@@ -211,4 +211,10 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_out_of_stock" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_out_of_stock,btn_stock_distribution" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
