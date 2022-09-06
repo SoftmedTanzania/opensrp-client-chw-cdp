@@ -17,6 +17,8 @@ public interface BaseOrderDetailsContract {
 
         void recordOutOfStockResponse();
 
+        void showOutOfStockDialog();
+
     }
 
     interface Presenter {

@@ -66,5 +66,6 @@
     <string name="village_name_label">Village Name</string>
     <string name="stock_distribution_label">Stock Distribution</string>
     <string name="out_of_stock_label">Out of Stock</string>
+    <string name="out_of_stock_message">Confirming this, will close this order request and mark it as failed</string>
 
 </resources>

@@ -1,11 +1,15 @@
 package org.smartregister.chw.cdp.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
@@ -22,8 +26,9 @@ import org.smartregister.view.activity.SecuredActivity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import timber.log.Timber;
 
-public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View {
+public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View, View.OnClickListener {
     protected BaseOrderDetailsContract.Presenter presenter;
     protected Toolbar toolbar;
     protected TextView tvTitle;
@@ -33,6 +38,9 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected TextView quantity;
     protected TextView requestDate;
     protected TextView requesterName;
+    protected Button outOfStockBtn;
+    protected Button stockDistributionBtn;
+
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
         Intent intent = new Intent(activity, BaseOrderDetailsActivity.class);
@@ -87,6 +95,26 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         presenter = new BaseOrderDetailsPresenter(this, new BaseOrderDetailsInteractor(), new BaseOrderDetailsModel(), client);
     }
 
+    @Override
+    public void showOutOfStockDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.out_of_stock_label));
+        builder.setMessage(getString(R.string.out_of_stock_message));
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(this.getString(R.string.yes), (dialog, id) -> {
+            try {
+                finish();
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        });
+        builder.setNegativeButton(this.getString(R.string.cancel), ((dialog, id) -> dialog.cancel()));
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     protected void setupViews() {
         toolbar = findViewById(R.id.collapsing_toolbar);
         tvTitle = findViewById(R.id.tvTitle);
@@ -95,6 +123,11 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         quantity = findViewById(R.id.condom_quantity);
         requestDate = findViewById(R.id.request_date);
         requesterName = findViewById(R.id.requester_name);
+        outOfStockBtn = findViewById(R.id.btn_out_of_stock);
+        stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
+
+        outOfStockBtn.setOnClickListener(this);
+        stockDistributionBtn.setOnClickListener(this);
 
         setUpActionBar();
     }
@@ -111,4 +144,14 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.btn_out_of_stock) {
+            showOutOfStockDialog();
+        }
+        if (id == R.id.btn_stock_distribution) {
+            Toast.makeText(this, "Dummy text", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
