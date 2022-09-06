@@ -21,6 +21,7 @@ public interface Constants {
         String CDP_RECEIVE_FROM_FACILITY = "CDP Receive From Facility";
         String CDP_OUTLET_RESTOCK = "CDP Outlet Restock";
         String CDP_CONDOM_ORDER = "CDP Condom Order";
+        String CDP_ORDER_FROM_FACILITY = "CDP Order From Facility";
     }
 
     interface FORMS {
@@ -39,6 +40,10 @@ public interface Constants {
         String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
         String CDP_ORDERS = "ec_cdp_orders";
         String TASK = "task";
+
+        //Orders table variations for handling facility ordering and attending
+        String CDP_ORDERS_RECEIVE = "ec_cdp_orders_receive";
+        String CDP_ORDERS_SENT = "ec_cdp_orders_sent";
     }
 
     interface ACTIVITY_PAYLOAD {
