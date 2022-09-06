@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -25,6 +26,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
     protected TextView condomType;
     protected TextView condomBrand;
     protected TextView quantity;
+    protected TextView requestDate;
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
         Intent intent = new Intent(activity, BaseOrderDetailsActivity.class);
@@ -57,10 +59,13 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
         condomBrand = findViewById(R.id.condom_brand);
         condomType = findViewById(R.id.condom_type);
         quantity = findViewById(R.id.condom_quantity);
+        requestDate = findViewById(R.id.request_date);
 
         condomType.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_TYPE, true));
         condomBrand.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_BRAND, true));
-        quantity.setText(Utils.getValue(client, DBConstants.KEY.QUANTITY_REQ, true));
+        quantity.setText(Utils.getValue(client, DBConstants.KEY.QUANTITY_REQ, false));
+        Long requestedAtMillis = Long.parseLong(Utils.getValue(client, DBConstants.KEY.REQUESTED_AT, false));
+        requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
 
         setUpActionBar();
     }

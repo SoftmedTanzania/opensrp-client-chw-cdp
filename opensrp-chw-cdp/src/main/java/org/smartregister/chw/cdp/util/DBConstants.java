@@ -24,5 +24,6 @@ public class DBConstants {
         public static final String FOR = "for";
         public static final String STATUS = "status";
         public static final String IS_CLOSED = "is_closed";
+        public static final String AUTHORED_ON = "authored_on";
     }
 }

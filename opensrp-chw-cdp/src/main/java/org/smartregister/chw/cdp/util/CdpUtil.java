@@ -30,7 +30,9 @@ import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.util.PermissionUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -132,6 +134,14 @@ public class CdpUtil {
 
     public static int getMemberProfileImageResourceIdentifier(String entityType) {
         return R.mipmap.ic_member;
+    }
+
+    /**
+    * @param timestamp timestamp
+     * @return  'dd-mm-yyyy'*/
+    public static String formatTimeStamp(Long timestamp){
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.ROOT);
+        return df.format(timestamp);
     }
 
 
