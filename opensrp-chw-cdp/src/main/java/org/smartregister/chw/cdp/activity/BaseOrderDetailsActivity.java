@@ -34,12 +34,16 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
 
     @Override
     protected void onCreation() {
-        setContentView(R.layout.activity_order_details);
+        setContentView(getMainContentView());
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             client = (CommonPersonObjectClient) getIntent().getSerializableExtra(Constants.ACTIVITY_PAYLOAD.CLIENT);
         }
         setupViews();
+    }
+
+    protected int getMainContentView(){
+        return R.layout.activity_order_details;
     }
 
     @Override
