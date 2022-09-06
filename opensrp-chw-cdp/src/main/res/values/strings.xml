@@ -90,6 +90,9 @@
     <string name="order_request_details">Order Request Details</string>
     <string name="requests">Requests</string>
     <string name="request_date_label_text">Request Date</string>
+    <string name="health_facility_name_label">Health Facility Name</string>
+    <string name="village_name_label">Village Name</string>
+    <string name="stock_distribution_label">Stock Distribution</string>
 
 
 </resources>
