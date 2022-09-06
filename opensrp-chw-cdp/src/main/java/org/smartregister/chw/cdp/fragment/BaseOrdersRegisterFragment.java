@@ -86,13 +86,16 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
-            titleView.setText(R.string.order_receive);
+            titleView.setText(getFragmentTitle());
             titleView.setFontVariant(FontVariant.REGULAR);
         }
 
         setUpTabLayout(view);
     }
 
+    protected int getFragmentTitle() {
+       return R.string.order_receive;
+    }
 
     @Override
     public BaseOrdersRegisterFragmentContract.Presenter presenter() {
