@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.holders.FooterViewHolder;
@@ -14,7 +16,6 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
-import org.smartregister.domain.Task;
 import org.smartregister.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
@@ -26,7 +27,6 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersViewHolder> {
@@ -60,7 +60,12 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
             viewHolder.condom_brand.setText(condomBrand);
             viewHolder.quantity.setText(condomQuantity);
             viewHolder.status.setText(getStatusString(context, orderStatus));
-
+            if (orderStatus.equals(Constants.OrderStatus.FAILED)) {
+                viewHolder.status.setTextColor(context.getResources().getColor(R.color.error_color));
+            }
+            if (orderStatus.equals(Constants.OrderStatus.COMPLETE)) {
+                viewHolder.status.setTextColor(context.getResources().getColor(R.color.alert_complete_green));
+            }
             viewHolder.registerColumns.setOnClickListener(onClickListener);
             viewHolder.registerColumns.setTag(pc);
             viewHolder.registerColumns.setTag(R.id.VIEW_ID, BaseCdpRegisterFragment.CLICK_VIEW_NORMAL);
