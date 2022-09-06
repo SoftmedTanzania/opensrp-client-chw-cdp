@@ -32,11 +32,15 @@ public interface BaseOrderDetailsContract {
         View getView();
 
         void refreshViewPageBottom();
+
+        void cancelOrderRequest(CommonPersonObjectClient pc);
     }
 
     interface Interactor {
 
         void saveForm(String jsonString, final InteractorCallBack callBack);
+
+        void cancelOrderRequest(CommonPersonObjectClient pc);
     }
 
     interface Model {

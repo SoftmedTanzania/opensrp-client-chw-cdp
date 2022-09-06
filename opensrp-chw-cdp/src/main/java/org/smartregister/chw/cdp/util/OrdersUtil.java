@@ -70,6 +70,15 @@ public class OrdersUtil {
         String ORDERED = "ordered";
         String IN_PROGRESS = "In-Progress";
         String COMPLETE = "Complete";
-        String EXPIRED = "Expired";
+        String CANCELLED = "Cancelled";
+    }
+
+    public static void cancelTask(Task currentTask) {
+        DateTime now = new DateTime();
+        currentTask.setStatus(Task.TaskStatus.CANCELLED);
+        currentTask.setBusinessStatus(BusinessStatus.CANCELLED);
+        currentTask.setLastModified(now);
+        currentTask.setSyncStatus(BaseRepository.TYPE_Unsynced);
+        getTaskRepository().addOrUpdate(currentTask);
     }
 }

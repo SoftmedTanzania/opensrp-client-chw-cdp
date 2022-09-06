@@ -104,6 +104,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
         builder.setPositiveButton(this.getString(R.string.yes), (dialog, id) -> {
             try {
+                presenter.cancelOrderRequest(client);
                 finish();
             } catch (Exception e) {
                 Timber.e(e);

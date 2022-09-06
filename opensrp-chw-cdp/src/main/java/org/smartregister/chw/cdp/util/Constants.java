@@ -92,7 +92,7 @@ public interface Constants {
 
     interface OrderStatus {
         String READY = "READY";
-        String FAILED = "FAILED";
-        String COMPLETE = "COMPLETE";
+        String FAILED = "CANCELLED";
+        String COMPLETE = "COMPLETED";
     }
 }

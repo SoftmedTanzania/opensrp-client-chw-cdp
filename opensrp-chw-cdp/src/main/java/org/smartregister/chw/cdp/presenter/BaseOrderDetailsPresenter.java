@@ -60,4 +60,9 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     public void refreshViewPageBottom() {
         //
     }
+
+    @Override
+    public void cancelOrderRequest(CommonPersonObjectClient pc) {
+        interactor.cancelOrderRequest(pc);
+    }
 }
