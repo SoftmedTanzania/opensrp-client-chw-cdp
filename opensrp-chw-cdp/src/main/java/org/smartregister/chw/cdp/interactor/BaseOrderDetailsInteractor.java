@@ -33,4 +33,9 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
         Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
         OrdersUtil.cancelTask(task);
     }
+
+    @Override
+    public String getOrderStatus(CommonPersonObjectClient pc) {
+        return Utils.getValue(pc, DBConstants.KEY.STATUS, false);
+    }
 }

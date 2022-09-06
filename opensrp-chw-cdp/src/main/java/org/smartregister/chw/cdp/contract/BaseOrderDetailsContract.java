@@ -19,6 +19,8 @@ public interface BaseOrderDetailsContract {
 
         void showOutOfStockDialog();
 
+        void hideButtons();
+
     }
 
     interface Presenter {
@@ -31,7 +33,7 @@ public interface BaseOrderDetailsContract {
         @Nullable
         View getView();
 
-        void refreshViewPageBottom();
+        void refreshViewPageBottom(CommonPersonObjectClient pc);
 
         void cancelOrderRequest(CommonPersonObjectClient pc);
     }
@@ -41,6 +43,8 @@ public interface BaseOrderDetailsContract {
         void saveForm(String jsonString, final InteractorCallBack callBack);
 
         void cancelOrderRequest(CommonPersonObjectClient pc);
+
+        String getOrderStatus(CommonPersonObjectClient pc);
     }
 
     interface Model {

@@ -26,6 +26,7 @@ import org.smartregister.view.activity.SecuredActivity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.Group;
 import timber.log.Timber;
 
 public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View, View.OnClickListener {
@@ -40,6 +41,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected TextView requesterName;
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
+    protected Group btnGroup;
 
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
@@ -116,6 +118,11 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         alertDialog.show();
     }
 
+    @Override
+    public void hideButtons() {
+        btnGroup.setVisibility(View.GONE);
+    }
+
     protected void setupViews() {
         toolbar = findViewById(R.id.collapsing_toolbar);
         tvTitle = findViewById(R.id.tvTitle);
@@ -126,6 +133,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         requesterName = findViewById(R.id.requester_name);
         outOfStockBtn = findViewById(R.id.btn_out_of_stock);
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
+        btnGroup = findViewById(R.id.btn_group);
 
         outOfStockBtn.setOnClickListener(this);
         stockDistributionBtn.setOnClickListener(this);

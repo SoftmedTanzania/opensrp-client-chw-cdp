@@ -5,6 +5,7 @@ import android.content.Context;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
+import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
 import java.lang.ref.WeakReference;
@@ -22,6 +23,7 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
         this.interactor = interactor;
         this.model = model;
         fillViewWithData(pc);
+        refreshViewPageBottom(pc);
     }
 
     @Override
@@ -57,8 +59,11 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
 
 
     @Override
-    public void refreshViewPageBottom() {
-        //
+    public void refreshViewPageBottom(CommonPersonObjectClient pc) {
+        String status = interactor.getOrderStatus(pc);
+        if(!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null){
+            getView().hideButtons();
+        }
     }
 
     @Override
