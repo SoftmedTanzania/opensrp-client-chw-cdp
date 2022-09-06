@@ -31,6 +31,7 @@
         app:tabIndicatorColor="@color/primary"
         app:tabIndicatorHeight="2.5dp"
         app:tabSelectedTextColor="@color/black"
+        android:visibility="gone"
         android:background="@color/off_white">
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

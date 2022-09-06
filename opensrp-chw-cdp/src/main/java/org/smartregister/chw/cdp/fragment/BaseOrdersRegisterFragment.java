@@ -279,8 +279,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     }
 
     protected void setUpTabLayout(View view) {
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
-        tabLayout.setVisibility(View.VISIBLE);
+        TabLayout tabLayout = getTabLayout(view);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -314,6 +313,12 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
             }
         });
 
+    }
+
+    protected TabLayout getTabLayout(View view) {
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout.setVisibility(View.VISIBLE);
+        return tabLayout;
     }
 
 }
