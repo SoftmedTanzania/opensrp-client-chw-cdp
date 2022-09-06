@@ -48,6 +48,33 @@
             android:text="@string/successful"
             />
     </com.google.android.material.tabs.TabLayout>
+    <com.google.android.material.tabs.TabLayout
+        app:tabTextAppearance="@style/TabTextAppearanceLowerCase"
+        android:layout_width="match_parent"
+        android:id="@+id/requests_tab_layout"
+        android:layout_height="wrap_content"
+        app:tabTextColor="@color/dark_grey"
+        app:tabIndicatorColor="@color/primary"
+        app:tabIndicatorHeight="2.5dp"
+        app:tabSelectedTextColor="@color/black"
+        android:background="@color/off_white"
+        android:visibility="gone">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/requests"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/successful"
+            />
+    </com.google.android.material.tabs.TabLayout>
 
     <include
         layout="@layout/base_register_sort_filter_bar"
