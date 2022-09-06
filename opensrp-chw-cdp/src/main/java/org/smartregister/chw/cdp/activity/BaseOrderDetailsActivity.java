@@ -7,7 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import org.json.JSONObject;
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
+import org.smartregister.chw.cdp.interactor.BaseOrderDetailsInteractor;
+import org.smartregister.chw.cdp.model.BaseOrderDetailsModel;
+import org.smartregister.chw.cdp.presenter.BaseOrderDetailsPresenter;
 import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
@@ -18,8 +23,8 @@ import org.smartregister.view.activity.SecuredActivity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-public class BaseOrderDetailsActivity extends SecuredActivity {
-
+public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View {
+    protected BaseOrderDetailsContract.Presenter presenter;
     protected Toolbar toolbar;
     protected TextView tvTitle;
     protected CommonPersonObjectClient client;
@@ -43,15 +48,43 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
             client = (CommonPersonObjectClient) getIntent().getSerializableExtra(Constants.ACTIVITY_PAYLOAD.CLIENT);
         }
         setupViews();
+        initializePresenter();
     }
 
-    protected int getMainContentView() {
+    @Override
+    public int getMainContentView() {
         return R.layout.activity_order_details;
     }
 
     @Override
     protected void onResumption() {
-        //override
+        setupViews();
+    }
+
+    @Override
+    public void setDetailViewWithData(CommonPersonObjectClient pc) {
+        condomType.setText(Utils.getValue(pc, DBConstants.KEY.CONDOM_TYPE, true));
+        condomBrand.setText(Utils.getValue(pc, DBConstants.KEY.CONDOM_BRAND, true));
+        quantity.setText(Utils.getValue(pc, DBConstants.KEY.QUANTITY_REQ, false));
+        Long requestedAtMillis = Long.parseLong(Utils.getValue(pc, DBConstants.KEY.REQUESTED_AT, false));
+        requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
+        String requesterLocation = Utils.getValue(pc, DBConstants.KEY.LOCATION_ID, false);
+        requesterName.setText(CdpUtil.getRequesterNameFromId(requesterLocation));
+    }
+
+    @Override
+    public void startFormActivity(JSONObject formJson) {
+        //implement in hf
+    }
+
+    @Override
+    public void recordOutOfStockResponse() {
+        //
+    }
+
+    @Override
+    public void initializePresenter() {
+        presenter = new BaseOrderDetailsPresenter(this, new BaseOrderDetailsInteractor(), new BaseOrderDetailsModel(), client);
     }
 
     protected void setupViews() {
@@ -62,14 +95,6 @@ public class BaseOrderDetailsActivity extends SecuredActivity {
         quantity = findViewById(R.id.condom_quantity);
         requestDate = findViewById(R.id.request_date);
         requesterName = findViewById(R.id.requester_name);
-
-        condomType.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_TYPE, true));
-        condomBrand.setText(Utils.getValue(client, DBConstants.KEY.CONDOM_BRAND, true));
-        quantity.setText(Utils.getValue(client, DBConstants.KEY.QUANTITY_REQ, false));
-        Long requestedAtMillis = Long.parseLong(Utils.getValue(client, DBConstants.KEY.REQUESTED_AT, false));
-        requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
-        String requesterLocation = Utils.getValue(client, DBConstants.KEY.LOCATION_ID, false);
-        requesterName.setText(CdpUtil.getRequesterNameFromId(requesterLocation));
 
         setUpActionBar();
     }
