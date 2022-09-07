@@ -73,7 +73,7 @@ public class OrdersUtil {
             getTaskRepository().addOrUpdate(task);
     }
 
-    public static void persistEvent(Event baseEvent){
+    public static void persistEvent(Event baseEvent) {
         JSONObject eventJson = null;
         try {
             eventJson = new JSONObject(CdpJsonFormUtils.gson.toJson(baseEvent));
@@ -81,13 +81,6 @@ public class OrdersUtil {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public interface BusinessStatus {
-        String ORDERED = "ordered";
-        String IN_PROGRESS = "In-Progress";
-        String COMPLETE = "Complete";
-        String CANCELLED = "Cancelled";
     }
 
     public static void orderResponseOutOfStock(Task currentTask) throws Exception {
@@ -99,16 +92,37 @@ public class OrdersUtil {
         CdpUtil.startClientProcessing();
     }
 
+    public static void orderResponseRestocking(Task currentTask, AllSharedPreferences allSharedPreferences, String jsonString) {
+        Event baseEvent = processJsonForm(allSharedPreferences, jsonString);
+        DateTime now = new DateTime();
+        if (baseEvent != null && currentTask != null) {
+            baseEvent.setEventType(Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK);
+            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withValue(Constants.ResponseStatus.RESTOCKED)
+                    .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_DATE).withValue(String.valueOf(now.getMillis()))
+                    .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_DATE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withValue(currentTask.getReasonReference())
+                    .withFieldCode(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+            baseEvent.setLocationId(currentTask.getLocation());
+            baseEvent.setBaseEntityId(generateRandomUUIDString());
+
+            Task completedTask = getCompletedTask(currentTask);
+            persistTask(completedTask);
+            persistEvent(baseEvent);
+            CdpUtil.startClientProcessing();
+        }
+    }
 
     /**
      * Feedback event for Out of stock
+     *
      * @param currentTask current task
      * @return Event Feedback Event
      * The event:
-     *      - should update the response_status with out_of_stock
-     *      - should update the response date
-     *      - should set request reference
-     * */
+     * - should update the response_status with out_of_stock
+     * - should update the response date
+     * - should set request reference
+     */
     private static Event getFeedbackEventOutOfStock(Task currentTask, AllSharedPreferences allSharedPreferences) {
         DateTime now = new DateTime();
         Event baseEvent = (Event) new Event()
@@ -133,12 +147,28 @@ public class OrdersUtil {
         return baseEvent;
     }
 
-    public static Task getCancelledTask(Task currentTask){
+    public static Task getCancelledTask(Task currentTask) {
         DateTime now = new DateTime();
         currentTask.setStatus(Task.TaskStatus.CANCELLED);
         currentTask.setBusinessStatus(BusinessStatus.CANCELLED);
         currentTask.setLastModified(now);
         currentTask.setSyncStatus(BaseRepository.TYPE_Unsynced);
         return currentTask;
+    }
+
+    public static Task getCompletedTask(Task currentTask) {
+        DateTime now = new DateTime();
+        currentTask.setStatus(Task.TaskStatus.COMPLETED);
+        currentTask.setBusinessStatus(BusinessStatus.COMPLETE);
+        currentTask.setLastModified(now);
+        currentTask.setSyncStatus(BaseRepository.TYPE_Unsynced);
+        return currentTask;
+    }
+
+    public interface BusinessStatus {
+        String ORDERED = "ordered";
+        String IN_PROGRESS = "In-Progress";
+        String COMPLETE = "Complete";
+        String CANCELLED = "Cancelled";
     }
 }

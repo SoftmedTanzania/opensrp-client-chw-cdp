@@ -40,7 +40,7 @@ public interface BaseOrderDetailsContract {
 
     interface Interactor {
 
-        void saveForm(String jsonString, final InteractorCallBack callBack);
+        void saveForm(CommonPersonObjectClient pc, String jsonString, final InteractorCallBack callBack) throws Exception;
 
         void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception;
 

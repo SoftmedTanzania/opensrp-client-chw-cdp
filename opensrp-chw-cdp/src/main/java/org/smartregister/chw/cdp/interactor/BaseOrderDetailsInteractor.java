@@ -1,11 +1,13 @@
 package org.smartregister.chw.cdp.interactor;
 
+import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
 import org.smartregister.chw.cdp.util.AppExecutors;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.chw.cdp.util.OrdersUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Task;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
 
 import androidx.annotation.VisibleForTesting;
@@ -23,8 +25,11 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     }
 
     @Override
-    public void saveForm(String jsonString, BaseOrderDetailsContract.InteractorCallBack callBack) {
-        //
+    public void saveForm(CommonPersonObjectClient pc, String jsonString, BaseOrderDetailsContract.InteractorCallBack callBack) throws Exception {
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
+        Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
+        OrdersUtil.orderResponseRestocking(task, allSharedPreferences, jsonString);
     }
 
     @Override

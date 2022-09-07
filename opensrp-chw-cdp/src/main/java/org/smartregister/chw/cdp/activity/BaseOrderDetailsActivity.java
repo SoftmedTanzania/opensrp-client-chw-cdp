@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
@@ -27,6 +28,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import timber.log.Timber;
+
+import static org.smartregister.chw.cdp.util.CdpUtil.startClientProcessing;
 
 public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View, View.OnClickListener {
     protected BaseOrderDetailsContract.Presenter presenter;
@@ -170,6 +173,24 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
             presenter.startForm(Constants.FORMS.CDP_CONDOM_DISTRIBUTION, null);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+            String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                String encounter_type = jsonObject.getString("encounter_type");
+                if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_DISTRIBUTION_OUTSIDE)) {
+                    presenter.saveForm(jsonString);
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            startClientProcessing();
         }
     }
 }

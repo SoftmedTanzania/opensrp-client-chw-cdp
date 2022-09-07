@@ -16,12 +16,14 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     protected WeakReference<BaseOrderDetailsContract.View> view;
     protected BaseOrderDetailsContract.Interactor interactor;
     protected BaseOrderDetailsContract.Model model;
+    protected CommonPersonObjectClient pc;
     protected Context context;
 
     public BaseOrderDetailsPresenter(BaseOrderDetailsContract.View view, BaseOrderDetailsContract.Interactor interactor, BaseOrderDetailsContract.Model model, CommonPersonObjectClient pc) {
         this.view = new WeakReference<>(view);
         this.interactor = interactor;
         this.model = model;
+        this.pc = pc;
         fillViewWithData(pc);
         refreshViewPageBottom(pc);
     }
@@ -36,7 +38,7 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     @Override
     public void saveForm(String jsonString) {
         try {
-            interactor.saveForm(jsonString, this);
+            interactor.saveForm(pc, jsonString, this);
         } catch (Exception e) {
             Timber.e(e);
         }
