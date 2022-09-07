@@ -6,6 +6,8 @@ import org.smartregister.dao.AbstractDao;
 
 public class CdpOrderDao extends AbstractDao {
     private static final String mainOrdersTable = Constants.TABLES.CDP_ORDERS;
+    private static final String mainFeedbackTable = Constants.TABLES.CDP_ORDER_FEEDBACK;
+
     public static void updateOrderData(String locationId,
                                        String baseEntityId,
                                        String formSubmissionId,
@@ -14,6 +16,7 @@ public class CdpOrderDao extends AbstractDao {
                                        String quantityRequested,
                                        String requestType) {
 
+        //TODO: refactor from using now as request date, this is updated everytime when the event is processed, which won't maintain the snapshot
         DateTime now = new DateTime();
 
         String sql = "INSERT INTO " + mainOrdersTable + "" +
@@ -30,5 +33,30 @@ public class CdpOrderDao extends AbstractDao {
                 "       ";
         updateDB(sql);
     }
+
+    public static void updateFeedbackData(String locationId,
+                                          String baseEntityId,
+                                          String requestReference,
+                                          String condomType,
+                                          String condomBrand,
+                                          String quantityResponse,
+                                          String responseStatus,
+                                          String responseDate) {
+
+        String sql = "INSERT INTO " + mainFeedbackTable + "" +
+                "    (id, location_id, request_reference, base_entity_id, condom_type, condom_brand, quantity_response, response_status, response_at) " +
+                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + requestReference + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityResponse + "', '" + responseStatus + "', '" + responseDate + "')" +
+                "       ON CONFLICT (id) DO UPDATE" +
+                "       SET location_id = '" + locationId + "'," +
+                "           request_reference = '" + requestReference + "', " +
+                "           condom_type = '" + condomType + "', " +
+                "           condom_brand = '" + condomBrand + "', " +
+                "           quantity_response = '" + quantityResponse + "', " +
+                "           response_status = '" + responseStatus + "', " +
+                "           response_at = '" + responseDate + "'" +
+                "       ";
+        updateDB(sql);
+    }
+
 
 }

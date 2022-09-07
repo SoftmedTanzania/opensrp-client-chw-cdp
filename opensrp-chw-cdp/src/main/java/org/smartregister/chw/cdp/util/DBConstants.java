@@ -19,6 +19,10 @@ public class DBConstants {
         public static final String CONDOM_TYPE = "condom_type";
         public static final String CONDOM_BRAND = "condom_brand";
         public static final String QUANTITY_REQ = "quantity_requested";
+        public static final String QUANTITY_RES = "quantity_response";
+        public static final String RESPONSE_STATUS = "response_status";
+        public static final String REQUEST_REFERENCE = "request_reference";
+        public static final String RESPONSE_DATE = "response_date";
         public static final String REQUESTED_AT = "requested_at";
         public static final String REQUEST_TYPE = "request_type";
         public static final String FOR = "for";

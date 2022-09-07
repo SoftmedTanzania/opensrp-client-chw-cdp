@@ -22,6 +22,7 @@ public interface Constants {
         String CDP_OUTLET_RESTOCK = "CDP Outlet Restock";
         String CDP_CONDOM_ORDER = "CDP Condom Order";
         String CDP_ORDER_FROM_FACILITY = "CDP Order From Facility";
+        String CDP_ORDER_FEEDBACK = "CDP Order Feedback";
     }
 
     interface FORMS {
@@ -40,6 +41,7 @@ public interface Constants {
         String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
         String CDP_ORDERS = "ec_cdp_orders";
         String TASK = "task";
+        String CDP_ORDER_FEEDBACK = "ec_cdp_order_feedback";
     }
 
     interface ACTIVITY_PAYLOAD {
@@ -76,6 +78,10 @@ public interface Constants {
         String CONDOM_BRAND = "condom_brand";
         String CONDOMS_REQUESTED = "requested_condoms";
         String REQUEST_TYPE = "request_type";
+        String QUANTITY_RES = "quantity_response";
+        String RESPONSE_STATUS = "response_status";
+        String REQUEST_REFERENCE = "request_reference";
+        String RESPONSE_DATE = "response_date";
     }
 
     interface STOCK_EVENT_TYPES {
