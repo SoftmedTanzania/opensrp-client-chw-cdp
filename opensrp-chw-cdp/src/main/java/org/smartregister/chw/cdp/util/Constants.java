@@ -99,4 +99,9 @@ public interface Constants {
         String FAILED = "CANCELLED";
         String COMPLETE = "COMPLETED";
     }
+
+    interface ResponseStatus {
+        String OUT_OF_STOCK = "out_of_stock";
+        String RESTOCKED = "restocked";
+    }
 }

@@ -61,13 +61,17 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     @Override
     public void refreshViewPageBottom(CommonPersonObjectClient pc) {
         String status = interactor.getOrderStatus(pc);
-        if(!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null){
+        if (!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null) {
             getView().hideButtons();
         }
     }
 
     @Override
     public void cancelOrderRequest(CommonPersonObjectClient pc) {
-        interactor.cancelOrderRequest(pc);
+        try {
+            interactor.cancelOrderRequest(pc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

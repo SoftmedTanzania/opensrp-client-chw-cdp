@@ -28,10 +28,10 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     }
 
     @Override
-    public void cancelOrderRequest(CommonPersonObjectClient pc) {
+    public void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception {
         String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
         Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
-        OrdersUtil.cancelTask(task);
+        OrdersUtil.orderResponseOutOfStock(task);
     }
 
     @Override

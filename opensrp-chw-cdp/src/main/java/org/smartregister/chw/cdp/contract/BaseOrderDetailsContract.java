@@ -42,7 +42,7 @@ public interface BaseOrderDetailsContract {
 
         void saveForm(String jsonString, final InteractorCallBack callBack);
 
-        void cancelOrderRequest(CommonPersonObjectClient pc);
+        void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception;
 
         String getOrderStatus(CommonPersonObjectClient pc);
     }
