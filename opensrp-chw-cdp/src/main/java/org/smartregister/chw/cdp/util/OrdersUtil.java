@@ -1,5 +1,6 @@
 package org.smartregister.chw.cdp.util;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +17,12 @@ import org.smartregister.util.JsonFormUtils;
 import java.util.ArrayList;
 import java.util.Date;
 
+import timber.log.Timber;
+
+import static com.vijay.jsonwizard.utils.FormUtils.getFieldJSONObject;
+import static org.smartregister.chw.cdp.util.CdpJsonFormUtils.fields;
 import static org.smartregister.chw.cdp.util.CdpJsonFormUtils.processJsonForm;
+import static org.smartregister.chw.cdp.util.Constants.STEP_ONE;
 import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
 
 public class OrdersUtil {
@@ -110,7 +116,25 @@ public class OrdersUtil {
             persistTask(completedTask);
             persistEvent(baseEvent);
             CdpUtil.startClientProcessing();
+            if (shouldCreateReceiveFromFacilityEvent(jsonString)) {
+                createReceiveFromFacilityEvent(allSharedPreferences, currentTask, jsonString);
+            }
         }
+
+    }
+
+    private static boolean shouldCreateReceiveFromFacilityEvent(String jsonString) {
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            String encounter_type = form.optString(Constants.JSON_FORM_EXTRA.ENCOUNTER_TYPE);
+            if (encounter_type.equals(Constants.EVENT_TYPE.CDP_CONDOM_DISTRIBUTION_OUTSIDE)) {
+                return true;
+            }
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+
+        return false;
     }
 
     /**
@@ -163,6 +187,52 @@ public class OrdersUtil {
         currentTask.setLastModified(now);
         currentTask.setSyncStatus(BaseRepository.TYPE_Unsynced);
         return currentTask;
+    }
+
+    private static void createReceiveFromFacilityEvent(AllSharedPreferences allSharedPreferences, Task task, String jsonString) {
+        String condomType = getCondomTypeAndOffset(jsonString).getLeft();
+        String offset = getCondomTypeAndOffset(jsonString).getRight();
+        Event baseEvent = (Event) new Event()
+                .withBaseEntityId(generateRandomUUIDString())
+                .withEventDate(new Date())
+                .withFormSubmissionId(generateRandomUUIDString())
+                .withEventType(Constants.EVENT_TYPE.CDP_RECEIVE_FROM_FACILITY)
+                .withEntityType(Constants.TABLES.CDP_STOCK_COUNT)
+                .withProviderId(allSharedPreferences.fetchRegisteredANM())
+                .withLocationId(task.getLocation())
+                .withTeamId(allSharedPreferences.fetchDefaultTeamId(allSharedPreferences.fetchRegisteredANM()))
+                .withTeam(allSharedPreferences.fetchDefaultTeam(allSharedPreferences.fetchRegisteredANM()))
+                .withClientDatabaseVersion(CdpLibrary.getInstance().getDatabaseVersion())
+                .withClientApplicationVersion(CdpLibrary.getInstance().getApplicationVersion())
+                .withDateCreated(new Date());
+
+        if (condomType.equals("male_condom")) {
+            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.MALE_CONDOMS_OFFSET).withValue(offset)
+                    .withFieldCode(Constants.JSON_FORM_KEY.MALE_CONDOMS_OFFSET).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+        } else if (condomType.equals("female_condom")) {
+            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.FEMALE_CONDOMS_OFFSET).withValue(offset)
+                    .withFieldCode(Constants.JSON_FORM_KEY.FEMALE_CONDOMS_OFFSET).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+        }
+        persistEvent(baseEvent);
+    }
+
+    private static Triple<String, String, String> getCondomTypeAndOffset(String jsonString) {
+        Triple<String, String, String> vals = null;
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            JSONObject condomTypeObj = getFieldJSONObject(fields(form, STEP_ONE), "condom_type");
+            String condomType = condomTypeObj.getString("value");
+
+            JSONObject quantityResponseObj = getFieldJSONObject(fields(form, STEP_ONE), "quantity_response");
+            String offset = quantityResponseObj.getString("value");
+
+            vals = Triple.of(condomType, null, offset);
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+
+        return vals;
     }
 
     public interface BusinessStatus {
