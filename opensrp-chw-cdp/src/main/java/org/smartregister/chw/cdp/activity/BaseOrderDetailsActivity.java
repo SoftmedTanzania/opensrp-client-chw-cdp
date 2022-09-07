@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
@@ -83,8 +82,10 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     }
 
     @Override
-    public void startFormActivity(JSONObject formJson) {
-        //implement in hf
+    public void startFormActivity(JSONObject jsonForm) {
+        Intent intent = new Intent(this, BaseOrderDetailsActivity.class);
+        intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
+        startActivityForResult(intent, Constants.REQUEST_CODE_GET_JSON);
     }
 
     @Override
@@ -160,7 +161,15 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
             showOutOfStockDialog();
         }
         if (id == R.id.btn_stock_distribution) {
-            Toast.makeText(this, "Dummy text", Toast.LENGTH_SHORT).show();
+            startStockDistributionForm();
+        }
+    }
+
+    private void startStockDistributionForm() {
+        try {
+            presenter.startForm(Constants.FORMS.CDP_CONDOM_DISTRIBUTION, null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
