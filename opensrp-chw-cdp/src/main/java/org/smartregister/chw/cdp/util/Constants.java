@@ -40,10 +40,6 @@ public interface Constants {
         String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
         String CDP_ORDERS = "ec_cdp_orders";
         String TASK = "task";
-
-        //Orders table variations for handling facility ordering and attending
-        String CDP_ORDERS_RECEIVE = "ec_cdp_orders_receive";
-        String CDP_ORDERS_SENT = "ec_cdp_orders_sent";
     }
 
     interface ACTIVITY_PAYLOAD {
@@ -79,6 +75,7 @@ public interface Constants {
         String CONDOM_TYPE = "condom_type";
         String CONDOM_BRAND = "condom_brand";
         String CONDOMS_REQUESTED = "requested_condoms";
+        String REQUEST_TYPE = "request_type";
     }
 
     interface STOCK_EVENT_TYPES {
@@ -88,6 +85,7 @@ public interface Constants {
 
     interface ORDER_TYPES {
         String COMMUNITY_TO_FACILITY_ORDER = "community_to_facility";
+        String FACILITY_TO_FACILITY_ORDER = "facility_to_facility";
     }
 
     interface OrderStatus {

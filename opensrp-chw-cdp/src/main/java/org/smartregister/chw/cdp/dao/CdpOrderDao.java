@@ -5,8 +5,8 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
 public class CdpOrderDao extends AbstractDao {
-
-    public static void updateOrderData(String orderTable, String locationId,
+    private static final String mainOrdersTable = Constants.TABLES.CDP_ORDERS;
+    public static void updateOrderData(String locationId,
                                        String baseEntityId,
                                        String formSubmissionId,
                                        String condomType,
@@ -16,7 +16,7 @@ public class CdpOrderDao extends AbstractDao {
 
         DateTime now = new DateTime();
 
-        String sql = "INSERT INTO " + orderTable + "" +
+        String sql = "INSERT INTO " + mainOrdersTable + "" +
                 "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at) " +
                 "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + now.getMillis() + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
