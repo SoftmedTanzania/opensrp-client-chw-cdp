@@ -95,6 +95,7 @@
     <string name="stock_distribution_label">Stock Distribution</string>
     <string name="out_of_stock_label">Out of Stock</string>
     <string name="out_of_stock_message">Confirming this, will close this order request and mark it as failed</string>
+    <string name="mark_as_received">Mark As Received</string>
 
 
 </resources>
