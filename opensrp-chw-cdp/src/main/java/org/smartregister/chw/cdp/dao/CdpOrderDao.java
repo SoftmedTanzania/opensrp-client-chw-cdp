@@ -14,14 +14,13 @@ public class CdpOrderDao extends AbstractDao {
                                        String condomType,
                                        String condomBrand,
                                        String quantityRequested,
-                                       String requestType) {
+                                       String requestType,
+                                       String requestDate) {
 
-        //TODO: refactor from using now as request date, this is updated everytime when the event is processed, which won't maintain the snapshot
-        DateTime now = new DateTime();
 
         String sql = "INSERT INTO " + mainOrdersTable + "" +
                 "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at) " +
-                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + now.getMillis() + "')" +
+                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + requestDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET location_id = '" + locationId + "'," +
                 "           form_submission_id = '" + formSubmissionId + "', " +
@@ -29,7 +28,7 @@ public class CdpOrderDao extends AbstractDao {
                 "           condom_brand = '" + condomBrand + "', " +
                 "           quantity_requested = '" + quantityRequested + "', " +
                 "           request_type = '" + requestType + "', " +
-                "           requested_at = '" + now.getMillis() + "'" +
+                "           requested_at = '" + requestDate + "'" +
                 "       ";
         updateDB(sql);
     }
