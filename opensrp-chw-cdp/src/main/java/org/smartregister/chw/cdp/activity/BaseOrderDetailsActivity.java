@@ -14,6 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
+import org.smartregister.chw.cdp.dao.CdpOrderDao;
+import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
 import org.smartregister.chw.cdp.interactor.BaseOrderDetailsInteractor;
 import org.smartregister.chw.cdp.model.BaseOrderDetailsModel;
 import org.smartregister.chw.cdp.presenter.BaseOrderDetailsPresenter;
@@ -44,6 +46,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
     protected Group btnGroup;
+    protected OrderFeedbackObject feedbackObject;
 
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
@@ -61,6 +64,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         }
         setupViews();
         initializePresenter();
+        feedbackObject = CdpOrderDao.getFeedbackObject(Utils.getValue(client, DBConstants.KEY.REQUEST_REFERENCE, false));
     }
 
     @Override
