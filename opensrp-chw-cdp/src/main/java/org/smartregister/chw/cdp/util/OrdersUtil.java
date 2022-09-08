@@ -116,9 +116,6 @@ public class OrdersUtil {
             persistTask(completedTask);
             persistEvent(baseEvent);
             CdpUtil.startClientProcessing();
-            if (shouldCreateReceiveFromFacilityEvent(jsonString)) {
-                createReceiveFromFacilityEvent(allSharedPreferences, currentTask, jsonString);
-            }
         }
 
     }
