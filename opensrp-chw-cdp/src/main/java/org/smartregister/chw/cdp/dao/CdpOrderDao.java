@@ -1,7 +1,13 @@
 package org.smartregister.chw.cdp.dao;
 
+import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
+import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 
 public class CdpOrderDao extends AbstractDao {
     private static final String mainOrdersTable = Constants.TABLES.CDP_ORDERS;
@@ -54,6 +60,30 @@ public class CdpOrderDao extends AbstractDao {
                 "           response_at = '" + responseDate + "'" +
                 "       ";
         updateDB(sql);
+    }
+
+    public static OrderFeedbackObject getFeedbackObject(String requestReference) {
+        String sql = "SELECT * FROM  " + mainFeedbackTable +
+                "           WHERE request_reference = '" + requestReference + "'";
+
+        DataMap<OrderFeedbackObject> dataMap = cursor -> {
+            OrderFeedbackObject orderFeedbackObject = new OrderFeedbackObject();
+
+            orderFeedbackObject.setCondomType(getCursorValue(cursor, "condom_type"));
+            orderFeedbackObject.setCondomBrand(getCursorValue(cursor, "condom_brand"));
+            orderFeedbackObject.setResponseDate(getCursorValue(cursor, "response_at"));
+            orderFeedbackObject.setResponseQuantity(getCursorValue(cursor, "quantity_response"));
+            orderFeedbackObject.setResponseStatus(getCursorValue(cursor, "response_status"));
+
+
+            return orderFeedbackObject;
+        };
+
+        List<OrderFeedbackObject> res = readData(sql, dataMap);
+        if (res == null || res.size() != 1)
+            return null;
+
+        return res.get(0);
     }
 
 
