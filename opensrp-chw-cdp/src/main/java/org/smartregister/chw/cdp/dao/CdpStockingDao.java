@@ -20,13 +20,14 @@ public class CdpStockingDao extends AbstractDao {
                                           String maleCondomsOffset,
                                           String femaleCondomsOffset,
                                           String stockEventType,
-                                          String eventType) {
+                                          String eventType,
+                                          String restockingDate) {
 
         DateTime now = new DateTime();
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
                 "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, stock_event_type, date_updated) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + stockEventType + "', '" + eventType + "', '" + now.getMillis() + "')" +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + stockEventType + "', '" + eventType + "', '" + restockingDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           chw_name = '" + chwName + "', " +
@@ -34,7 +35,7 @@ public class CdpStockingDao extends AbstractDao {
                 "           male_condoms_offset = '" + maleCondomsOffset + "', " +
                 "           stock_event_type = '" + stockEventType + "', " +
                 "           event_type = '" + eventType + "', " +
-                "           date_updated = '" + now.getMillis() + "'" +
+                "           date_updated = '" + restockingDate + "'" +
                 "       ";
         updateDB(sqlUpdateStockLog);
     }
@@ -43,7 +44,8 @@ public class CdpStockingDao extends AbstractDao {
                                             String chwName,
                                             String maleCondomsOffset,
                                             String femaleCondomsOffset,
-                                            String stockEventType) {
+                                            String stockEventType,
+                                            String restockingDate) {
 
         int femaleCondomsCount = 0;
         int maleCondomsCount = 0;
@@ -62,12 +64,12 @@ public class CdpStockingDao extends AbstractDao {
 
         String sqlUpdateStockCount = "INSERT INTO " + stockCountTable + "" +
                 "    (id, base_entity_id, chw_name, female_condoms_count, male_condoms_count, date_updated) " +
-                "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + now.getMillis() + "')" +
+                "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + restockingDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "          SET  chw_name = '" + chwName + "', " +
                 "               female_condoms_count = '" + femaleCondomsCount + "', " +
                 "               male_condoms_count = '" + maleCondomsCount + "', " +
-                "               date_updated = '" + now.getMillis() + "'" +
+                "               date_updated = '" + restockingDate + "'" +
                 "       ";
         updateDB(sqlUpdateStockCount);
     }
