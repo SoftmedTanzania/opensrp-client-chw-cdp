@@ -32,6 +32,7 @@ public interface Constants {
         String CD_OUTLET_VISIT = "cdp_outlet_visit";
         String CDP_CONDOM_ORDER = "cdp_condom_order";
         String CDP_CONDOM_DISTRIBUTION = "cdp_condom_distribution_outside";
+        String CDP_CONDOM_ORDER_FACILITY = "cdp_facility_order_form";
     }
 
     interface TABLES {
