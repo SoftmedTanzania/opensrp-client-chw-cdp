@@ -1,6 +1,5 @@
 package org.smartregister.chw.cdp.dao;
 
-import org.joda.time.DateTime;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
