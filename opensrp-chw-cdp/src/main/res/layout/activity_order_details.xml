@@ -48,13 +48,13 @@
                 android:id="@+id/request_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+
                     android:text="@string/order_request_details"
                     android:textColor="@color/black"
                     android:textSize="18sp"
