@@ -112,8 +112,8 @@ public class OrdersUtil {
             baseEvent.setLocationId(currentTask.getLocation());
             baseEvent.setBaseEntityId(generateRandomUUIDString());
 
-            Task completedTask = getCompletedTask(currentTask);
-            persistTask(completedTask);
+            Task inTransitTask = getInTransitTask(currentTask);
+            persistTask(inTransitTask);
             persistEvent(baseEvent);
             CdpUtil.startClientProcessing();
         }
@@ -179,6 +179,15 @@ public class OrdersUtil {
 
     public static Task getCompletedTask(Task currentTask) {
         DateTime now = new DateTime();
+        currentTask.setStatus(Task.TaskStatus.IN_PROGRESS);
+        currentTask.setBusinessStatus(BusinessStatus.IN_PROGRESS);
+        currentTask.setLastModified(now);
+        currentTask.setSyncStatus(BaseRepository.TYPE_Unsynced);
+        return currentTask;
+    }
+
+    public static Task getInTransitTask(Task currentTask) {
+        DateTime now = new DateTime();
         currentTask.setStatus(Task.TaskStatus.COMPLETED);
         currentTask.setBusinessStatus(BusinessStatus.COMPLETE);
         currentTask.setLastModified(now);
@@ -211,6 +220,7 @@ public class OrdersUtil {
                     .withFieldCode(Constants.JSON_FORM_KEY.FEMALE_CONDOMS_OFFSET).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
         }
         persistEvent(baseEvent);
+        persistTask(getCompletedTask(task));
     }
 
     private static Triple<String, String, String> getCondomTypeAndOffset(String jsonString) {

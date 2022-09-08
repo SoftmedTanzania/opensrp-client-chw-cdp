@@ -102,6 +102,7 @@ public interface Constants {
         String READY = "READY";
         String FAILED = "CANCELLED";
         String COMPLETE = "COMPLETED";
+        String IN_TRANSIT = "IN_PROGRESS";
     }
 
     interface ResponseStatus {

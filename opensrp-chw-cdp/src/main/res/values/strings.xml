@@ -84,6 +84,7 @@
     <string name="familia">Familia</string>
     <string name="others">Others</string>
     <string name="order_status_pending">Pending</string>
+    <string name="order_status_in_transit">In Transit</string>
     <string name="order_status_complete">Successful</string>
     <string name="order_status_failed">Out Of Stock</string>
     <string name="return_to_orders">Return to all Orders</string>

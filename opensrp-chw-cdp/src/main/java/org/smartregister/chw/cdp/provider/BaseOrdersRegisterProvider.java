@@ -81,6 +81,8 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
                 return context.getString(R.string.order_status_failed);
             case Constants.OrderStatus.COMPLETE:
                 return context.getString(R.string.order_status_complete);
+            case Constants.OrderStatus.IN_TRANSIT:
+                return context.getString(R.string.order_status_in_transit);
             default:
                 return context.getString(R.string.order_status_pending);
         }

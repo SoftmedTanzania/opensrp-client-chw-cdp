@@ -46,7 +46,7 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
 
     @Override
     public String getSuccessFulOrdersQuery() {
-        return Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS + " = '" + Constants.OrderStatus.COMPLETE + "'";
+        return Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS + " = '" + Constants.OrderStatus.COMPLETE + "' OR " + Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS + " = '" + Constants.OrderStatus.IN_TRANSIT + "'";
     }
 
     @Override
@@ -69,7 +69,6 @@ public class BaseOrdersRegisterFragmentPresenter implements BaseOrdersRegisterFr
         return query;
 
     }
-
 
 
     @Override
