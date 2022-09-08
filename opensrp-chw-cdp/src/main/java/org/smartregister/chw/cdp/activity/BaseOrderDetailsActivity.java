@@ -124,8 +124,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     @Override
     public void hideButtons() {
-        if(btnGroup != null)
-            btnGroup.setVisibility(View.GONE);
+        btnGroup.setVisibility(View.GONE);
     }
 
     protected void setupViews() {
@@ -140,12 +139,10 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
         btnGroup = findViewById(R.id.btn_group);
 
-        if (outOfStockBtn != null) {
-            outOfStockBtn.setOnClickListener(this);
-        }
-        if (stockDistributionBtn != null) {
-            stockDistributionBtn.setOnClickListener(this);
-        }
+        btnGroup.setVisibility(View.GONE);
+        outOfStockBtn.setOnClickListener(this);
+        stockDistributionBtn.setOnClickListener(this);
+
 
         setUpActionBar();
     }
