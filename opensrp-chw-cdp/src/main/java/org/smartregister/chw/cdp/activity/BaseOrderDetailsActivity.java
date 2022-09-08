@@ -80,8 +80,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         quantity.setText(Utils.getValue(pc, DBConstants.KEY.QUANTITY_REQ, false));
         Long requestedAtMillis = Long.parseLong(Utils.getValue(pc, DBConstants.KEY.REQUESTED_AT, false));
         requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
-        String requesterLocation = Utils.getValue(pc, DBConstants.KEY.LOCATION_ID, false);
-        requesterName.setText(CdpUtil.getRequesterNameFromId(requesterLocation));
+        String requester = Utils.getValue(pc, DBConstants.KEY.REQUESTER, false);
+        requesterName.setText(requester);
     }
 
     @Override
@@ -124,7 +124,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     @Override
     public void hideButtons() {
-        btnGroup.setVisibility(View.GONE);
+        if(btnGroup != null)
+            btnGroup.setVisibility(View.GONE);
     }
 
     protected void setupViews() {
@@ -139,8 +140,12 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
         btnGroup = findViewById(R.id.btn_group);
 
-        outOfStockBtn.setOnClickListener(this);
-        stockDistributionBtn.setOnClickListener(this);
+        if (outOfStockBtn != null) {
+            outOfStockBtn.setOnClickListener(this);
+        }
+        if (stockDistributionBtn != null) {
+            stockDistributionBtn.setOnClickListener(this);
+        }
 
         setUpActionBar();
     }
