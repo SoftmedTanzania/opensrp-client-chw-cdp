@@ -1,5 +1,7 @@
 package org.smartregister.chw.cdp.activity;
 
+import static org.smartregister.chw.cdp.util.CdpUtil.startClientProcessing;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -10,11 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Group;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
-import org.smartregister.chw.cdp.dao.CdpOrderDao;
 import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
 import org.smartregister.chw.cdp.interactor.BaseOrderDetailsInteractor;
 import org.smartregister.chw.cdp.model.BaseOrderDetailsModel;
@@ -26,12 +32,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.Utils;
 import org.smartregister.view.activity.SecuredActivity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.Group;
 import timber.log.Timber;
-
-import static org.smartregister.chw.cdp.util.CdpUtil.startClientProcessing;
 
 public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrderDetailsContract.View, View.OnClickListener {
     protected BaseOrderDetailsContract.Presenter presenter;
@@ -43,10 +44,14 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected TextView quantity;
     protected TextView requestDate;
     protected TextView requesterName;
+    protected TextView feedbackCondomType;
+    protected TextView feedbackCondomBrand;
+    protected TextView feedbackQuantity;
+    protected TextView responseDate;
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
     protected Group btnGroup;
-    protected OrderFeedbackObject feedbackObject;
+    protected ConstraintLayout responseLayout;
 
 
     public static void startMe(Activity activity, CommonPersonObjectClient pc) {
@@ -64,7 +69,6 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         }
         setupViews();
         initializePresenter();
-        feedbackObject = CdpOrderDao.getFeedbackObject(Utils.getValue(client, DBConstants.KEY.REQUEST_REFERENCE, false));
     }
 
     @Override
@@ -86,6 +90,15 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         requestDate.setText(CdpUtil.formatTimeStamp(requestedAtMillis));
         String requester = Utils.getValue(pc, DBConstants.KEY.REQUESTER, false);
         requesterName.setText(requester);
+    }
+
+    @Override
+    public void setDetailViewWithFeedbackData(OrderFeedbackObject feedbackObject) {
+        responseLayout.setVisibility(View.VISIBLE);
+        feedbackCondomType.setText(feedbackObject.getCondomType());
+        feedbackCondomBrand.setText(feedbackObject.getCondomBrand());
+        feedbackQuantity.setText(feedbackObject.getResponseQuantity());
+        responseDate.setText(feedbackObject.getResponseDate());
     }
 
     @Override
@@ -139,9 +152,14 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         quantity = findViewById(R.id.condom_quantity);
         requestDate = findViewById(R.id.request_date);
         requesterName = findViewById(R.id.requester_name);
+        feedbackCondomBrand = findViewById(R.id.feedback_condom_brand);
+        feedbackCondomType = findViewById(R.id.feedback_condom_type);
+        feedbackQuantity = findViewById(R.id.feedback_condom_quantity);
+        responseDate = findViewById(R.id.response_date);
         outOfStockBtn = findViewById(R.id.btn_out_of_stock);
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
         btnGroup = findViewById(R.id.btn_group);
+        responseLayout = findViewById(R.id.response_details);
 
         btnGroup.setVisibility(View.GONE);
         outOfStockBtn.setOnClickListener(this);

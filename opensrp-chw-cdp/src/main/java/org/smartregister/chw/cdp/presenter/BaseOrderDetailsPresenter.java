@@ -5,8 +5,12 @@ import android.content.Context;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
+import org.smartregister.chw.cdp.dao.CdpOrderDao;
+import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
 import org.smartregister.chw.cdp.util.Constants;
+import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.util.Utils;
 
 import java.lang.ref.WeakReference;
 
@@ -17,6 +21,7 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     protected BaseOrderDetailsContract.Interactor interactor;
     protected BaseOrderDetailsContract.Model model;
     protected CommonPersonObjectClient pc;
+    protected OrderFeedbackObject feedbackObject;
     protected Context context;
 
     public BaseOrderDetailsPresenter(BaseOrderDetailsContract.View view, BaseOrderDetailsContract.Interactor interactor, BaseOrderDetailsContract.Model model, CommonPersonObjectClient pc) {
@@ -24,7 +29,9 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
         this.interactor = interactor;
         this.model = model;
         this.pc = pc;
+        feedbackObject = CdpOrderDao.getFeedbackObject(Utils.getValue(pc, DBConstants.KEY.REQUEST_REFERENCE, false));
         fillViewWithData(pc);
+        fillViewWithFeedbackData(feedbackObject);
         refreshViewPageBottom(pc);
     }
 
@@ -33,6 +40,14 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
         if (pc != null && getView() != null) {
             getView().setDetailViewWithData(pc);
         }
+    }
+
+    @Override
+    public void fillViewWithFeedbackData(OrderFeedbackObject feedbackObject) {
+        if (feedbackObject != null && getView() != null) {
+            getView().setDetailViewWithFeedbackData(feedbackObject);
+        }
+
     }
 
     @Override

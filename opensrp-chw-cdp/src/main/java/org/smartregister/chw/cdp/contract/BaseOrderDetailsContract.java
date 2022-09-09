@@ -2,12 +2,15 @@ package org.smartregister.chw.cdp.contract;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
+import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
 public interface BaseOrderDetailsContract {
 
     interface View {
         void setDetailViewWithData(CommonPersonObjectClient pc);
+
+        void setDetailViewWithFeedbackData(OrderFeedbackObject feedbackObject);
 
         void startFormActivity(JSONObject formJson);
 
@@ -25,6 +28,8 @@ public interface BaseOrderDetailsContract {
 
     interface Presenter {
         void fillViewWithData(CommonPersonObjectClient pc);
+
+        void fillViewWithFeedbackData(OrderFeedbackObject feedbackObject);
 
         void saveForm(String jsonString);
 

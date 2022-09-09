@@ -32,5 +32,6 @@ public class DBConstants {
         public static final String TASK_ID = "task_id";
         public static final String ID = "_id";
         public static final String REQUESTER = "requester";
+        public static final String FORM_SUBMISSION_ID = "form_submission_id";
     }
 }
