@@ -195,6 +195,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -284,7 +286,7 @@
                     app:layout_constraintTop_toBottomOf="@id/feedback_condom_quantity" />
 
                 <TextView
-                    android:id="@+id/feedback_response_date"
+                    android:id="@+id/response_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -305,7 +307,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/feedback_response_date" />
+                    app:layout_constraintTop_toBottomOf="@id/response_date" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
