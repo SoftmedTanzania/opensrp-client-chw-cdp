@@ -249,7 +249,7 @@ public class OrdersUtil {
     private static String getFacilityId(String jsonString) {
         try {
             JSONObject form = new JSONObject(jsonString);
-            JSONObject facilityObj = getFieldJSONObject(fields(form, STEP_ONE), "facility_with_msd_code");
+            JSONObject facilityObj = getFieldJSONObject(fields(form, STEP_ONE), "receiving_order_facility");
             if (facilityObj != null) {
                 return facilityObj.getString("value");
             }
