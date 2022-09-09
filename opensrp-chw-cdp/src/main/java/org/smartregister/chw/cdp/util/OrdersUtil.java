@@ -2,6 +2,7 @@ package org.smartregister.chw.cdp.util;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.CdpLibrary;
@@ -38,6 +39,10 @@ public class OrdersUtil {
         if (focus.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_ORDER)) {
             //TODO: read the value from the JSON object for facility ordering
             String groupId = allSharedPreferences.fetchDefaultLocalityId(allSharedPreferences.fetchRegisteredANM());
+            task = createTask(allSharedPreferences, focus, event, groupId);
+        }
+        if (focus.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_ORDER_FROM_FACILITY)) {
+            String groupId = getFacilityId(jsonString);
             task = createTask(allSharedPreferences, focus, event, groupId);
         }
         return new CdpOrderTaskEvent(event, task);
@@ -240,6 +245,21 @@ public class OrdersUtil {
         }
 
         return vals;
+    }
+
+    private static String getFacilityId(String jsonString) {
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            JSONObject facilityObj = getFieldJSONObject(fields(form, STEP_ONE), "receiving_order_facility");
+            if (facilityObj != null) {
+                String val = facilityObj.getString("value");
+                JSONArray arr = new JSONArray(val);
+                return arr.getJSONObject(0).getJSONObject("property").getString("confirmed-id");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public interface BusinessStatus {

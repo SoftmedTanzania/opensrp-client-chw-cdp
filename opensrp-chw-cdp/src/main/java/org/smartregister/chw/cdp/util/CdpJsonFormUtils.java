@@ -1,7 +1,8 @@
 package org.smartregister.chw.cdp.util;
 
-import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -9,15 +10,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.CdpLibrary;
-import org.smartregister.clientandeventmodel.Client;
+import org.smartregister.chw.cdp.repository.LocationWithTagsRepository;
 import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.domain.Location;
+import org.smartregister.domain.LocationTag;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.util.FormUtils;
+import org.smartregister.util.JsonFormUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -138,6 +141,40 @@ public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static JSONObject getFormAsJson(String formName) throws Exception {
         return FormUtils.getInstance(CdpLibrary.getInstance().context().applicationContext()).getFormJson(formName);
+    }
+
+    public static void initializeHealthFacilitiesList(JSONObject form) {
+        LocationWithTagsRepository locationRepository = new LocationWithTagsRepository();
+        List<Location> locations = locationRepository.getAllLocationsWithTags();
+        if (locations != null && form != null) {
+
+            try {
+
+                JSONArray fields = form.getJSONObject(STEP_ONE)
+                        .getJSONArray(JsonFormConstants.FIELDS);
+
+                JSONObject referralHealthFacilities = JsonFormUtils.getFieldJSONObject(fields, Constants.JSON_FORM_KEY.RECEIVING_ORDER_FACILITY);
+
+                JSONArray options = referralHealthFacilities.getJSONArray("options");
+                String healthFacilityWithMsdCodeTagName = "Facility_msd_code";
+                for (Location location : locations) {
+                    Set<LocationTag> locationTags = location.getLocationTags();
+                    if (locationTags.iterator().next().getName().equalsIgnoreCase(healthFacilityWithMsdCodeTagName)) {
+                        JSONObject optionNode = new JSONObject();
+                        optionNode.put("text", StringUtils.capitalize(location.getProperties().getName()));
+                        optionNode.put("key", StringUtils.capitalize(location.getProperties().getName()));
+                        JSONObject propertyObject = new JSONObject();
+                        propertyObject.put("presumed-id", location.getProperties().getUid());
+                        propertyObject.put("confirmed-id", location.getProperties().getUid());
+                        optionNode.put("property", propertyObject);
+
+                        options.put(optionNode);
+                    }
+                }
+            } catch (JSONException e) {
+                Timber.e(e);
+            }
+        }
     }
 
 }

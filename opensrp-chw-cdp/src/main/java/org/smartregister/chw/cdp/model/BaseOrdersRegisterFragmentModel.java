@@ -33,6 +33,11 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
 
     @Override
     public JSONObject getOrderFormAsJson(String formName) throws Exception {
+        if (formName.equalsIgnoreCase(Constants.FORMS.CDP_CONDOM_ORDER_FACILITY)) {
+            JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+            CdpJsonFormUtils.initializeHealthFacilitiesList(form);
+            return form;
+        }
         return CdpJsonFormUtils.getFormAsJson(formName);
     }
 

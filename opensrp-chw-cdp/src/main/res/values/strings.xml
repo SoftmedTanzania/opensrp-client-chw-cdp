@@ -99,6 +99,7 @@
     <string name="mark_as_received">Mark As Received</string>
     <string name="facility_response_label">Facility Response</string>
     <string name="response_date_label_text">Response Date</string>
+    <string name="receive_msd">Receive MSD</string>
 
 
 </resources>
