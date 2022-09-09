@@ -1,6 +1,5 @@
 package org.smartregister.chw.cdp.dao;
 
-import org.joda.time.DateTime;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
@@ -23,7 +22,6 @@ public class CdpStockingDao extends AbstractDao {
                                           String eventType,
                                           String restockingDate) {
 
-        DateTime now = new DateTime();
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
                 "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, stock_event_type, date_updated) " +
@@ -41,37 +39,50 @@ public class CdpStockingDao extends AbstractDao {
     }
 
     public static void updateStockCountData(String locationId,
+                                            String formSubmissionId,
                                             String chwName,
                                             String maleCondomsOffset,
                                             String femaleCondomsOffset,
                                             String stockEventType,
                                             String restockingDate) {
 
-        int femaleCondomsCount = 0;
-        int maleCondomsCount = 0;
+        /*
+         * Needed to prevent recount when the client processor re runs the processing of the event
+         * */
+        if (!wasRecordProcessed(formSubmissionId)) {
+            int femaleCondomsCount = 0;
+            int maleCondomsCount = 0;
 
-        DateTime now = new DateTime();
-        Integer currentFemaleCondomCount = getCurrentFemaleCondomCount(locationId);
-        Integer currentMaleCondomCount = getCurrentMaleCondomCount(locationId);
+            Integer currentFemaleCondomCount = getCurrentFemaleCondomCount(locationId);
+            Integer currentMaleCondomCount = getCurrentMaleCondomCount(locationId);
 
-        if (stockEventType.equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.DECREMENT)) {
-            femaleCondomsCount = currentFemaleCondomCount != null ? currentFemaleCondomCount - Integer.parseInt(femaleCondomsOffset) : Integer.parseInt(femaleCondomsOffset);
-            maleCondomsCount = currentMaleCondomCount != null ? currentMaleCondomCount - Integer.parseInt(maleCondomsOffset) : Integer.parseInt(maleCondomsOffset);
-        } else if (stockEventType.equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.INCREMENT)) {
-            femaleCondomsCount = currentFemaleCondomCount != null ? currentFemaleCondomCount + Integer.parseInt(femaleCondomsOffset) : Integer.parseInt(femaleCondomsOffset);
-            maleCondomsCount = currentMaleCondomCount != null ? currentMaleCondomCount + Integer.parseInt(maleCondomsOffset) : Integer.parseInt(maleCondomsOffset);
+            if (stockEventType.equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.DECREMENT)) {
+                femaleCondomsCount = currentFemaleCondomCount != null ? currentFemaleCondomCount - Integer.parseInt(femaleCondomsOffset) : Integer.parseInt(femaleCondomsOffset);
+                maleCondomsCount = currentMaleCondomCount != null ? currentMaleCondomCount - Integer.parseInt(maleCondomsOffset) : Integer.parseInt(maleCondomsOffset);
+            } else if (stockEventType.equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.INCREMENT)) {
+                femaleCondomsCount = currentFemaleCondomCount != null ? currentFemaleCondomCount + Integer.parseInt(femaleCondomsOffset) : Integer.parseInt(femaleCondomsOffset);
+                maleCondomsCount = currentMaleCondomCount != null ? currentMaleCondomCount + Integer.parseInt(maleCondomsOffset) : Integer.parseInt(maleCondomsOffset);
+            }
+
+            String sqlUpdateStockCount = "INSERT INTO " + stockCountTable + "" +
+                    "    (id, base_entity_id, chw_name, form_submission_id, female_condoms_count, male_condoms_count, date_updated) " +
+                    "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + formSubmissionId + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + restockingDate + "')" +
+                    "       ON CONFLICT (id) DO UPDATE" +
+                    "          SET  chw_name = '" + chwName + "', " +
+                    "               form_submission_id = '" + formSubmissionId + "', " +
+                    "               female_condoms_count = '" + femaleCondomsCount + "', " +
+                    "               male_condoms_count = '" + maleCondomsCount + "', " +
+                    "               date_updated = '" + restockingDate + "'" +
+                    "       ";
+            updateDB(sqlUpdateStockCount);
         }
+    }
 
-        String sqlUpdateStockCount = "INSERT INTO " + stockCountTable + "" +
-                "    (id, base_entity_id, chw_name, female_condoms_count, male_condoms_count, date_updated) " +
-                "         VALUES ('" + locationId + "', '" + locationId + "', '" + chwName + "', '" + femaleCondomsCount + "', '" + maleCondomsCount + "', '" + restockingDate + "')" +
-                "       ON CONFLICT (id) DO UPDATE" +
-                "          SET  chw_name = '" + chwName + "', " +
-                "               female_condoms_count = '" + femaleCondomsCount + "', " +
-                "               male_condoms_count = '" + maleCondomsCount + "', " +
-                "               date_updated = '" + restockingDate + "'" +
-                "       ";
-        updateDB(sqlUpdateStockCount);
+    private static boolean wasRecordProcessed(String formSubmissionId) {
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "form_submission_id");
+        String sql = "SELECT form_submission_id FROM " + stockCountTable + " WHERE form_submission_id = '" + formSubmissionId + "' ";
+        List<String> res = readData(sql, dataMap);
+        return res != null && res.size() > 0 && res.get(0) != null;
     }
 
     public static Integer getCurrentMaleCondomCount(String locationId) {
