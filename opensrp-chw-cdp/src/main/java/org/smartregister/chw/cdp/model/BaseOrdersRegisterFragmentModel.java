@@ -27,12 +27,17 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         SmartRegisterQueryBuilder queryBuilder = new SmartRegisterQueryBuilder();
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName), DBConstants.KEY.LOCATION_ID);
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName));
-        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.BASE_ENTITY_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
+        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName + "." + DBConstants.KEY.BASE_ENTITY_ID + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
         return queryBuilder.mainCondition(mainCondition);
     }
 
     @Override
     public JSONObject getOrderFormAsJson(String formName) throws Exception {
+        if (formName.equalsIgnoreCase(Constants.FORMS.CDP_CONDOM_ORDER_FACILITY)) {
+            JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+            CdpJsonFormUtils.initializeHealthFacilitiesList(form);
+            return form;
+        }
         return CdpJsonFormUtils.getFormAsJson(formName);
     }
 
@@ -47,7 +52,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         columnList.add(tableName + "." + DBConstants.KEY.REQUEST_TYPE);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.AUTHORED_ON + " AS " + DBConstants.KEY.REQUESTED_AT);
-        columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.ID + " AS " + DBConstants.KEY.TASK_ID );
+        columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.ID + " AS " + DBConstants.KEY.TASK_ID);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.REQUESTER);
 
         return columnList.toArray(new String[columnList.size()]);

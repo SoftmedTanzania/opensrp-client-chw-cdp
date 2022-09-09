@@ -87,6 +87,7 @@ public interface Constants {
         String RESPONSE_DATE = "response_date";
         String CONDOM_REQUEST_DATE = "condom_order_date";
         String CONDOM_RESTOCK_DATE = "condom_restock_date";
+        String RECEIVING_ORDER_FACILITY = "receiving_order_facility";
     }
 
     interface STOCK_EVENT_TYPES {
