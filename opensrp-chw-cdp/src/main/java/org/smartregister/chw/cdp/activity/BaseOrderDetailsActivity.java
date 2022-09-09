@@ -98,7 +98,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         feedbackCondomType.setText(feedbackObject.getCondomType());
         feedbackCondomBrand.setText(feedbackObject.getCondomBrand());
         feedbackQuantity.setText(feedbackObject.getResponseQuantity());
-        responseDate.setText(feedbackObject.getResponseDate());
+        Long responseAtMillis = Long.parseLong(feedbackObject.getResponseDate());
+        responseDate.setText(CdpUtil.formatTimeStamp(responseAtMillis));
     }
 
     @Override
