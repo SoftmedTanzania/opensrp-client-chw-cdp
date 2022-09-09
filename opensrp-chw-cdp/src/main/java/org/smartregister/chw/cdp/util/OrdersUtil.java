@@ -2,6 +2,7 @@ package org.smartregister.chw.cdp.util;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.CdpLibrary;
@@ -251,7 +252,9 @@ public class OrdersUtil {
             JSONObject form = new JSONObject(jsonString);
             JSONObject facilityObj = getFieldJSONObject(fields(form, STEP_ONE), "receiving_order_facility");
             if (facilityObj != null) {
-                return facilityObj.getString("value");
+                String val = facilityObj.getString("value");
+                JSONArray arr = new JSONArray(val);
+                return arr.getJSONObject(0).getJSONObject("property").getString("confirmed-id");
             }
         } catch (JSONException e) {
             e.printStackTrace();
