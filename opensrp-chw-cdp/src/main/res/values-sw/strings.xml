@@ -67,5 +67,7 @@
     <string name="stock_distribution_label">Stock Distribution</string>
     <string name="out_of_stock_label">Out of Stock</string>
     <string name="out_of_stock_message">Confirming this, will close this order request and mark it as failed</string>
+    <string name="facility_response_label">Facility Response</string>
+    <string name="response_date_label_text">Response Date</string>
 
 </resources>
