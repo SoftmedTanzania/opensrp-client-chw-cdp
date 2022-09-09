@@ -40,6 +40,10 @@ public class OrdersUtil {
             String groupId = allSharedPreferences.fetchDefaultLocalityId(allSharedPreferences.fetchRegisteredANM());
             task = createTask(allSharedPreferences, focus, event, groupId);
         }
+        if (focus.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_ORDER_FROM_FACILITY)) {
+            String groupId = getFacilityId(jsonString);
+            task = createTask(allSharedPreferences, focus, event, groupId);
+        }
         return new CdpOrderTaskEvent(event, task);
 
     }
@@ -240,6 +244,19 @@ public class OrdersUtil {
         }
 
         return vals;
+    }
+
+    private static String getFacilityId(String jsonString) {
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            JSONObject facilityObj = getFieldJSONObject(fields(form, STEP_ONE), "facility_with_msd_code");
+            if (facilityObj != null) {
+                return facilityObj.getString("value");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public interface BusinessStatus {
