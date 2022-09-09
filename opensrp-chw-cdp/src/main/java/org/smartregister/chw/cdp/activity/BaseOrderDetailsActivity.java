@@ -96,7 +96,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     public void setDetailViewWithFeedbackData(OrderFeedbackObject feedbackObject) {
         responseLayout.setVisibility(View.VISIBLE);
         feedbackCondomType.setText(feedbackObject.getCondomType());
-        feedbackCondomBrand.setText(feedbackObject.getCondomBrand());
+        feedbackCondomType.setText(this.getString(this.getResources().getIdentifier(feedbackObject.getCondomType(), "string", this.getPackageName())));
+        feedbackCondomBrand.setText(this.getString(this.getResources().getIdentifier(feedbackObject.getCondomBrand(), "string", this.getPackageName())));
         feedbackQuantity.setText(feedbackObject.getResponseQuantity());
         Long responseAtMillis = Long.parseLong(feedbackObject.getResponseDate());
         responseDate.setText(CdpUtil.formatTimeStamp(responseAtMillis));
