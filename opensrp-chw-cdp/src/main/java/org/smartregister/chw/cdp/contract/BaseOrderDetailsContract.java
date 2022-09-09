@@ -57,7 +57,8 @@ public interface BaseOrderDetailsContract {
         JSONObject getFormAsJson(String formName, String entityId) throws Exception;
 
     }
-    interface  InteractorCallBack {
+
+    interface InteractorCallBack {
 
     }
 }

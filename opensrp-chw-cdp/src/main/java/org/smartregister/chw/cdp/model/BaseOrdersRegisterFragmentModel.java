@@ -1,5 +1,7 @@
 package org.smartregister.chw.cdp.model;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
@@ -10,8 +12,6 @@ import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
 
 public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragmentContract.Model {
     @Override
@@ -27,7 +27,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         SmartRegisterQueryBuilder queryBuilder = new SmartRegisterQueryBuilder();
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName), DBConstants.KEY.LOCATION_ID);
         queryBuilder.selectInitiateMainTable(tableName, mainColumns(tableName));
-        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName+ "." +DBConstants.KEY.BASE_ENTITY_ID  + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
+        queryBuilder.customJoin("INNER JOIN " + Constants.TABLES.TASK + " ON  " + tableName + "." + DBConstants.KEY.BASE_ENTITY_ID + " = " + Constants.TABLES.TASK + "." + DBConstants.KEY.FOR + " COLLATE NOCASE ");
         return queryBuilder.mainCondition(mainCondition);
     }
 
@@ -48,7 +48,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         columnList.add(tableName + "." + DBConstants.KEY.FORM_SUBMISSION_ID + " AS " + DBConstants.KEY.REQUEST_REFERENCE);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.AUTHORED_ON + " AS " + DBConstants.KEY.REQUESTED_AT);
-        columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.ID + " AS " + DBConstants.KEY.TASK_ID );
+        columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.ID + " AS " + DBConstants.KEY.TASK_ID);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.REQUESTER);
 
 
