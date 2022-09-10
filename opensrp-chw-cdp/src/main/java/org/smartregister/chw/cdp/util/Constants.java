@@ -19,7 +19,7 @@ public interface Constants {
         String CDP_FOLLOW_UP_VISIT = "CDP Follow-up Visit";
         String CDP_OUTLET_VISIT = "CDP Outlet Visit";
         String CDP_RECEIVE_FROM_FACILITY = "CDP Receive From Facility";
-        String CDP_OUTLET_RESTOCK = "CDP Outlet Restock";
+        String CDP_RESTOCK = "CDP Restock";
         String CDP_CONDOM_ORDER = "CDP Condom Order";
         String CDP_ORDER_FROM_FACILITY = "CDP Order From Facility";
         String CDP_ORDER_FEEDBACK = "CDP Order Feedback";

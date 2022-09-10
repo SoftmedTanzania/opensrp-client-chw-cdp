@@ -12,7 +12,7 @@ import java.util.Map;
 public class VisitUtils {
     public static List<Visit> getVisits(String memberID) {
 
-        List<Visit> visits = getVisitsOnly(memberID, Constants.EVENT_TYPE.CDP_OUTLET_RESTOCK);
+        List<Visit> visits = getVisitsOnly(memberID, Constants.EVENT_TYPE.CDP_RESTOCK);
         for (Visit visit : visits) {
             List<VisitDetail> detailList = getVisitDetailsOnly(visit.getVisitId());
             visit.setVisitDetails(getVisitGroups(detailList));
