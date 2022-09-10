@@ -182,7 +182,7 @@ public class OrdersUtil {
         return currentTask;
     }
 
-    public static Task getCompletedTask(Task currentTask) {
+    public static Task getInTransitTask(Task currentTask) {
         DateTime now = new DateTime();
         currentTask.setStatus(Task.TaskStatus.IN_PROGRESS);
         currentTask.setBusinessStatus(BusinessStatus.IN_PROGRESS);
@@ -191,7 +191,7 @@ public class OrdersUtil {
         return currentTask;
     }
 
-    public static Task getInTransitTask(Task currentTask) {
+    public static Task getCompletedTask(Task currentTask) {
         DateTime now = new DateTime();
         currentTask.setStatus(Task.TaskStatus.COMPLETED);
         currentTask.setBusinessStatus(BusinessStatus.COMPLETE);
