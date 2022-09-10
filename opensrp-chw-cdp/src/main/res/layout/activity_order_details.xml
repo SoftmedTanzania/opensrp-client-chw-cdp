@@ -353,6 +353,7 @@
         android:text="@string/mark_as_received"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:layout_marginBottom="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
