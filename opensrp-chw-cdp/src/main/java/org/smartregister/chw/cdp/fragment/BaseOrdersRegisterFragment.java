@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -13,6 +14,7 @@ import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.activity.BaseOrderDetailsActivity;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
+import org.smartregister.chw.cdp.dao.CdpStockingDao;
 import org.smartregister.chw.cdp.model.BaseOrdersRegisterFragmentModel;
 import org.smartregister.chw.cdp.presenter.BaseOrdersRegisterFragmentPresenter;
 import org.smartregister.chw.cdp.provider.BaseOrdersRegisterProvider;
@@ -45,6 +47,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     protected Toolbar toolbar;
     protected CustomFontTextView titleView;
     protected String customGroupFilter;
+    private TextView tvStockOnHandCount;
 
     @Override
     public void setupViews(View view) {
@@ -54,6 +57,10 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         toolbar.setContentInsetsAbsolute(0, 0);
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetStartWithNavigation(0);
+        tvStockOnHandCount = view.findViewById(R.id.stock_count_tv);
+
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String locationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
 
         // Update top left icon
         // Update top left icon
@@ -91,6 +98,13 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         }
 
         setUpTabLayout(view);
+
+        updateStockOnHand(CdpStockingDao.getCurrentStockInHand(locationId));
+    }
+
+    protected void updateStockOnHand(int stock) {
+        if (tvStockOnHandCount != null)
+            tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
     }
 
     protected int getFragmentTitle() {
