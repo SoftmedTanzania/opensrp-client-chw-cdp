@@ -1,5 +1,7 @@
 package org.smartregister.chw.cdp.util;
 
+import static org.smartregister.util.Utils.getAllSharedPreferences;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,6 +18,9 @@ import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
@@ -36,11 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import timber.log.Timber;
-
-import static org.smartregister.util.Utils.getAllSharedPreferences;
 
 public class CdpUtil {
 
@@ -139,23 +140,25 @@ public class CdpUtil {
     }
 
     /**
-    * @param timestamp timestamp
-     * @return  'dd-mm-yyyy'*/
-    public static String formatTimeStamp(Long timestamp){
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.ROOT);
+     * @param timestamp timestamp
+     * @return 'dd-mm-yyyy'
+     */
+    public static String formatTimeStamp(Long timestamp) {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ROOT);
         return df.format(timestamp);
     }
 
     /**
-    * Get the location name from Id
-     * @param  locationId Location uuid in string
-     * @return  location name
-     * */
-    public static String getRequesterNameFromId(String locationId){
+     * Get the location name from Id
+     *
+     * @param locationId Location uuid in string
+     * @return location name
+     */
+    public static String getRequesterNameFromId(String locationId) {
         LocationRepository locationRepository = CdpLibrary.getInstance().context().getLocationRepository();
         Location location = locationRepository.getLocationById(locationId);
-        if(location!= null && location.getProperties() != null){
-            return  location.getProperties().getName();
+        if (location != null && location.getProperties() != null) {
+            return location.getProperties().getName();
         }
         return "";
     }
@@ -168,5 +171,9 @@ public class CdpUtil {
             return context.getResources().getString(R.string.female);
         }
         return "";
+    }
+
+    public static int getStringFromResources(String identifier, Activity activity) {
+        return activity.getResources().getIdentifier(identifier, "string", activity.getPackageName());
     }
 }
