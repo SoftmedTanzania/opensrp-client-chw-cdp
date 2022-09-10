@@ -24,6 +24,8 @@ public interface BaseOrderDetailsContract {
 
         void hideButtons();
 
+        void showMarkAsReceived();
+
     }
 
     interface Presenter {
@@ -50,6 +52,8 @@ public interface BaseOrderDetailsContract {
         void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception;
 
         String getOrderStatus(CommonPersonObjectClient pc);
+
+        boolean isRespondingFacility(CommonPersonObjectClient pc);
     }
 
     interface Model {

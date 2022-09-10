@@ -51,6 +51,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected TextView responseStatus;
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
+    protected Button markAsReceivedBtn;
     protected Group btnGroup;
     protected Group tvRestockGroup;
     protected ConstraintLayout responseLayout;
@@ -162,6 +163,11 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         btnGroup.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showMarkAsReceived() {
+        markAsReceivedBtn.setVisibility(View.VISIBLE);
+    }
+
     protected void setupViews() {
         toolbar = findViewById(R.id.collapsing_toolbar);
         tvTitle = findViewById(R.id.tvTitle);
@@ -180,10 +186,12 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         btnGroup = findViewById(R.id.btn_group);
         tvRestockGroup = findViewById(R.id.tv_restock_group);
         responseLayout = findViewById(R.id.response_details);
+        markAsReceivedBtn = findViewById(R.id.btn_mark_as_received);
 
         btnGroup.setVisibility(View.GONE);
         outOfStockBtn.setOnClickListener(this);
         stockDistributionBtn.setOnClickListener(this);
+        markAsReceivedBtn.setOnClickListener(this);
 
 
         setUpActionBar();
@@ -210,11 +218,22 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         if (id == R.id.btn_stock_distribution) {
             startStockDistributionForm();
         }
+        if(id == R.id.btn_mark_as_received){
+            startReceivedForm();
+        }
     }
 
     private void startStockDistributionForm() {
         try {
             presenter.startForm(Constants.FORMS.CDP_CONDOM_DISTRIBUTION, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startReceivedForm(){
+        try {
+            presenter.startForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FACILITY, null);
         } catch (Exception e) {
             e.printStackTrace();
         }

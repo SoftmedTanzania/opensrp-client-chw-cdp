@@ -43,4 +43,12 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     public String getOrderStatus(CommonPersonObjectClient pc) {
         return Utils.getValue(pc, DBConstants.KEY.STATUS, false);
     }
+
+    @Override
+    public boolean isRespondingFacility(CommonPersonObjectClient pc) {
+        String requestLocation = Utils.getValue(pc, DBConstants.KEY.LOCATION_ID, false);
+        String facilityLocation = Utils.getAllSharedPreferences().fetchDefaultLocalityId(Utils.getAllSharedPreferences().fetchRegisteredANM());
+        return !requestLocation.equals(facilityLocation);
+    }
+
 }

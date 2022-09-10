@@ -78,8 +78,12 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     @Override
     public void refreshViewPageBottom(CommonPersonObjectClient pc) {
         String status = interactor.getOrderStatus(pc);
+        boolean isRespondingFacility = interactor.isRespondingFacility(pc);
         if (!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null) {
             getView().hideButtons();
+        }
+        if(!isRespondingFacility && status.equalsIgnoreCase(Constants.OrderStatus.IN_TRANSIT) && getView() != null){
+            getView().showMarkAsReceived();
         }
     }
 
