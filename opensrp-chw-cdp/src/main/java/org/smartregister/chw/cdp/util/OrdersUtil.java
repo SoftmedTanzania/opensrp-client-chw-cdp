@@ -105,8 +105,12 @@ public class OrdersUtil {
 
     public static void orderResponseRestocking(Task currentTask, AllSharedPreferences allSharedPreferences, String jsonString) {
         Event baseEvent = processJsonForm(allSharedPreferences, jsonString);
+
         DateTime now = new DateTime();
         if (baseEvent != null && currentTask != null) {
+            baseEvent.setBaseEntityId(generateRandomUUIDString());
+            processFormForStockChanges(baseEvent, allSharedPreferences);
+
             baseEvent.setEventType(Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK);
             baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withValue(Constants.ResponseStatus.RESTOCKED)
                     .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
@@ -115,14 +119,22 @@ public class OrdersUtil {
             baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withValue(currentTask.getReasonReference())
                     .withFieldCode(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
             baseEvent.setLocationId(currentTask.getLocation());
-            baseEvent.setBaseEntityId(generateRandomUUIDString());
-
+            baseEvent.setFormSubmissionId(generateRandomUUIDString());
             Task inTransitTask = getInTransitTask(currentTask);
             persistTask(inTransitTask);
             persistEvent(baseEvent);
             CdpUtil.startClientProcessing();
         }
 
+    }
+
+    private static void processFormForStockChanges(Event baseEvent, AllSharedPreferences allSharedPreferences) {
+        baseEvent.setFormSubmissionId(generateRandomUUIDString());
+        try {
+            CdpUtil.processEvent(allSharedPreferences, baseEvent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static boolean shouldCreateReceiveFromFacilityEvent(String jsonString) {
