@@ -6,7 +6,12 @@ import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 
 public class BaseOrderDetailsModel implements BaseOrderDetailsContract.Model {
     @Override
-    public JSONObject getFormAsJson(String formName, String entityId) throws Exception {
-        return CdpJsonFormUtils.getFormAsJson(formName);
+    public JSONObject getFormAsJson(String formName, String entityId, String condomType) throws Exception {
+        JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+        JSONObject global = form.getJSONObject("global");
+        if (condomType != null) {
+            global.put("condom_type", condomType);
+        }
+        return form;
     }
 }

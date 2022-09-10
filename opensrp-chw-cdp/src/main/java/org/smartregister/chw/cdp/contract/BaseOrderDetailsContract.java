@@ -35,7 +35,7 @@ public interface BaseOrderDetailsContract {
 
         void saveForm(String jsonString);
 
-        void startForm(String formName, String entityId) throws Exception;
+        void startForm(String formName, String entityId, String condomType) throws Exception;
 
         @Nullable
         View getView();
@@ -58,7 +58,7 @@ public interface BaseOrderDetailsContract {
 
     interface Model {
 
-        JSONObject getFormAsJson(String formName, String entityId) throws Exception;
+        JSONObject getFormAsJson(String formName, String entityId, String condomType) throws Exception;
 
     }
 

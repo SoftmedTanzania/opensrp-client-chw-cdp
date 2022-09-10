@@ -60,8 +60,8 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     }
 
     @Override
-    public void startForm(String formName, String entityId) throws Exception {
-        JSONObject form = model.getFormAsJson(formName, entityId);
+    public void startForm(String formName, String entityId, String condomType) throws Exception {
+        JSONObject form = model.getFormAsJson(formName, entityId, condomType);
         if (getView() != null)
             getView().startFormActivity(form);
     }

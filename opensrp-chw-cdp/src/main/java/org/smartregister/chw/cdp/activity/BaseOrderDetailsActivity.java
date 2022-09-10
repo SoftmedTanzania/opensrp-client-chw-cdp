@@ -225,7 +225,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     private void startStockDistributionForm() {
         try {
-            presenter.startForm(Constants.FORMS.CDP_CONDOM_DISTRIBUTION, null);
+            String condomType = Utils.getValue(client, DBConstants.KEY.CONDOM_TYPE, false);
+            presenter.startForm(Constants.FORMS.CDP_CONDOM_DISTRIBUTION, null, condomType);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,7 +234,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     private void startReceivedForm(){
         try {
-            presenter.startForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FACILITY, null);
+            presenter.startForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FACILITY, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
