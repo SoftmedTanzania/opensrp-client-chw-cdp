@@ -48,9 +48,11 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected TextView feedbackCondomBrand;
     protected TextView feedbackQuantity;
     protected TextView responseDate;
+    protected TextView responseStatus;
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
     protected Group btnGroup;
+    protected Group tvRestockGroup;
     protected ConstraintLayout responseLayout;
 
 
@@ -95,12 +97,26 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     @Override
     public void setDetailViewWithFeedbackData(OrderFeedbackObject feedbackObject) {
         responseLayout.setVisibility(View.VISIBLE);
-        feedbackCondomType.setText(feedbackObject.getCondomType());
-        feedbackCondomType.setText(this.getString(this.getResources().getIdentifier(feedbackObject.getCondomType(), "string", this.getPackageName())));
-        feedbackCondomBrand.setText(this.getString(this.getResources().getIdentifier(feedbackObject.getCondomBrand(), "string", this.getPackageName())));
+        if (feedbackObject.getResponseStatus().equals(Constants.ResponseStatus.OUT_OF_STOCK)) {
+            tvRestockGroup.setVisibility(View.GONE);
+        }
+
+        setTranslatedStringFromResources(feedbackCondomType, feedbackObject.getCondomType());
+        setTranslatedStringFromResources(feedbackCondomBrand, feedbackObject.getCondomBrand());
+        setTranslatedStringFromResources(responseStatus, "rs_" + feedbackObject.getResponseStatus());
+
         feedbackQuantity.setText(feedbackObject.getResponseQuantity());
         Long responseAtMillis = Long.parseLong(feedbackObject.getResponseDate());
         responseDate.setText(CdpUtil.formatTimeStamp(responseAtMillis));
+    }
+
+    private void setTranslatedStringFromResources(TextView tv, String identifier) {
+        int tvVal = CdpUtil.getStringFromResources(identifier, this);
+        if (tvVal != 0) {
+            tv.setText(this.getString(tvVal));
+        } else {
+            tv.setText(identifier);
+        }
     }
 
     @Override
@@ -158,9 +174,11 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         feedbackCondomType = findViewById(R.id.feedback_condom_type);
         feedbackQuantity = findViewById(R.id.feedback_condom_quantity);
         responseDate = findViewById(R.id.response_date);
+        responseStatus = findViewById(R.id.response_status);
         outOfStockBtn = findViewById(R.id.btn_out_of_stock);
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
         btnGroup = findViewById(R.id.btn_group);
+        tvRestockGroup = findViewById(R.id.tv_restock_group);
         responseLayout = findViewById(R.id.response_details);
 
         btnGroup.setVisibility(View.GONE);

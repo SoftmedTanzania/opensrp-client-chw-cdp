@@ -196,9 +196,9 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:visibility="gone"
-                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/feedback_title"
@@ -308,6 +308,36 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/response_date" />
+
+                <TextView
+                    android:id="@+id/response_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/feedback_response_date_label"
+                    tools:text="Restocked" />
+
+                <TextView
+                    android:id="@+id/response_status_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/response_status_label"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/response_status" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/tv_restock_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="feedback_condom_type,feedback_type_label,feedback_condom_brand,feedback_brand_label,feedback_condom_quantity,feedback_quantity_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

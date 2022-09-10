@@ -101,6 +101,9 @@
     <string name="response_date_label_text">Response Date</string>
     <string name="receive_msd">Receive MSD</string>
     <string name="received_from_msd">Received From MSD</string>
+    <string name="response_status_label">Response Status</string>
+    <string name="rs_restocked">Restocked</string>
+    <string name="rs_out_of_stock">Out of Stock</string>
 
 
 </resources>
