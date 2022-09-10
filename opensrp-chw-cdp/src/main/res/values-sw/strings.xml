@@ -70,5 +70,6 @@
     <string name="facility_response_label">Facility Response</string>
     <string name="response_date_label_text">Response Date</string>
     <string name="response_status_label">Response Status</string>
+    <string name="date_label">Date:</string>
 
 </resources>

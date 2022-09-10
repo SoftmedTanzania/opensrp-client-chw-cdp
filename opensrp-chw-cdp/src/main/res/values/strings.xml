@@ -104,6 +104,7 @@
     <string name="response_status_label">Response Status</string>
     <string name="rs_restocked">Restocked</string>
     <string name="rs_out_of_stock">Out of Stock</string>
+    <string name="date_label">Date:</string>
 
 
 </resources>
