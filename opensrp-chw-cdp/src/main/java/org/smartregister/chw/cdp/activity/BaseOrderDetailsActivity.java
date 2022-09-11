@@ -234,7 +234,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     private void startReceivedForm(){
         try {
-            presenter.startForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FACILITY, null, null);
+            String condomType = Utils.getValue(client, DBConstants.KEY.CONDOM_TYPE, false);
+            presenter.startForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FACILITY, null, condomType);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,6 +250,10 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
                 String encounter_type = jsonObject.getString("encounter_type");
                 if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_CONDOM_DISTRIBUTION_OUTSIDE)) {
                     presenter.saveForm(jsonString);
+                    finish();
+                }
+                if(encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_RECEIVE_FROM_FACILITY)){
+                    presenter.saveMarkAsReceivedForm(jsonString);
                     finish();
                 }
             } catch (JSONException e) {

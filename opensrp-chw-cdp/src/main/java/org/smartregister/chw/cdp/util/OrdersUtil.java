@@ -1,6 +1,5 @@
 package org.smartregister.chw.cdp.util;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -212,52 +211,19 @@ public class OrdersUtil {
         return currentTask;
     }
 
-    private static void createReceiveFromFacilityEvent(AllSharedPreferences allSharedPreferences, Task task, String jsonString) {
-        String condomType = getCondomTypeAndOffset(jsonString).getLeft();
-        String offset = getCondomTypeAndOffset(jsonString).getRight();
-        Event baseEvent = (Event) new Event()
-                .withBaseEntityId(generateRandomUUIDString())
-                .withEventDate(new Date())
-                .withFormSubmissionId(generateRandomUUIDString())
-                .withEventType(Constants.EVENT_TYPE.CDP_RECEIVE_FROM_FACILITY)
-                .withEntityType(Constants.TABLES.CDP_STOCK_COUNT)
-                .withProviderId(allSharedPreferences.fetchRegisteredANM())
-                .withLocationId(task.getLocation())
-                .withTeamId(allSharedPreferences.fetchDefaultTeamId(allSharedPreferences.fetchRegisteredANM()))
-                .withTeam(allSharedPreferences.fetchDefaultTeam(allSharedPreferences.fetchRegisteredANM()))
-                .withClientDatabaseVersion(CdpLibrary.getInstance().getDatabaseVersion())
-                .withClientApplicationVersion(CdpLibrary.getInstance().getApplicationVersion())
-                .withDateCreated(new Date());
-
-        if (condomType.equals("male_condom")) {
-            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.MALE_CONDOMS_OFFSET).withValue(offset)
-                    .withFieldCode(Constants.JSON_FORM_KEY.MALE_CONDOMS_OFFSET).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
-        } else if (condomType.equals("female_condom")) {
-            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.FEMALE_CONDOMS_OFFSET).withValue(offset)
-                    .withFieldCode(Constants.JSON_FORM_KEY.FEMALE_CONDOMS_OFFSET).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+    public static void processMarkAsReceived(AllSharedPreferences allSharedPreferences, String jsonString, Task task) {
+        Event baseEvent = processJsonForm(allSharedPreferences, jsonString);
+        if (baseEvent != null && task != null) {
+            try {
+                baseEvent.setBaseEntityId(generateRandomUUIDString());
+                CdpUtil.processEvent(allSharedPreferences, baseEvent);
+                persistTask(getCompletedTask(task));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        persistEvent(baseEvent);
-        persistTask(getCompletedTask(task));
     }
 
-    private static Triple<String, String, String> getCondomTypeAndOffset(String jsonString) {
-        Triple<String, String, String> vals = null;
-        try {
-            JSONObject form = new JSONObject(jsonString);
-            JSONObject condomTypeObj = getFieldJSONObject(fields(form, STEP_ONE), "condom_type");
-            String condomType = condomTypeObj.getString("value");
-
-            JSONObject quantityResponseObj = getFieldJSONObject(fields(form, STEP_ONE), "quantity_response");
-            String offset = quantityResponseObj.getString("value");
-
-            vals = Triple.of(condomType, null, offset);
-
-        } catch (Exception e) {
-            Timber.e(e);
-        }
-
-        return vals;
-    }
 
     private static String getFacilityId(String jsonString) {
         try {

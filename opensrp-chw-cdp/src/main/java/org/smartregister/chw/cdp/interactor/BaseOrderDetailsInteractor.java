@@ -33,6 +33,14 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     }
 
     @Override
+    public void saveReceivedStockForm(CommonPersonObjectClient pc, String jsonString, BaseOrderDetailsContract.InteractorCallBack callBack) throws Exception {
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
+        Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
+        OrdersUtil.processMarkAsReceived(allSharedPreferences, jsonString, task);
+    }
+
+    @Override
     public void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception {
         String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
         Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);

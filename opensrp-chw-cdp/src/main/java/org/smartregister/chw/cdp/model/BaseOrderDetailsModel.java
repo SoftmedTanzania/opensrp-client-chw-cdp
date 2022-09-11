@@ -14,4 +14,15 @@ public class BaseOrderDetailsModel implements BaseOrderDetailsContract.Model {
         }
         return form;
     }
+
+    @Override
+    public JSONObject getFormAsJson(String formName, String entityId, String condomType, String quantity) throws Exception {
+        JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+        JSONObject global = form.getJSONObject("global");
+        if (condomType != null && quantity != null) {
+            global.put("condom_type", condomType);
+            global.put("condom_quantity", quantity);
+        }
+        return form;
+    }
 }

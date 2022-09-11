@@ -35,6 +35,8 @@ public interface BaseOrderDetailsContract {
 
         void saveForm(String jsonString);
 
+        void saveMarkAsReceivedForm(String jsonString);
+
         void startForm(String formName, String entityId, String condomType) throws Exception;
 
         @Nullable
@@ -49,6 +51,8 @@ public interface BaseOrderDetailsContract {
 
         void saveForm(CommonPersonObjectClient pc, String jsonString, final InteractorCallBack callBack) throws Exception;
 
+        void saveReceivedStockForm(CommonPersonObjectClient pc, String jsonString, final InteractorCallBack callBack) throws Exception;
+
         void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception;
 
         String getOrderStatus(CommonPersonObjectClient pc);
@@ -59,6 +63,8 @@ public interface BaseOrderDetailsContract {
     interface Model {
 
         JSONObject getFormAsJson(String formName, String entityId, String condomType) throws Exception;
+
+        JSONObject getFormAsJson(String formName, String entityId, String condomType, String quantity) throws Exception;
 
     }
 

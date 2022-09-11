@@ -60,8 +60,22 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
     }
 
     @Override
+    public void saveMarkAsReceivedForm(String jsonString) {
+        try {
+            interactor.saveReceivedStockForm(pc, jsonString, this);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
+    @Override
     public void startForm(String formName, String entityId, String condomType) throws Exception {
-        JSONObject form = model.getFormAsJson(formName, entityId, condomType);
+        JSONObject form;
+        if (feedbackObject != null) {
+            form = model.getFormAsJson(formName, entityId, condomType, feedbackObject.getResponseQuantity());
+        } else {
+            form = model.getFormAsJson(formName, entityId, condomType);
+        }
         if (getView() != null)
             getView().startFormActivity(form);
     }
@@ -82,7 +96,7 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
         if (!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null) {
             getView().hideButtons();
         }
-        if(!isRespondingFacility && status.equalsIgnoreCase(Constants.OrderStatus.IN_TRANSIT) && getView() != null){
+        if (!isRespondingFacility && status.equalsIgnoreCase(Constants.OrderStatus.IN_TRANSIT) && getView() != null) {
             getView().showMarkAsReceived();
         }
     }
