@@ -55,7 +55,7 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     @Override
     public boolean isRespondingFacility(CommonPersonObjectClient pc) {
         String requestLocation = Utils.getValue(pc, DBConstants.KEY.LOCATION_ID, false);
-        String facilityLocation = Utils.getAllSharedPreferences().fetchDefaultLocalityId(Utils.getAllSharedPreferences().fetchRegisteredANM());
+        String facilityLocation = Utils.getAllSharedPreferences().fetchUserLocalityId(Utils.getAllSharedPreferences().fetchRegisteredANM());
         return !requestLocation.equals(facilityLocation);
     }
 
