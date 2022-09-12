@@ -28,8 +28,9 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     public void saveForm(CommonPersonObjectClient pc, String jsonString, BaseOrderDetailsContract.InteractorCallBack callBack) throws Exception {
         AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
         String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
+        String teamId = Utils.getValue(pc, DBConstants.KEY.TEAM_ID, false);
         Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
-        OrdersUtil.orderResponseRestocking(task, allSharedPreferences, jsonString);
+        OrdersUtil.orderResponseRestocking(task, allSharedPreferences, jsonString, teamId);
     }
 
     @Override
@@ -43,8 +44,9 @@ public class BaseOrderDetailsInteractor implements BaseOrderDetailsContract.Inte
     @Override
     public void cancelOrderRequest(CommonPersonObjectClient pc) throws Exception {
         String taskId = Utils.getValue(pc, DBConstants.KEY.TASK_ID, false);
+        String teamId = Utils.getValue(pc, DBConstants.KEY.TEAM_ID, false);
         Task task = OrdersUtil.getTaskRepository().getTaskByIdentifier(taskId);
-        OrdersUtil.orderResponseOutOfStock(task);
+        OrdersUtil.orderResponseOutOfStock(task, teamId);
     }
 
     @Override

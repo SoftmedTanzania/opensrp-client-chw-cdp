@@ -12,7 +12,6 @@ import org.smartregister.domain.Task;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.TaskRepository;
-import org.smartregister.util.JsonFormUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,35 +92,41 @@ public class OrdersUtil {
         }
     }
 
-    public static void orderResponseOutOfStock(Task currentTask) throws Exception {
+    public static void orderResponseOutOfStock(Task currentTask, String teamId) throws Exception {
         AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String baseEntityId = generateRandomUUIDString();
+        String currentTeamId = allSharedPreferences.fetchDefaultTeamId(allSharedPreferences.fetchRegisteredANM());
+        String currentLocationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
+
         Task canceledTask = getCancelledTask(currentTask);
-        Event orderFeedBackEvent = getFeedbackEventOutOfStock(currentTask, allSharedPreferences);
+        Event orderFeedBackEvent = getFeedbackEventOutOfStock(baseEntityId, currentTask, allSharedPreferences, Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK, currentTask.getLocation(), teamId);
+        Event orderFeedBackEventFacilityCopy = getFeedbackEventOutOfStock(baseEntityId, currentTask, allSharedPreferences, Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK_OWN_COPY, currentLocationId, currentTeamId);
         persistTask(canceledTask);
         persistEvent(orderFeedBackEvent);
+        persistEvent(orderFeedBackEventFacilityCopy);
         CdpUtil.startClientProcessing();
     }
 
-    public static void orderResponseRestocking(Task currentTask, AllSharedPreferences allSharedPreferences, String jsonString) {
+    public static void orderResponseRestocking(Task currentTask, AllSharedPreferences allSharedPreferences, String jsonString, String teamId) {
         Event baseEvent = processJsonForm(allSharedPreferences, jsonString);
 
-        DateTime now = new DateTime();
         if (baseEvent != null && currentTask != null) {
             baseEvent.setBaseEntityId(generateRandomUUIDString());
             processFormForStockChanges(baseEvent, allSharedPreferences);
 
-            baseEvent.setEventType(Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK);
-            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withValue(Constants.ResponseStatus.RESTOCKED)
-                    .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
-            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_DATE).withValue(String.valueOf(now.getMillis()))
-                    .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_DATE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
-            baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withValue(currentTask.getReasonReference())
-                    .withFieldCode(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
-            baseEvent.setLocationId(currentTask.getLocation());
-            baseEvent.setFormSubmissionId(generateRandomUUIDString());
+            Event feedbackEvent = getFeedBackEvent(baseEvent, currentTask, Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK, currentTask.getLocation(), teamId);
+            persistEvent(feedbackEvent);
+
+
+            String currentTeamId = allSharedPreferences.fetchDefaultTeamId(allSharedPreferences.fetchRegisteredANM());
+            String currentLocationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
+            Event feedbackEventCopy = getFeedBackEvent(baseEvent, currentTask, Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK_OWN_COPY, currentLocationId, currentTeamId);
+            persistEvent(feedbackEventCopy);
+
+
             Task inTransitTask = getInTransitTask(currentTask);
             persistTask(inTransitTask);
-            persistEvent(baseEvent);
+
             CdpUtil.startClientProcessing();
         }
 
@@ -134,6 +139,21 @@ public class OrdersUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static Event getFeedBackEvent(Event baseEvent, Task currentTask, String eventType, String locationId, String teamId) {
+        DateTime now = new DateTime();
+        baseEvent.setEventType(eventType);
+        baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withValue(Constants.ResponseStatus.RESTOCKED)
+                .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_STATUS).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+        baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.RESPONSE_DATE).withValue(String.valueOf(now.getMillis()))
+                .withFieldCode(Constants.JSON_FORM_KEY.RESPONSE_DATE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+        baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withValue(currentTask.getReasonReference())
+                .withFieldCode(Constants.JSON_FORM_KEY.REQUEST_REFERENCE).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
+        baseEvent.setLocationId(locationId);
+        baseEvent.setTeamId(teamId);
+        baseEvent.setFormSubmissionId(generateRandomUUIDString());
+        return baseEvent;
     }
 
     private static boolean shouldCreateReceiveFromFacilityEvent(String jsonString) {
@@ -153,24 +173,28 @@ public class OrdersUtil {
     /**
      * Feedback event for Out of stock
      *
-     * @param currentTask current task
+     * @param currentTask          current task
+     * @param allSharedPreferences allSharedPreferences
+     * @param locationId           sync_location_id
+     * @param teamId               sync_team_id
+     * @param eventType            eventTypeName
      * @return Event Feedback Event
      * The event:
      * - should update the response_status with out_of_stock
      * - should update the response date
      * - should set request reference
      */
-    private static Event getFeedbackEventOutOfStock(Task currentTask, AllSharedPreferences allSharedPreferences) {
+    private static Event getFeedbackEventOutOfStock(String baseEntityId, Task currentTask, AllSharedPreferences allSharedPreferences, String eventType, String locationId, String teamId) {
         DateTime now = new DateTime();
         Event baseEvent = (Event) new Event()
-                .withBaseEntityId(generateRandomUUIDString())
+                .withBaseEntityId(baseEntityId)
                 .withEventDate(new Date())
-                .withFormSubmissionId(JsonFormUtils.generateRandomUUIDString())
-                .withEventType(Constants.EVENT_TYPE.CDP_ORDER_FEEDBACK)
+                .withFormSubmissionId(generateRandomUUIDString())
+                .withEventType(eventType)
                 .withEntityType(Constants.TABLES.CDP_ORDER_FEEDBACK)
                 .withProviderId(allSharedPreferences.fetchRegisteredANM())
-                .withLocationId(currentTask.getLocation()) // <== use task location_id as location for syncing
-                .withTeamId(allSharedPreferences.fetchDefaultTeamId(allSharedPreferences.fetchRegisteredANM()))
+                .withLocationId(locationId)
+                .withTeamId(teamId)
                 .withTeam(allSharedPreferences.fetchDefaultTeam(allSharedPreferences.fetchRegisteredANM()))
                 .withClientDatabaseVersion(CdpLibrary.getInstance().getDatabaseVersion())
                 .withClientApplicationVersion(CdpLibrary.getInstance().getApplicationVersion())

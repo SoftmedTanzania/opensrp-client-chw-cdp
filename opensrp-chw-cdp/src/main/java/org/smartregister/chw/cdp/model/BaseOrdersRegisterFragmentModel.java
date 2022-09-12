@@ -51,6 +51,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         columnList.add(tableName + "." + DBConstants.KEY.QUANTITY_REQ);
         columnList.add(tableName + "." + DBConstants.KEY.REQUEST_TYPE);
         columnList.add(tableName + "." + DBConstants.KEY.FORM_SUBMISSION_ID + " AS " + DBConstants.KEY.REQUEST_REFERENCE);
+        columnList.add(tableName + "." + DBConstants.KEY.TEAM_ID);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.STATUS);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.AUTHORED_ON + " AS " + DBConstants.KEY.REQUESTED_AT);
         columnList.add(Constants.TABLES.TASK + "." + DBConstants.KEY.ID + " AS " + DBConstants.KEY.TASK_ID);

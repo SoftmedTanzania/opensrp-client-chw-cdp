@@ -23,6 +23,7 @@ public interface Constants {
         String CDP_CONDOM_ORDER = "CDP Condom Order";
         String CDP_ORDER_FROM_FACILITY = "CDP Order From Facility";
         String CDP_ORDER_FEEDBACK = "CDP Order Feedback";
+        String CDP_ORDER_FEEDBACK_OWN_COPY = "CDP Order Feedback Own Copy";
         String CDP_CONDOM_DISTRIBUTION_OUTSIDE = "CDP Distribution Outside Facility";
     }
 
