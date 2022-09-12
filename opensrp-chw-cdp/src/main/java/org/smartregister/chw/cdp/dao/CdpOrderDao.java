@@ -20,12 +20,13 @@ public class CdpOrderDao extends AbstractDao {
                                        String condomBrand,
                                        String quantityRequested,
                                        String requestType,
-                                       String requestDate) {
+                                       String requestDate,
+                                       String teamId) {
 
 
         String sql = "INSERT INTO " + mainOrdersTable + "" +
-                "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at) " +
-                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + requestDate + "')" +
+                "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at, teamId) " +
+                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + requestDate + "', '" + teamId + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET location_id = '" + locationId + "'," +
                 "           form_submission_id = '" + formSubmissionId + "', " +
@@ -33,7 +34,8 @@ public class CdpOrderDao extends AbstractDao {
                 "           condom_brand = '" + condomBrand + "', " +
                 "           quantity_requested = '" + quantityRequested + "', " +
                 "           request_type = '" + requestType + "', " +
-                "           requested_at = '" + requestDate + "'" +
+                "           requested_at = '" + requestDate + "', " +
+                "           teamId = '" + teamId + "'" +
                 "       ";
         updateDB(sql);
     }
