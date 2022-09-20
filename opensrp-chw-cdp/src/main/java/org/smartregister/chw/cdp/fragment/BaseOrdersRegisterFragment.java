@@ -102,6 +102,12 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         updateStockOnHand(CdpStockingDao.getCurrentStockInHand(locationId));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupViews(rootView);
+    }
+
     protected void updateStockOnHand(int stock) {
         if (tvStockOnHandCount != null)
             tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
