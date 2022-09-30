@@ -247,6 +247,11 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     }
 
     @Override
+    protected void attachSyncButton(View view) {
+        syncButton = view.findViewById(R.id.sync_refresh);
+    }
+
+    @Override
     protected void refreshSyncProgressSpinner() {
         if (syncProgressBar != null) {
             syncProgressBar.setVisibility(android.view.View.GONE);
