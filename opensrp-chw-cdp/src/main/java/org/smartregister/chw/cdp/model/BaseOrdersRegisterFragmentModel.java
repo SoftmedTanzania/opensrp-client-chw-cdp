@@ -1,7 +1,5 @@
 package org.smartregister.chw.cdp.model;
 
-import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
@@ -9,9 +7,15 @@ import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
+import org.smartregister.util.Utils;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+
+import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentFemaleCondomCount;
+import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentMaleCondomCount;
 
 public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragmentContract.Model {
     @Override
@@ -36,6 +40,21 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         if (formName.equalsIgnoreCase(Constants.FORMS.CDP_CONDOM_ORDER_FACILITY)) {
             JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
             CdpJsonFormUtils.initializeHealthFacilitiesList(form);
+            return form;
+        }
+        return CdpJsonFormUtils.getFormAsJson(formName);
+    }
+
+    @Override
+    public JSONObject getDistributionFormAsJson(String formName) throws Exception {
+        if (formName.equalsIgnoreCase(Constants.FORMS.CDP_CONDOM_DISTRIBUTION_WITHIN)) {
+            JSONObject form = CdpJsonFormUtils.getFormAsJson(formName);
+            String userLocationId = Utils.getAllSharedPreferences().fetchUserLocalityId(Utils.getAllSharedPreferences().fetchRegisteredANM());
+            JSONObject global = form.getJSONObject("global");
+            if (global != null) {
+                global.put("male_condom_count", getCurrentMaleCondomCount(userLocationId));
+                global.put("female_condom_count", getCurrentFemaleCondomCount(userLocationId));
+            }
             return form;
         }
         return CdpJsonFormUtils.getFormAsJson(formName);

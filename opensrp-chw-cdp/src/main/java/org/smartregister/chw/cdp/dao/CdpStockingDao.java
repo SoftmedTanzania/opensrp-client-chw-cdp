@@ -112,7 +112,7 @@ public class CdpStockingDao extends AbstractDao {
         List<Integer> res = readData(sql, dataMap);
 
         if (res == null || res.size() == 0)
-            return null;
+            return 0;
         return res.get(0);
     }
 
@@ -123,7 +123,7 @@ public class CdpStockingDao extends AbstractDao {
         List<Integer> res = readData(sql, dataMap);
 
         if (res == null || res.size() == 0)
-            return null;
+            return 0;
         return res.get(0);
     }
 

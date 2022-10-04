@@ -102,6 +102,12 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         updateStockOnHand(CdpStockingDao.getCurrentStockInHand(locationId));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        new android.os.Handler().postDelayed(() -> setupViews(rootView), 1000);
+    }
+
     protected void updateStockOnHand(int stock) {
         if (tvStockOnHandCount != null)
             tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
@@ -238,6 +244,11 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     @Override
     public void setAdvancedSearchFormData(HashMap<String, String> advancedSearchFormData) {
         //
+    }
+
+    @Override
+    protected void attachSyncButton(View view) {
+        syncButton = view.findViewById(R.id.sync_refresh);
     }
 
     @Override

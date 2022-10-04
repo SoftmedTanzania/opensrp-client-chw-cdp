@@ -25,6 +25,7 @@ public interface Constants {
         String CDP_ORDER_FEEDBACK = "CDP Order Feedback";
         String CDP_ORDER_FEEDBACK_OWN_COPY = "CDP Order Feedback Own Copy";
         String CDP_CONDOM_DISTRIBUTION_OUTSIDE = "CDP Distribution Outside Facility";
+        String CDP_CONDOM_DISTRIBUTION_WITHIN = "CDP Distribution Within Facility";
     }
 
     interface FORMS {
@@ -36,6 +37,7 @@ public interface Constants {
         String CDP_CONDOM_ORDER_FACILITY = "cdp_facility_order_form";
         String CDP_RECEIVE_CONDOM_MSD = "cdp_receive_condom_msd";
         String CDP_RECEIVE_CONDOM_FACILITY = "cdp_receive_condom_facility";
+        String CDP_CONDOM_DISTRIBUTION_WITHIN = "cdp_condom_distribution_within";
     }
 
     interface TABLES {

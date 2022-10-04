@@ -43,5 +43,7 @@ public interface BaseOrdersRegisterFragmentContract {
         String mainSelect(String tableName, String mainCondition);
 
         JSONObject getOrderFormAsJson(String formName) throws Exception;
+
+        JSONObject getDistributionFormAsJson(String formName) throws Exception;
     }
 }
