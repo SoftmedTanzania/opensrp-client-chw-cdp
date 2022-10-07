@@ -95,6 +95,7 @@ public interface Constants {
         String RECEIVING_ORDER_FACILITY = "receiving_order_facility";
         String STOCK_EVENT_TYPE = "stock_event_type";
         String ISSUING_ORGANIZATION = "issuing_organization";
+        String MALE_CONDOM_BRAND = "male_condom_brand";
     }
 
     interface STOCK_EVENT_TYPES {

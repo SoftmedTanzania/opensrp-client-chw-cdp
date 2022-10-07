@@ -21,13 +21,14 @@ public class CdpStockingDao extends AbstractDao {
                                           String femaleCondomsOffset,
                                           String stockEventType,
                                           String issuingOrganization,
+                                          String maleCondomBrand,
                                           String eventType,
                                           String restockingDate) {
 
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
-                "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, stock_event_type, date_updated) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "', '" + stockEventType + "', '" + restockingDate + "')" +
+                "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, male_condom_brand, stock_event_type, date_updated) " +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "','" + maleCondomBrand + "', '" + stockEventType + "', '" + restockingDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           chw_name = '" + chwName + "', " +
@@ -36,6 +37,7 @@ public class CdpStockingDao extends AbstractDao {
                 "           stock_event_type = '" + stockEventType + "', " +
                 "           event_type = '" + eventType + "', " +
                 "           issuing_organization = '" + issuingOrganization + "', " +
+                "           male_condom_brand = '" + maleCondomBrand + "', " +
                 "           date_updated = '" + restockingDate + "'" +
                 "       ";
         updateDB(sqlUpdateStockLog);
