@@ -13,6 +13,8 @@ import java.util.List;
 public class CdpStockingDao extends AbstractDao {
     private static final String stockLogTable = Constants.TABLES.CDP_STOCK_LOG;
     private static final String stockCountTable = Constants.TABLES.CDP_STOCK_COUNT;
+    private static final String stockIssuingTable = Constants.TABLES.CDP_ISSUING_HF;
+
 
     public static void updateStockLogData(String locationId,
                                           String formSubmissionId,
@@ -21,14 +23,16 @@ public class CdpStockingDao extends AbstractDao {
                                           String femaleCondomsOffset,
                                           String stockEventType,
                                           String issuingOrganization,
+                                          String otherIssuingOrganization,
                                           String maleCondomBrand,
+                                          String femaleCondomBrand,
                                           String eventType,
                                           String restockingDate) {
 
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
-                "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, male_condom_brand, stock_event_type, date_updated) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "','" + maleCondomBrand + "', '" + stockEventType + "', '" + restockingDate + "')" +
+                "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, other_issuing_organization, male_condom_brand, female_condom_brand, stock_event_type, date_updated) " +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "','" + otherIssuingOrganization + "','" + maleCondomBrand + "','" + femaleCondomBrand + "', '" + stockEventType + "', '" + restockingDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           chw_name = '" + chwName + "', " +
@@ -37,10 +41,42 @@ public class CdpStockingDao extends AbstractDao {
                 "           stock_event_type = '" + stockEventType + "', " +
                 "           event_type = '" + eventType + "', " +
                 "           issuing_organization = '" + issuingOrganization + "', " +
+                "           other_issuing_organization = '" + otherIssuingOrganization + "', " +
                 "           male_condom_brand = '" + maleCondomBrand + "', " +
+                "           female_condom_brand = '" + femaleCondomBrand + "', " +
                 "           date_updated = '" + restockingDate + "'" +
                 "       ";
         updateDB(sqlUpdateStockLog);
+    }
+    public static void updateStockIssuingData(String locationId,
+                                          String formSubmissionId,
+                                          String maleCondoms,
+                                          String femaleCondoms,
+                                          String restockDate,
+                                          String condomType,
+                                          String condomBrand,
+                                          String otherCondomBrand,
+                                          String pointOfService,
+                                          String providedMaleCondoms,
+                                          String providedFemaleCondoms) {
+
+
+        String sqlUpdateIssuingHf = "INSERT INTO " + stockIssuingTable + "" +
+                "    (id, entity_id, base_entity_id, male_condoms, female_condoms, condom_restock_date, condom_type, condom_brand, other_condom_brand, point_of_service, provided_male_condoms, provided_female_condoms) " +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + maleCondoms + "', '" + femaleCondoms + "', '" + restockDate + "', '" + condomType + "', '" + condomBrand + "','" + otherCondomBrand + "','" + pointOfService + "','" + providedMaleCondoms + "', '" + providedFemaleCondoms + "')" +
+                "       ON CONFLICT (id) DO UPDATE" +
+                "       SET entity_id = '" + locationId + "'," +
+                "           male_condoms = '" + maleCondoms + "', " +
+                "           female_condoms = '" + femaleCondoms + "', " +
+                "           condom_restock_date = '" + restockDate + "', " +
+                "           condom_type = '" + condomType + "', " +
+                "           condom_brand = '" + condomBrand + "', " +
+                "           other_condom_brand = '" + otherCondomBrand + "', " +
+                "           point_of_service = '" + pointOfService + "', " +
+                "           provided_male_condoms = '" + providedMaleCondoms + "', " +
+                "           provided_female_condoms = '" + providedFemaleCondoms + "'" +
+                "       ";
+        updateDB(sqlUpdateIssuingHf);
     }
 
     public static void updateStockCountData(String locationId,
