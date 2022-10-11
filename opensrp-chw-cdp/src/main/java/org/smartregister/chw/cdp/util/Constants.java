@@ -103,6 +103,7 @@ public interface Constants {
         String FEMALE_CONDOMS = "female_condoms";
         String OTHER_CONDOM_BRAND = "other_condom_brand";
         String POINT_OF_SERVICE = "point_of_service";
+        String OTHER_POS = "other_pos";
         String PROVIDED_MALE_CONDOMS = "provided_male_condoms";
         String PROVIDED_FEMALE_CONDOMS = "provided_female_condoms";
 
