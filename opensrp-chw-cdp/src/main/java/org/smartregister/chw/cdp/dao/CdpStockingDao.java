@@ -64,7 +64,7 @@ public class CdpStockingDao extends AbstractDao {
 
         String sqlUpdateIssuingHf = "INSERT INTO " + stockIssuingTable + "" +
                 "    (id, entity_id, base_entity_id, male_condoms, female_condoms, condom_restock_date, condom_type, condom_brand, other_condom_brand, point_of_service, other_pos, provided_male_condoms, provided_female_condoms) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + maleCondoms + "', '" + femaleCondoms + "', '" + restockDate + "', '" + condomType + "', '" + condomBrand + "','" + otherCondomBrand + "','" + pointOfService + "','" + "','" + otherPos + "','" +providedMaleCondoms + "', '" + providedFemaleCondoms + "')" +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + maleCondoms + "', '" + femaleCondoms + "', '" + restockDate + "', '" + condomType + "', '" + condomBrand + "','" + otherCondomBrand + "','" + pointOfService + "','" + otherPos + "','" +providedMaleCondoms + "', '" + providedFemaleCondoms + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           male_condoms = '" + maleCondoms + "', " +
