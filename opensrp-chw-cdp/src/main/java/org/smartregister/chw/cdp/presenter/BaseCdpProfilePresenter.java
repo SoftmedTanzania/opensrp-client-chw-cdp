@@ -81,8 +81,8 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
 
         JSONArray fields = form.getJSONObject(Constants.STEP_ONE).getJSONArray(JsonFormConstants.FIELDS);
 
-        JSONObject numberOfMaleCondoms = org.smartregister.util.JsonFormUtils.getFieldJSONObject(fields, "number_of_male_condoms");
-        JSONObject numberOfFemaleCondoms = org.smartregister.util.JsonFormUtils.getFieldJSONObject(fields, "number_of_female_condoms");
+        JSONObject numberOfMaleCondoms = JsonFormUtils.getFieldJSONObject(fields, "number_of_male_condoms");
+        JSONObject numberOfFemaleCondoms = JsonFormUtils.getFieldJSONObject(fields, "number_of_female_condoms");
         if (numberOfMaleCondoms != null) {
             JSONObject vMax = new JSONObject();
             vMax.put(JsonFormUtils.VALUE, CdpDao.getLastRecordedMaleCondomsStockAtOutlet(entityId));
