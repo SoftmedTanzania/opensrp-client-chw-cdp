@@ -12,7 +12,7 @@
         android:id="@+id/action_receive_from_msd"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_south_east_24"
-        android:title="@string/receive_msd"
+        android:title="@string/receive_condoms"
         app:showAsAction="ifRoom"/>
 
     <item

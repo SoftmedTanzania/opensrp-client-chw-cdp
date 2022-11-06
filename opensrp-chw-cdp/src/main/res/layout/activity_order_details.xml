@@ -99,6 +99,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:visibility = "gone"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/type_label"
@@ -112,6 +113,7 @@
                     android:text="@string/brand_label_text"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:visibility = "gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/condom_brand" />
 
@@ -404,11 +406,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_end="60dp"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/btn_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="btn_out_of_stock,btn_stock_distribution" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

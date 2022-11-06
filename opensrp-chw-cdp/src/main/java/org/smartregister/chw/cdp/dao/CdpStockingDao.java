@@ -4,7 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /*
  * Handles all Stocking And Restocking issues
@@ -17,6 +19,7 @@ public class CdpStockingDao extends AbstractDao {
     public static void updateStockLogData(String locationId,
                                           String formSubmissionId,
                                           String chwName,
+                                          String condomBrand,
                                           String maleCondomsOffset,
                                           String femaleCondomsOffset,
                                           String stockEventType,
@@ -26,11 +29,12 @@ public class CdpStockingDao extends AbstractDao {
 
 
         String sqlUpdateStockLog = "INSERT INTO " + stockLogTable + "" +
-                "    (id, entity_id, base_entity_id, chw_name, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, stock_event_type, date_updated) " +
-                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "', '" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "', '" + stockEventType + "', '" + restockingDate + "')" +
+                "    (id, entity_id, base_entity_id, chw_name,condom_brand, female_condoms_offset, male_condoms_offset, event_type, issuing_organization, stock_event_type, date_updated) " +
+                "         VALUES ('" + formSubmissionId + "', '" + locationId + "', '" + formSubmissionId + "', '" + chwName + "','" + condomBrand + "' ,'" + femaleCondomsOffset + "', '" + maleCondomsOffset + "', '" + eventType + "', '" + issuingOrganization + "', '" + stockEventType + "', '" + restockingDate + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET entity_id = '" + locationId + "'," +
                 "           chw_name = '" + chwName + "', " +
+                "           condom_brand = '" + condomBrand + "', " +
                 "           female_condoms_offset = '" + femaleCondomsOffset + "', " +
                 "           male_condoms_offset = '" + maleCondomsOffset + "', " +
                 "           stock_event_type = '" + stockEventType + "', " +
@@ -127,6 +131,51 @@ public class CdpStockingDao extends AbstractDao {
         return res.get(0);
     }
 
+
+    public static List<String> getCondomBrands() {
+        String sql = "SELECT  DISTINCT condom_brand COLLATE NOCASE as condom_brand  FROM " + stockLogTable + " WHERE condom_brand <> '' AND condom_brand IS NOT NULL ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "condom_brand");
+
+        List<String> res = readData(sql, dataMap);
+
+        if (res == null || res.size() == 0)
+            return new ArrayList<>();
+        return res;
+    }
+
+
+    public static Integer getCurrentCondomCountByBrand(String condomBrand, CondomStockLog.CondomType condomType) {
+        String sql = "SELECT * FROM " + stockLogTable + " WHERE condom_brand = '" + condomBrand + "' ";
+
+        AbstractDao.DataMap<CondomStockLog> dataMap = cursor -> {
+            CondomStockLog condomStockLog = new CondomStockLog();
+
+            condomStockLog.setCondomBrand(getCursorValue(cursor, "condom_brand", ""));
+            condomStockLog.setStockEventType(getCursorValue(cursor, "stock_event_type", ""));
+            condomStockLog.setCount(getCursorIntValue(cursor, condomType.name().toLowerCase(Locale.getDefault()) + "_condoms_offset", 0));
+
+            return condomStockLog;
+        };
+
+
+        List<CondomStockLog> res = readData(sql, dataMap);
+
+        if (res == null || res.size() == 0)
+            return 0;
+        else {
+            int count = 0;
+            for (CondomStockLog condomStockLog : res) {
+                if (condomStockLog.getStockEventType().equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.INCREMENT))
+                    count += condomStockLog.getCount();
+                else if (condomStockLog.getStockEventType().equalsIgnoreCase(Constants.STOCK_EVENT_TYPES.DECREMENT))
+                    count -= condomStockLog.getCount();
+            }
+            return count;
+        }
+    }
+
+
     public static int getCurrentStockInHand(String locationId) {
         int currentStockInHand = 0;
         Integer currentFemaleCondomCount = getCurrentFemaleCondomCount(locationId);
@@ -138,5 +187,40 @@ public class CdpStockingDao extends AbstractDao {
             currentStockInHand += currentMaleCondomCount;
         }
         return currentStockInHand;
+    }
+
+    public static class CondomStockLog {
+        private String condomBrand;
+        private String stockEventType;
+        private int count;
+
+        public enum CondomType {
+            MALE,
+            FEMALE
+        }
+
+        public String getCondomBrand() {
+            return condomBrand;
+        }
+
+        public void setCondomBrand(String condomBrand) {
+            this.condomBrand = condomBrand;
+        }
+
+        public String getStockEventType() {
+            return stockEventType;
+        }
+
+        public void setStockEventType(String stockEventType) {
+            this.stockEventType = stockEventType;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
     }
 }

@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
@@ -28,9 +32,6 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.view.activity.BaseProfileActivity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -82,6 +83,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         imageRenderHelper = new ImageRenderHelper(this);
         setupViews();
         initializePresenter();
+        updateFollowupButton();
     }
 
     @Override
@@ -118,7 +120,7 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         if (id == R.id.btn_record_visit) {
             startOutletVisit();
         }
-        if(id == R.id.rlVisitHistory){
+        if (id == R.id.rlVisitHistory) {
             startRestockingHistory();
         }
     }
@@ -131,6 +133,14 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         profilePresenter.refreshProfileBottom();
     }
 
+    @Override
+    public void updateFollowupButton() {
+        if (CdpDao.getLastRecordedStockAtOutlet(outletObject.getBaseEntityId()) == 0) {
+            hideView();
+        } else {
+            btnRecordFollowup.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void hideView() {
@@ -138,11 +148,11 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
     }
 
     @Override
-    public void updateLastRecordedStock(){
+    public void updateLastRecordedStock() {
         tvLastRecordedStock.setText(getString(R.string.last_recorded_stock, CdpDao.getLastRecordedStockAtOutlet(outletObject.getBaseEntityId())));
     }
 
-    protected void startRestockingHistory(){
+    protected void startRestockingHistory() {
         BaseRestockingHistoryActivity.startMe(this, outletObject);
     }
 
@@ -159,7 +169,10 @@ public class BaseCdpProfileActivity extends BaseProfileActivity implements BaseC
         textViewName.setText(outletObject.getOutletName());
         textViewLocation.setText(outletObject.getOutletWardName());
         textViewUniqueID.setText(outletObject.getOutletId());
-        textViewOutletType.setText(outletObject.getOutletType());
+        if (outletObject.getOutletType().equalsIgnoreCase("other"))
+            textViewOutletType.setText(outletObject.getOtherOutletType());
+        else
+            textViewOutletType.setText(outletObject.getOutletType());
     }
 
 

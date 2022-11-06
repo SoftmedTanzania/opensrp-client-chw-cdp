@@ -65,7 +65,7 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
         linearLayout = view.findViewById(R.id.linearLayoutRestockingHistory);
 
         Button restockingBtn = view.findViewById(R.id.restock_button);
-        restockingBtn.setText(R.string.receive_msd);
+        restockingBtn.setText(R.string.receive_condoms);
 
         restockingBtn.setOnClickListener(this);
 

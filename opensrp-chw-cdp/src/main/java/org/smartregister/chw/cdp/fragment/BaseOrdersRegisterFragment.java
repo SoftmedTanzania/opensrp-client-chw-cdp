@@ -1,11 +1,19 @@
 package org.smartregister.chw.cdp.fragment;
 
+import static org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment.CLICK_VIEW_NORMAL;
+import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -34,20 +42,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import timber.log.Timber;
-
-import static org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment.CLICK_VIEW_NORMAL;
-import static org.smartregister.util.JsonFormUtils.generateRandomUUIDString;
 
 public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements BaseOrdersRegisterFragmentContract.View {
     protected Toolbar toolbar;
     protected CustomFontTextView titleView;
     protected String customGroupFilter;
-    private TextView tvStockOnHandCount;
+    private TextView tvMaleCondomsStockOnHandCount;
+    private TextView tvFemaleCondomsStockOnHandCount;
 
     @Override
     public void setupViews(View view) {
@@ -57,7 +59,8 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         toolbar.setContentInsetsAbsolute(0, 0);
         toolbar.setContentInsetsRelative(0, 0);
         toolbar.setContentInsetStartWithNavigation(0);
-        tvStockOnHandCount = view.findViewById(R.id.stock_count_tv);
+        tvMaleCondomsStockOnHandCount = view.findViewById(R.id.male_condoms_stock_count_tv);
+        tvFemaleCondomsStockOnHandCount = view.findViewById(R.id.female_condoms_stock_count_tv);
 
         AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
         String locationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
@@ -99,7 +102,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
 
         setUpTabLayout(view);
 
-        updateStockOnHand(CdpStockingDao.getCurrentStockInHand(locationId));
+        updateStockOnHand(CdpStockingDao.getCurrentMaleCondomCount(locationId), CdpStockingDao.getCurrentFemaleCondomCount(locationId));
     }
 
     @Override
@@ -108,13 +111,15 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
         new android.os.Handler().postDelayed(() -> setupViews(rootView), 1000);
     }
 
-    protected void updateStockOnHand(int stock) {
-        if (tvStockOnHandCount != null)
-            tvStockOnHandCount.setText(getString(R.string.stock_on_hand, stock));
+    protected void updateStockOnHand(int maleCondomsStockOnHand, int femaleCondomsStockOnHand) {
+        if (tvMaleCondomsStockOnHandCount != null)
+            tvMaleCondomsStockOnHandCount.setText(getString(R.string.male_condoms_stock_on_hand, maleCondomsStockOnHand));
+        if (tvFemaleCondomsStockOnHandCount != null)
+            tvFemaleCondomsStockOnHandCount.setText(getString(R.string.female_condoms_stock_on_hand, femaleCondomsStockOnHand));
     }
 
     protected int getFragmentTitle() {
-       return R.string.order_receive;
+        return R.string.order_receive;
     }
 
     @Override

@@ -2,13 +2,20 @@ package org.smartregister.chw.cdp.presenter;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
+import com.vijay.jsonwizard.constants.JsonFormConstants;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseCdpProfileContract;
+import org.smartregister.chw.cdp.dao.CdpDao;
 import org.smartregister.chw.cdp.domain.OutletObject;
+import org.smartregister.chw.cdp.util.Constants;
+import org.smartregister.util.JsonFormUtils;
 
 import java.lang.ref.WeakReference;
 
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 
@@ -71,6 +78,26 @@ public class BaseCdpProfilePresenter implements BaseCdpProfileContract.Presenter
     @Override
     public void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception {
         JSONObject form = model.getFormAsJson(formName, entityId, currentLocationId);
+
+        JSONArray fields = form.getJSONObject(Constants.STEP_ONE).getJSONArray(JsonFormConstants.FIELDS);
+
+        JSONObject numberOfMaleCondoms = org.smartregister.util.JsonFormUtils.getFieldJSONObject(fields, "number_of_male_condoms");
+        JSONObject numberOfFemaleCondoms = org.smartregister.util.JsonFormUtils.getFieldJSONObject(fields, "number_of_female_condoms");
+        if (numberOfMaleCondoms != null) {
+            JSONObject vMax = new JSONObject();
+            vMax.put(JsonFormUtils.VALUE, CdpDao.getLastRecordedMaleCondomsStockAtOutlet(entityId));
+            vMax.put("err", "Condom count should be less than or equal to the previous restock amount");
+
+            numberOfMaleCondoms.put("v_max", vMax);
+        }
+
+        if (numberOfFemaleCondoms != null) {
+            JSONObject vMax = new JSONObject();
+            vMax.put(JsonFormUtils.VALUE, CdpDao.getLastRecordedFemaleCondomsStockAtOutlet(entityId));
+            vMax.put("err", "Condom count should be less than or equal to the previous restock amount");
+            numberOfFemaleCondoms.put("v_max", vMax);
+        }
+
         getView().startFormActivity(form);
     }
 }

@@ -59,6 +59,8 @@
     <string name="sent_orders">Sent Orders</string>
     <string name="all">All</string>
     <string name="stock_on_hand">Stock On Hand: %d</string>
+    <string name="male_condoms_stock_on_hand">Male Condoms: %d</string>
+    <string name="female_condoms_stock_on_hand">Female Condoms: %d</string>
     <string name="outlets_count">Outlets: %d</string>
     <string name="no_unique_id">No unique Id found</string>
     <string name="return_to_all_outlets">Return to all outlets</string>
@@ -99,8 +101,8 @@
     <string name="mark_as_received">Mark As Received</string>
     <string name="facility_response_label">Facility Response</string>
     <string name="response_date_label_text">Response Date</string>
-    <string name="receive_msd">Receive MSD</string>
-    <string name="received_from_msd">Received From MSD</string>
+    <string name="receive_condoms">Receive Condoms</string>
+    <string name="received_from_history">Received From History</string>
     <string name="response_status_label">Response Status</string>
     <string name="rs_restocked">Restocked</string>
     <string name="rs_out_of_stock">Out of Stock</string>

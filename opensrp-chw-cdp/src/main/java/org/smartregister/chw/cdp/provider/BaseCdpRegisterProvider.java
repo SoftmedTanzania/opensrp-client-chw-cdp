@@ -5,8 +5,9 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.smartregister.cdp.R;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
@@ -25,7 +26,6 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 import java.text.MessageFormat;
 import java.util.Set;
 
-import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegisterProvider.OutletViewHolder> {
@@ -60,10 +60,15 @@ public class BaseCdpRegisterProvider implements RecyclerViewProvider<BaseCdpRegi
             String outletName = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_NAME, true);
             String outletLocation = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_WARD_NAME, true);
             String outletType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OUTLET_TYPE, true);
+            String otherOutletType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.OTHER_OUTLET_TYPE, true);
 
             viewHolder.outlet_name.setText(outletName);
             viewHolder.outlet_location.setText(outletLocation);
-            viewHolder.outlet_type.setText(outletType);
+
+            if (outletType.equalsIgnoreCase("other"))
+                viewHolder.outlet_type.setText(otherOutletType);
+            else
+                viewHolder.outlet_type.setText(outletType);
 
             viewHolder.outlet_column.setOnClickListener(onClickListener);
             viewHolder.outlet_column.setTag(pc);

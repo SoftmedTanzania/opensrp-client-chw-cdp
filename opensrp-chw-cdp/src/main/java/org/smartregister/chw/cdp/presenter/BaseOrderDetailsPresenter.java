@@ -95,6 +95,8 @@ public class BaseOrderDetailsPresenter implements BaseOrderDetailsContract.Prese
         boolean isRespondingFacility = interactor.isRespondingFacility(pc);
         if (!status.equalsIgnoreCase(Constants.OrderStatus.READY) && getView() != null) {
             getView().hideButtons();
+        } else if (getView() != null) {
+            getView().showOutOfStock();
         }
         if (!isRespondingFacility && status.equalsIgnoreCase(Constants.OrderStatus.IN_TRANSIT) && getView() != null) {
             getView().showMarkAsReceived();
