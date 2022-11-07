@@ -45,6 +45,7 @@ public interface Constants {
         String CDP_REGISTER = "ec_cdp_register";
         String CDP_FOLLOW_UP = "ec_cdp_follow_up_visit";
         String CDP_STOCK_COUNT = "ec_cdp_stock_count";
+        String CDP_ISSUING_HF = "ec_cdp_issuing_hf";
         String CDP_STOCK_LOG = "ec_cdp_stock_log";
         String CDP_OUTLET_VISIT = "ec_cdp_outlet_visit";
         String CDP_ORDERS = "ec_cdp_orders";
@@ -95,6 +96,17 @@ public interface Constants {
         String RECEIVING_ORDER_FACILITY = "receiving_order_facility";
         String STOCK_EVENT_TYPE = "stock_event_type";
         String ISSUING_ORGANIZATION = "issuing_organization";
+        String OTHER_ISSUING_ORGANIZATION = "other_issuing_organization";
+        String MALE_CONDOM_BRAND = "male_condom_brand";
+        String OTHER_MALE_CONDOM_BRAND = "other_male_condom_brand";
+        String FEMALE_CONDOM_BRAND = "female_condom_brand";
+        String OTHER_FEMALE_CONDOM_BRAND = "other_female_condom_brand";
+        String MALE_CONDOMS = "male_condoms";
+        String FEMALE_CONDOMS = "female_condoms";
+        String OTHER_CONDOM_BRAND = "other_condom_brand";
+        String POINT_OF_SERVICE = "point_of_service";
+        String PROVIDED_MALE_CONDOMS = "provided_male_condoms";
+        String PROVIDED_FEMALE_CONDOMS = "provided_female_condoms";
     }
 
     interface STOCK_EVENT_TYPES {
