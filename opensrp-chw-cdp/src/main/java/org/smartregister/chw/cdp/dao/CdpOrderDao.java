@@ -1,19 +1,17 @@
 package org.smartregister.chw.cdp.dao;
 
 import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
-import org.smartregister.chw.cdp.domain.OutletObject;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class CdpOrderDao extends AbstractDao {
     private static final String mainOrdersTable = Constants.TABLES.CDP_ORDERS;
     private static final String mainFeedbackTable = Constants.TABLES.CDP_ORDER_FEEDBACK;
 
     public static void updateOrderData(String locationId,
+                                       String receivingOrderFacility,
                                        String baseEntityId,
                                        String formSubmissionId,
                                        String condomType,
@@ -25,10 +23,11 @@ public class CdpOrderDao extends AbstractDao {
 
 
         String sql = "INSERT INTO " + mainOrdersTable + "" +
-                "    (id, location_id, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at, teamId) " +
-                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + requestDate + "', '" + teamId + "')" +
+                "    (id, location_id, receiving_order_facility, form_submission_id, base_entity_id, condom_type, condom_brand, quantity_requested, request_type, requested_at, teamId) " +
+                "         VALUES ('" + baseEntityId + "', '" + locationId + "', '" + receivingOrderFacility + "', '" + formSubmissionId + "', '" + baseEntityId + "', '" + condomType + "', '" + condomBrand + "', '" + quantityRequested + "', '" + requestType + "', '" + requestDate + "', '" + teamId + "')" +
                 "       ON CONFLICT (id) DO UPDATE" +
                 "       SET location_id = '" + locationId + "'," +
+                "           receiving_order_facility = '" + receivingOrderFacility + "', " +
                 "           form_submission_id = '" + formSubmissionId + "', " +
                 "           condom_type = '" + condomType + "', " +
                 "           condom_brand = '" + condomBrand + "', " +

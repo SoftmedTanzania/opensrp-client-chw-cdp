@@ -59,6 +59,30 @@
         tools:text="Brand" />
 
     <TextView
+        android:id="@+id/health_facility_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/health_facility"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/brand_label" />
+
+    <TextView
+        android:id="@+id/health_facility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/health_facility_label"
+        app:layout_constraintTop_toBottomOf="@id/condom_brand"
+        app:layout_constraintEnd_toStartOf="@id/v_guideline"
+        tools:text="" />
+
+    <TextView
         android:id="@+id/quantity_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +91,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/brand_label" />
+        app:layout_constraintTop_toBottomOf="@id/health_facility_label" />
 
     <TextView
         android:id="@+id/condom_quantity"
@@ -78,7 +102,7 @@
         android:textColor="@color/black"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/quantity_label"
-        app:layout_constraintTop_toBottomOf="@id/brand_label"
+        app:layout_constraintTop_toBottomOf="@id/health_facility"
         app:layout_constraintEnd_toStartOf="@id/v_guideline"
         tools:text="20" />
 

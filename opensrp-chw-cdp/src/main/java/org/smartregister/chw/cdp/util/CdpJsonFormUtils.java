@@ -1,5 +1,9 @@
 package org.smartregister.chw.cdp.util;
 
+import static org.smartregister.chw.cdp.util.Constants.ENCOUNTER_TYPE;
+import static org.smartregister.chw.cdp.util.Constants.STEP_ONE;
+import static org.smartregister.chw.cdp.util.Constants.STEP_TWO;
+
 import android.util.Log;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -23,10 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 import timber.log.Timber;
-
-import static org.smartregister.chw.cdp.util.Constants.ENCOUNTER_TYPE;
-import static org.smartregister.chw.cdp.util.Constants.STEP_ONE;
-import static org.smartregister.chw.cdp.util.Constants.STEP_TWO;
 
 public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
@@ -134,7 +134,7 @@ public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         jsonObject.put(DBConstants.KEY.RELATIONAL_ID, entityId);
     }
 
-    public static void getVisitForm(JSONObject jsonObject, String entityId, String currentLocationId) throws JSONException{
+    public static void getVisitForm(JSONObject jsonObject, String entityId, String currentLocationId) throws JSONException {
         jsonObject.getJSONObject(METADATA).put(ENCOUNTER_LOCATION, currentLocationId);
         jsonObject.put(org.smartregister.util.JsonFormUtils.ENTITY_ID, entityId);
     }
@@ -163,6 +163,10 @@ public class CdpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         JSONObject optionNode = new JSONObject();
                         optionNode.put("text", StringUtils.capitalize(location.getProperties().getName()));
                         optionNode.put("key", StringUtils.capitalize(location.getProperties().getName()));
+                        optionNode.put("openmrs_entity_parent", "");
+                        optionNode.put("openmrs_entity", "concept");
+                        optionNode.put("openmrs_entity_id", location.getProperties().getUid());
+
                         JSONObject propertyObject = new JSONObject();
                         propertyObject.put("presumed-id", location.getProperties().getUid());
                         propertyObject.put("confirmed-id", location.getProperties().getUid());

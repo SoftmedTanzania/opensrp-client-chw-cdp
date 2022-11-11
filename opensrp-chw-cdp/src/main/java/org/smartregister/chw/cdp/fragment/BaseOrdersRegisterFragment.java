@@ -119,7 +119,7 @@ public class BaseOrdersRegisterFragment extends BaseRegisterFragment implements 
     }
 
     protected int getFragmentTitle() {
-        return R.string.order_receive;
+        return R.string.menu_order_condoms;
     }
 
     @Override

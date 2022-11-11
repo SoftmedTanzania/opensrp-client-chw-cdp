@@ -87,6 +87,30 @@
             app:layout_constraintTop_toBottomOf="@id/tv_type_male" />
 
         <TextView
+            android:id="@+id/tv_issuing_organization_male_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/issuing_organization_label"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_brand_label_male" />
+
+        <TextView
+            android:id="@+id/tv_issuing_organization_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:text="MSD"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/tv_issuing_organization_male_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_brand_male" />
+
+        <TextView
             android:id="@+id/tv_restocking_date_label_male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +118,7 @@
             android:text="@string/date_label"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_brand_label_male" />
+            app:layout_constraintTop_toBottomOf="@id/tv_issuing_organization_male_label" />
 
         <TextView
             android:id="@+id/tv_restocking_date_male"
@@ -108,7 +132,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/tv_restocking_date_label_male"
-            app:layout_constraintTop_toBottomOf="@id/tv_brand_male" />
+            app:layout_constraintTop_toBottomOf="@id/tv_issuing_organization_male" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -200,6 +224,31 @@
             app:layout_constraintStart_toEndOf="@+id/tv_brand_label_female"
             app:layout_constraintTop_toBottomOf="@id/tv_type_female" />
 
+
+        <TextView
+            android:id="@+id/tv_issuing_organization_female_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/issuing_organization_label"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_brand_label_female" />
+
+        <TextView
+            android:id="@+id/tv_issuing_organization_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:text="MSD"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/tv_issuing_organization_female_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_brand_female" />
+
         <TextView
             android:id="@+id/tv_restocking_date_label_female"
             android:layout_width="wrap_content"
@@ -208,7 +257,7 @@
             android:text="@string/date_label"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_brand_label_female" />
+            app:layout_constraintTop_toBottomOf="@id/tv_issuing_organization_female_label" />
 
         <TextView
             android:id="@+id/tv_restocking_date_female"
@@ -222,7 +271,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/tv_restocking_date_label_female"
-            app:layout_constraintTop_toBottomOf="@id/tv_brand_female" />
+            app:layout_constraintTop_toBottomOf="@id/tv_issuing_organization_female" />
 
         <View
             android:layout_width="match_parent"

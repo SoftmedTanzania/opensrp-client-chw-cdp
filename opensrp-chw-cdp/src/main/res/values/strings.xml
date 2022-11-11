@@ -52,12 +52,17 @@
     <string name="female">Female</string>
     <string name="outlet_registration">Outlet Registration</string>
     <string name="menu_cdp">Condom Programming</string>
+    <string name="menu_issue_condoms">Incoming Orders</string>
+    <string name="menu_order_condoms">Outgoing Orders</string>
+    <string name="menu_receive_cdp_from_organizations">Receive Condoms From Organizations</string>
     <string name="add_outlet">Add Outlet</string>
-    <string name="order_receive">Order/Receive</string>
+    <string name="order_receive">Outgoing Orders</string>
+    <string name="order_send">Incoming Orders</string>
     <string name="all_outlets">All Outlets</string>
     <string name="successful">Successful</string>
-    <string name="sent_orders">Sent Orders</string>
-    <string name="all">All</string>
+    <string name="sent_pending_orders">Pending</string>
+    <string name="all_received_orders">All Received Orders</string>
+    <string name="all_sent_orders">All Sent Orders</string>
     <string name="stock_on_hand">Stock On Hand: %d</string>
     <string name="male_condoms_stock_on_hand">Male Condoms: %d</string>
     <string name="female_condoms_stock_on_hand">Female Condoms: %d</string>
@@ -70,6 +75,8 @@
     <string name="type_label">Type:</string>
     <string name="quantity_label">Quantity (Pieces):</string>
     <string name="brand_label">Brand:</string>
+    <string name="health_facility">Health Facility:</string>
+    <string name="issuing_organization_label">Issuing Organization:</string>
     <string name="restocking_date_label">Restocking Date:</string>
     <string name="type_label_text">Type</string>
     <string name="quantity_label_text">Quantity (Pieces)</string>
@@ -91,7 +98,7 @@
     <string name="order_status_failed">Out Of Stock</string>
     <string name="return_to_orders">Return to all Orders</string>
     <string name="order_request_details">Order Request Details</string>
-    <string name="requests">Requests</string>
+    <string name="requests">Pending Requests</string>
     <string name="request_date_label_text">Request Date</string>
     <string name="health_facility_name_label">Health Facility Name</string>
     <string name="requester_name_label">Requester Name</string>
@@ -101,7 +108,7 @@
     <string name="mark_as_received">Mark As Received</string>
     <string name="facility_response_label">Facility Response</string>
     <string name="response_date_label_text">Response Date</string>
-    <string name="receive_condoms">Receive Condoms</string>
+    <string name="receive_condoms">Receive Condoms\nFrom Organizations</string>
     <string name="received_from_history">Received From History</string>
     <string name="response_status_label">Response Status</string>
     <string name="rs_restocked">Restocked</string>

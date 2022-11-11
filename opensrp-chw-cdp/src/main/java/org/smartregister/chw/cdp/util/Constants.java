@@ -35,7 +35,7 @@ public interface Constants {
         String CDP_CONDOM_ORDER = "cdp_condom_order";
         String CDP_CONDOM_DISTRIBUTION = "cdp_condom_distribution_outside";
         String CDP_CONDOM_ORDER_FACILITY = "cdp_facility_order_form";
-        String CDP_RECEIVE_CONDOM_MSD = "cdp_receive_condom_msd";
+        String CDP_RECEIVE_CONDOM_FROM_ORGANIZATIONS = "cdp_receive_condom_from_organizations";
         String CDP_RECEIVE_CONDOM_FACILITY = "cdp_receive_condom_facility";
         String CDP_CONDOM_DISTRIBUTION_WITHIN = "cdp_condom_distribution_within";
     }

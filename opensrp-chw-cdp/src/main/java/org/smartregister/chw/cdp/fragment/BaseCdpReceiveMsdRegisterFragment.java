@@ -80,7 +80,7 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
         titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
-            titleView.setText(R.string.menu_cdp);
+            titleView.setText(R.string.menu_receive_cdp_from_organizations);
             titleView.setFontVariant(FontVariant.REGULAR);
         }
     }
@@ -88,7 +88,7 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
 
     @LayoutRes
     protected int getLayout() {
-        return R.layout.fragment_cdp_receive_msd;
+        return R.layout.fragment_cdp_receive_from_organization;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
         int id = view.getId();
         if (id == R.id.restock_button) {
             try {
-                startRestockingForm(Constants.FORMS.CDP_RECEIVE_CONDOM_MSD);
+                startRestockingForm(Constants.FORMS.CDP_RECEIVE_CONDOM_FROM_ORGANIZATIONS);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -109,12 +109,19 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initializePresenter();
+    }
+
+    @Override
     public RestockingHistoryContract.Presenter getPresenter() {
         return presenter;
     }
 
     @Override
     public void onDataReceived(List<Visit> visits) {
+        getMainLayout().removeAllViews();
         if (visits.size() > 0) {
             for (Visit visit : visits) {
                 View view = renderView(visit);
@@ -125,7 +132,7 @@ public class BaseCdpReceiveMsdRegisterFragment extends Fragment implements View.
 
     protected void processViewData(Visit visit, View view) {
         List<Map<String, String>> visits_details = new ArrayList<>();
-        String[] params = {"condom_restock_date", "condom_type", "male_condom_brand", "female_condom_brand", "restocked_female_condoms", "restocked_male_condoms"};
+        String[] params = {"condom_restock_date", "condom_type", "male_condom_brand", "female_condom_brand", "restocked_female_condoms", "restocked_male_condoms","issuing_organization"};
         RestockingUtils.extractVisit(visit, params, visits_details);
         RestockingUtils.processRestockingVisit(visits_details, view, requireActivity());
     }
