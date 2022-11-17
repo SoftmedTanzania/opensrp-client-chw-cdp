@@ -227,11 +227,11 @@ public class VisitRepository extends BaseRepository {
         return visits;
     }
 
-    public List<Visit> getVisits(String baseEntityID, String visitType) {
+    public List<Visit> getVisits(String baseEntityID, String visitType, String ordering) {
         List<Visit> visits = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(VISIT_TABLE, VISIT_COLUMNS, BASE_ENTITY_ID + " = ? AND " + VISIT_TYPE + " = ? ", new String[]{baseEntityID, visitType}, null, null, CREATED_AT + " ASC ", null);
+            cursor = getReadableDatabase().query(VISIT_TABLE, VISIT_COLUMNS, BASE_ENTITY_ID + " = ? AND " + VISIT_TYPE + " = ? ", new String[]{baseEntityID, visitType}, null, null, VISIT_DATE + " " + ordering, null);
             visits = readVisits(cursor);
         } catch (Exception e) {
             Timber.e(e);
@@ -247,7 +247,7 @@ public class VisitRepository extends BaseRepository {
         List<Visit> visits = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(VISIT_TABLE, VISIT_COLUMNS, VISIT_GROUP + " = ? ", new String[]{visitGroup}, null, null, CREATED_AT + " ASC ", null);
+            cursor = getReadableDatabase().query(VISIT_TABLE, VISIT_COLUMNS, VISIT_GROUP + " = ? ", new String[]{visitGroup}, null, null, VISIT_DATE + " ASC ", null);
             visits = readVisits(cursor);
         } catch (Exception e) {
             Timber.e(e);

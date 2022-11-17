@@ -58,6 +58,7 @@ public class BaseCdpRegisterFragmentModel implements BaseCdpRegisterFragmentCont
         columnList.add(Constants.TABLES.CDP_OUTLET + "." + DBConstants.KEY.RELATIONAL_ID);
         columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_NAME);
         columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_TYPE);
+        columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OTHER_OUTLET_TYPE);
         columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_VILLAGE_STREET_NAME);
         columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.OUTLET_WARD_NAME);
         columnList.add(Constants.TABLES.CDP_OUTLET+ "." + DBConstants.KEY.FOCAL_PERSON_NAME);

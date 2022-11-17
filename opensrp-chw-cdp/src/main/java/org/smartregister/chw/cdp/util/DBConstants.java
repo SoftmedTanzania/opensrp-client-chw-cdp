@@ -15,7 +15,9 @@ public class DBConstants {
         public static final String FOCAL_PERSON_NAME = "focal_person_name";
         public static final String FOCAL_PERSON_PHONE = "focal_person_phone";
         public static final String OUTLET_TYPE = "outlet_type";
+        public static final String OTHER_OUTLET_TYPE = "other_outlet_type";
         public static final String LOCATION_ID = "location_id";
+        public static final String RECEIVING_ORDER_FACILITY = "receiving_order_facility";
         public static final String CONDOM_TYPE = "condom_type";
         public static final String CONDOM_BRAND = "condom_brand";
         public static final String QUANTITY_REQ = "quantity_requested";

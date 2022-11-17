@@ -14,6 +14,7 @@ import org.smartregister.chw.cdp.domain.VisitDetail;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class RestockingUtils {
@@ -55,10 +56,15 @@ public class RestockingUtils {
             TextView tvBrand = view.findViewById(R.id.tv_brand_male);
             TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_male);
             TextView tvQuantity = view.findViewById(R.id.tv_quantity_male);
+            TextView tvIssuingOrganization = view.findViewById(R.id.tv_issuing_organization_male);
+
+
             tvType.setText(context.getString(context.getResources().getIdentifier(condomType, "string", context.getPackageName())));
             tvBrand.setText(context.getString(context.getResources().getIdentifier(getMapValue(vals, "male_condom_brand"), "string", context.getPackageName())));
             tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
             tvQuantity.setText(getMapValue(vals, "restocked_male_condoms"));
+            tvIssuingOrganization.setText(getMapValue(vals, "issuing_organization").toUpperCase(Locale.ROOT));
+
         }
         if (condomType.equalsIgnoreCase("female_condom")) {
             view.findViewById(R.id.female_condoms_details).setVisibility(View.VISIBLE);
@@ -66,11 +72,13 @@ public class RestockingUtils {
             TextView tvBrand = view.findViewById(R.id.tv_brand_female);
             TextView tvRestockingDate = view.findViewById(R.id.tv_restocking_date_female);
             TextView tvQuantity = view.findViewById(R.id.tv_quantity_female);
+            TextView tvIssuingOrganization = view.findViewById(R.id.tv_issuing_organization_female);
 
             tvType.setText(context.getString(context.getResources().getIdentifier(condomType, "string", context.getPackageName())));
             tvBrand.setText(context.getString(context.getResources().getIdentifier(getMapValue(vals, "female_condom_brand"), "string", context.getPackageName())));
             tvRestockingDate.setText(getMapValue(vals, "condom_restock_date"));
             tvQuantity.setText(getMapValue(vals, "restocked_female_condoms"));
+            tvIssuingOrganization.setText(getMapValue(vals, "issuing_organization").toUpperCase(Locale.ROOT));
         }
     }
 

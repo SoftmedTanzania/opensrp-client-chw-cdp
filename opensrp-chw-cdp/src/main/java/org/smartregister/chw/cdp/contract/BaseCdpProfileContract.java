@@ -18,6 +18,8 @@ public interface BaseCdpProfileContract {
         void startFormActivity(JSONObject formJson);
 
         void updateLastRecordedStock();
+
+        void updateFollowupButton();
     }
 
     interface Presenter {

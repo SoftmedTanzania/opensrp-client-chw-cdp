@@ -6,6 +6,7 @@ public class OutletObject implements Serializable {
 
     private String outletName;
     private String outletType;
+    private String otherOutletType;
     private String outletWardName;
     private String outletId;
     private String focalPersonName;
@@ -45,6 +46,14 @@ public class OutletObject implements Serializable {
 
     public void setOutletId(String outletId) {
         this.outletId = outletId;
+    }
+
+    public String getOtherOutletType() {
+        return otherOutletType;
+    }
+
+    public void setOtherOutletType(String otherOutletType) {
+        this.otherOutletType = otherOutletType;
     }
 
     public String getFocalPersonName() {

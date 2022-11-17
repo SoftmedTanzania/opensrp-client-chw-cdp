@@ -20,7 +20,9 @@ import androidx.constraintlayout.widget.Group;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.contract.BaseOrderDetailsContract;
+import org.smartregister.chw.cdp.dao.CdpStockingDao;
 import org.smartregister.chw.cdp.domain.OrderFeedbackObject;
 import org.smartregister.chw.cdp.interactor.BaseOrderDetailsInteractor;
 import org.smartregister.chw.cdp.model.BaseOrderDetailsModel;
@@ -29,6 +31,7 @@ import org.smartregister.chw.cdp.util.CdpUtil;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
 import org.smartregister.view.activity.SecuredActivity;
 
@@ -52,7 +55,6 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     protected Button outOfStockBtn;
     protected Button stockDistributionBtn;
     protected Button markAsReceivedBtn;
-    protected Group btnGroup;
     protected Group tvRestockGroup;
     protected ConstraintLayout responseLayout;
 
@@ -138,6 +140,17 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
     }
 
     @Override
+    public void showOutOfStock() {
+        AllSharedPreferences allSharedPreferences = CdpLibrary.getInstance().context().allSharedPreferences();
+        String locationId = allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM());
+        if (CdpStockingDao.getCurrentStockInHand(locationId) < 50) {
+            outOfStockBtn.setVisibility(View.VISIBLE);
+        }else {
+            outOfStockBtn.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void showOutOfStockDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.out_of_stock_label));
@@ -160,7 +173,8 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
 
     @Override
     public void hideButtons() {
-        btnGroup.setVisibility(View.GONE);
+        stockDistributionBtn.setVisibility(View.GONE);
+        outOfStockBtn.setVisibility(View.GONE);
     }
 
     @Override
@@ -183,12 +197,13 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         responseStatus = findViewById(R.id.response_status);
         outOfStockBtn = findViewById(R.id.btn_out_of_stock);
         stockDistributionBtn = findViewById(R.id.btn_stock_distribution);
-        btnGroup = findViewById(R.id.btn_group);
         tvRestockGroup = findViewById(R.id.tv_restock_group);
         responseLayout = findViewById(R.id.response_details);
         markAsReceivedBtn = findViewById(R.id.btn_mark_as_received);
 
-        btnGroup.setVisibility(View.GONE);
+        stockDistributionBtn.setVisibility(View.GONE);
+        outOfStockBtn.setVisibility(View.GONE);
+
         outOfStockBtn.setOnClickListener(this);
         stockDistributionBtn.setOnClickListener(this);
         markAsReceivedBtn.setOnClickListener(this);
@@ -218,7 +233,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
         if (id == R.id.btn_stock_distribution) {
             startStockDistributionForm();
         }
-        if(id == R.id.btn_mark_as_received){
+        if (id == R.id.btn_mark_as_received) {
             startReceivedForm();
         }
     }
@@ -252,7 +267,7 @@ public class BaseOrderDetailsActivity extends SecuredActivity implements BaseOrd
                     presenter.saveForm(jsonString);
                     finish();
                 }
-                if(encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_RECEIVE_FROM_FACILITY)){
+                if (encounter_type.equalsIgnoreCase(Constants.EVENT_TYPE.CDP_RECEIVE_FROM_FACILITY)) {
                     presenter.saveMarkAsReceivedForm(jsonString);
                     finish();
                 }

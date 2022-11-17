@@ -1,8 +1,15 @@
 package org.smartregister.chw.cdp.model;
 
+import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentCondomCountByBrand;
+import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentFemaleCondomCount;
+import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentMaleCondomCount;
+
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.smartregister.chw.cdp.contract.BaseOrdersRegisterFragmentContract;
+import org.smartregister.chw.cdp.dao.CdpStockingDao;
 import org.smartregister.chw.cdp.util.CdpJsonFormUtils;
 import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
@@ -10,12 +17,8 @@ import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.util.Utils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
-
-import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentFemaleCondomCount;
-import static org.smartregister.chw.cdp.dao.CdpStockingDao.getCurrentMaleCondomCount;
 
 public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragmentContract.Model {
     @Override
@@ -54,6 +57,12 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
             if (global != null) {
                 global.put("male_condom_count", getCurrentMaleCondomCount(userLocationId));
                 global.put("female_condom_count", getCurrentFemaleCondomCount(userLocationId));
+
+                List<String> condomBrands = CdpStockingDao.getCondomBrands();
+                for (String condomBrand : condomBrands) {
+                    global.put("male_condom_"+ condomBrand+"_count", getCurrentCondomCountByBrand(condomBrand, CdpStockingDao.CondomStockLog.CondomType.MALE));
+                    global.put("female_condom_"+ condomBrand+"_count", getCurrentCondomCountByBrand(condomBrand, CdpStockingDao.CondomStockLog.CondomType.FEMALE));
+                }
             }
             return form;
         }
@@ -68,6 +77,7 @@ public class BaseOrdersRegisterFragmentModel implements BaseOrdersRegisterFragme
         columnList.add(tableName + "." + DBConstants.KEY.CONDOM_TYPE);
         columnList.add(tableName + "." + DBConstants.KEY.CONDOM_BRAND);
         columnList.add(tableName + "." + DBConstants.KEY.QUANTITY_REQ);
+        columnList.add(tableName + "." + DBConstants.KEY.RECEIVING_ORDER_FACILITY);
         columnList.add(tableName + "." + DBConstants.KEY.REQUEST_TYPE);
         columnList.add(tableName + "." + DBConstants.KEY.FORM_SUBMISSION_ID + " AS " + DBConstants.KEY.REQUEST_REFERENCE);
         columnList.add(tableName + "." + DBConstants.KEY.TEAM_ID);

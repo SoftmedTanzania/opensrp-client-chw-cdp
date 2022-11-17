@@ -22,7 +22,7 @@ public class VisitUtils {
     }
 
     public static List<Visit> getVisitsOnly(String memberID, String visitName) {
-        return new ArrayList<>(CdpLibrary.getInstance().visitRepository().getVisits(memberID, visitName));
+        return new ArrayList<>(CdpLibrary.getInstance().visitRepository().getVisits(memberID, visitName, "ASC"));
     }
 
     public static List<VisitDetail> getVisitDetailsOnly(String visitID) {

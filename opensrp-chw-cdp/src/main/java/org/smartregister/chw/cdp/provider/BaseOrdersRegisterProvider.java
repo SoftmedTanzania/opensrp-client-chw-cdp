@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.smartregister.cdp.R;
+import org.smartregister.chw.cdp.CdpLibrary;
 import org.smartregister.chw.cdp.fragment.BaseCdpRegisterFragment;
 import org.smartregister.chw.cdp.holders.FooterViewHolder;
 import org.smartregister.chw.cdp.holders.OrdersViewHolder;
@@ -16,6 +17,8 @@ import org.smartregister.chw.cdp.util.Constants;
 import org.smartregister.chw.cdp.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
+import org.smartregister.domain.Location;
+import org.smartregister.repository.LocationRepository;
 import org.smartregister.util.Utils;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
@@ -34,12 +37,14 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
     private Context context;
     private View.OnClickListener onClickListener;
     private View.OnClickListener paginationClickListener;
+    private LocationRepository locationRepository;
 
     public BaseOrdersRegisterProvider(Context context, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.onClickListener = onClickListener;
         this.paginationClickListener = paginationClickListener;
+        this.locationRepository = CdpLibrary.getInstance().context().getLocationRepository();
     }
 
     @Override
@@ -48,14 +53,20 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
         populateOrderDetailColumn(pc, viewHolder);
     }
 
-    private void populateOrderDetailColumn(CommonPersonObjectClient pc, OrdersViewHolder viewHolder) {
+    protected void populateOrderDetailColumn(CommonPersonObjectClient pc, OrdersViewHolder viewHolder) {
         try {
 
+            String healthFacilityId = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.RECEIVING_ORDER_FACILITY, true);
             String condomType = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_TYPE, true);
             String condomBrand = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.CONDOM_BRAND, true);
             String condomQuantity = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.QUANTITY_REQ, false);
             String orderStatus = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.STATUS, false);
 
+            if (healthFacilityId != null) {
+                Location location = locationRepository.getLocationById(healthFacilityId);
+                String healthFacilityName = location.getProperties().getName();
+                viewHolder.health_facility.setText(healthFacilityName);
+            }
             viewHolder.condom_type.setText(condomType);
             viewHolder.condom_brand.setText(condomBrand);
             viewHolder.quantity.setText(condomQuantity);
@@ -75,7 +86,7 @@ public class BaseOrdersRegisterProvider implements RecyclerViewProvider<OrdersVi
         }
     }
 
-    private String getStatusString(Context context, String st) {
+    protected String getStatusString(Context context, String st) {
         switch (st.toUpperCase(Locale.ROOT)) {
             case Constants.OrderStatus.FAILED:
                 return context.getString(R.string.order_status_failed);

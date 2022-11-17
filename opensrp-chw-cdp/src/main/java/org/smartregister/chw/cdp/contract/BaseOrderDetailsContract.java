@@ -18,6 +18,8 @@ public interface BaseOrderDetailsContract {
 
         void initializePresenter();
 
+        void showOutOfStock();
+
         void recordOutOfStockResponse();
 
         void showOutOfStockDialog();
